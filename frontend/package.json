@@ -12,12 +12,17 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@mantine/core": "^6.0.13",
+    "@mantine/form": "^6.0.14",
     "@mantine/hooks": "^6.0.13",
+    "@mantine/notifications": "^6.0.14",
     "@tabler/icons-react": "^2.22.0",
+    "@tanstack/react-query": "^4.29.15",
+    "@types/js-cookie": "^3.0.3",
     "axios": "^1.4.0",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-lottie-player": "^1.5.4",
     "react-router": "^6.12.1",
     "react-router-dom": "^6.12.1"
   },

@@ -1,4 +1,4 @@
-import { Avatar, Group, Menu, Text, UnstyledButton } from '@mantine/core';
+import { Avatar, Group, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import { forwardRef } from 'react';
 

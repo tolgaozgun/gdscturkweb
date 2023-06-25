@@ -7,7 +7,7 @@ const AppHeader = () => {
 		<Header w="100%" height={100} p="lg">
 			<Flex align="center" justify="space-between">
 				<Title color="blue" ml={20}>
-					BilBilet
+					GDSC Turkiye
 				</Title>
 				<ProfileMenu />
 			</Flex>

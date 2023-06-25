@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { axiosSecure } from '../../services/axios';
-import { User } from '../../types';
+import { User } from '../../types/UserTypes';
 import { useRefresh } from './useRefresh';
 import { useUser } from './useUser';
 
