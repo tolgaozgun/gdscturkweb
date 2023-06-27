@@ -35,6 +35,17 @@ public class AnnouncementController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "all")
+    public ResponseEntity<Object> getAllAnnouncements() {
+        try {
+            List<Announcement> announcements = announcementService.getAllAnnouncements();
+            return Response.create("Gathered all announcements", HttpStatus.OK, announcements);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "create")
     public ResponseEntity<Object> createAnnouncement(@Valid @RequestBody AnnouncementRequest announcementRequest) {
         try {

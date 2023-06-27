@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -21,11 +22,9 @@ public class UniversityMapper {
     }
 
     public List<University> toModel(List<UniversityEntity> universityEntityList) {
-        List<University> universityList = new ArrayList<>();
-        for (UniversityEntity universityEntity : universityEntityList) {
-            universityList.add(toModel(universityEntity));
-        }
-        return universityList;
+        return universityEntityList.stream()
+                .map(this::toModel)
+                .collect(Collectors.toList());
     }
 
     public University toModel(UniversityEntity universityEntity) {

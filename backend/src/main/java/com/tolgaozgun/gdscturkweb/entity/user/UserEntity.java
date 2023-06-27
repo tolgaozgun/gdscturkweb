@@ -1,7 +1,7 @@
 package com.tolgaozgun.gdscturkweb.entity.user;
 
 
-import com.tolgaozgun.gdscturkweb.dto.user.UserRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
 import com.tolgaozgun.gdscturkweb.entity.TopicEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import jakarta.persistence.*;

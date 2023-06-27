@@ -1,8 +1,8 @@
 package com.tolgaozgun.gdscturkweb.dto.request.register;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.tolgaozgun.gdscturkweb.dto.user.LeadRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.UserRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.LeadRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

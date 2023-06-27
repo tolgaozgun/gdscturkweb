@@ -21,7 +21,7 @@ public class LeadEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id", nullable = false)
-    private UniversityEntity universityEntity;
+    private UniversityEntity university;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buddy_team_id")
@@ -32,7 +32,7 @@ public class LeadEntity {
     private UserEntity user;
 
     public LeadEntity(UniversityEntity universityEntity, UserEntity user){
-        this.universityEntity = universityEntity;
+        this.university = universityEntity;
         this.user = user;
     }
 

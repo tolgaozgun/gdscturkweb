@@ -1,4 +1,4 @@
-package com.tolgaozgun.gdscturkweb.dto.user;
+package com.tolgaozgun.gdscturkweb.dto.user.register;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

@@ -17,9 +17,6 @@ public class Facilitator {
     private Long facilitatorId;
 
     @NotNull
-    private BuddyTeam buddyTeam;
-
-    @NotNull
     private University university;
 
     @NotNull

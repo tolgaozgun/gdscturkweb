@@ -1,15 +1,20 @@
 package com.tolgaozgun.gdscturkweb.service;
 
+import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.LoginRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.LoginResponse;
 import com.tolgaozgun.gdscturkweb.dto.UserDTO;
-import com.tolgaozgun.gdscturkweb.dto.user.CoreTeamRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.LeadRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.UserRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.CoreTeamRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.FacilitatorRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.LeadRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
+import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.CoreTeamMemberEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
@@ -17,14 +22,12 @@ import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.PasswordNotMatchException;
 import com.tolgaozgun.gdscturkweb.exception.UserAlreadyExistsException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
-import com.tolgaozgun.gdscturkweb.mapper.CoreTeamMapper;
-import com.tolgaozgun.gdscturkweb.mapper.LeadMapper;
-import com.tolgaozgun.gdscturkweb.mapper.UniversityMapper;
-import com.tolgaozgun.gdscturkweb.mapper.UserMapper;
+import com.tolgaozgun.gdscturkweb.mapper.*;
 import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.CoreTeamMemberRepository;
+import com.tolgaozgun.gdscturkweb.repository.user.FacilitatorRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.LeadRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
 import com.tolgaozgun.gdscturkweb.security.JWTUserService;
@@ -35,6 +38,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -53,6 +57,7 @@ public class AuthService {
     private final LeadMapper leadMapper;
     private final UniversityMapper universityMapper;
     private final CoreTeamMapper coreTeamMapper;
+    private final FacilitatorMapper facilitatorMapper;
 
     // JWT
 
@@ -65,6 +70,7 @@ public class AuthService {
     private final CoreTeamMemberRepository coreTeamMemberRepository;
     private final UserRepository userRepository;
     private final LeadRepository leadRepository;
+    private final FacilitatorRepository facilitatorRepository;
 
 
     @Autowired
@@ -120,7 +126,7 @@ public class AuthService {
         }
     }
 
-    private UserEntity checkAndRegisterUser(UserRegister userRegister) throws Exception {
+    private UserEntity checkAndRegisterUser(UserRegister userRegister, UserType userType) throws Exception {
         boolean userExist = userRepository.existsByUsername(userRegister.getUsername());
 
         if (userExist) {
@@ -134,7 +140,7 @@ public class AuthService {
         }
         userRegister.setPassword(encodePassword(userRegister.getPassword()));
 
-        UserEntity userEntity = new UserEntity(userRegister, UserType.LEAD);
+        UserEntity userEntity = new UserEntity(userRegister, userType);
 
         return userRepository.save(userEntity);
 
@@ -147,7 +153,7 @@ public class AuthService {
             UserRegister userRegister = leadRegisterRequest.getUserRegister();
             LeadRegister leadRegister = leadRegisterRequest.getLeadRegister();
 
-            UserEntity savedEntity = checkAndRegisterUser(userRegister);
+            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.LEAD);
 
             // generate uuid and hash password if user does not exist in the system
             // user.setId(UUID.randomUUID());
@@ -171,25 +177,47 @@ public class AuthService {
             UserRegister userRegister = coreTeamRegisterRequest.getUserRegister();
             CoreTeamRegister coreTeamRegister = coreTeamRegisterRequest.getCoreTeamRegister();
 
-            boolean userExist = userRepository.existsByUsername(userRegister.getUsername());
-
-            if (userExist) {
-                throw new UserAlreadyExistsException("This username already exists");
-            }
-
-            userRegister.setPassword(encodePassword(userRegister.getPassword()));
-
-            UserEntity userEntity = new UserEntity(userRegister, UserType.CORE_TEAM_MEMBER);
+            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.CORE_TEAM_MEMBER);
 
             UniversityEntity universityEntity = universityRepository.findById(coreTeamRegister.getUniversityId())
                     .orElseThrow(() -> new Exception("University not found"));
 
-            CoreTeamMemberEntity coreTeamMemberEntity = new CoreTeamMemberEntity(universityEntity, userEntity);
+            CoreTeamMemberEntity coreTeamMemberEntity = new CoreTeamMemberEntity(universityEntity, savedEntity);
 
 
             CoreTeamMemberEntity savedCoreTeamMemberEntity = coreTeamMemberRepository.save(coreTeamMemberEntity);
 
-            return coreTeamMapper.toModel(coreTeamMemberEntity);
+            return coreTeamMapper.toModel(savedCoreTeamMemberEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public FacilitatorDTO registerFacilitator(FacilitatorRegisterRequest facilitatorRegisterRequest) throws Exception {
+        try {
+
+            UserRegister userRegister = facilitatorRegisterRequest.getUserRegister();
+            FacilitatorRegister facilitatorRegister = facilitatorRegisterRequest.getFacilitatorRegister();
+
+            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.FACILITATOR);
+
+
+            UniversityEntity universityEntity = universityRepository.findById(facilitatorRegister.getUniversityId())
+                    .orElseThrow(() -> new Exception("University not found"));
+
+            FacilitatorEntity facilitatorEntity = new FacilitatorEntity();
+            facilitatorEntity.setUniversity(universityEntity);
+            facilitatorEntity.setUser(savedEntity);
+            facilitatorEntity = facilitatorRepository.save(facilitatorEntity);
+
+            BuddyTeamEntity buddyTeamEntity = new BuddyTeamEntity();
+            buddyTeamEntity.setFacilitator(facilitatorEntity);
+            buddyTeamEntity.setLeads(List.of());
+
+            buddyTeamRepository.save(buddyTeamEntity);
+
+            return facilitatorMapper.toDTO(facilitatorEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

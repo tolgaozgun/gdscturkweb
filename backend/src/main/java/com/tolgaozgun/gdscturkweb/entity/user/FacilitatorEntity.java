@@ -18,12 +18,9 @@ public class FacilitatorEntity {
     @Column(name = "facilitator_id", nullable = false)
     private Long facilitatorId;
 
-    @OneToOne(mappedBy = "facilitator", cascade = CascadeType.ALL)
-    private BuddyTeamEntity buddyTeam;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id", nullable = false)
-    private UniversityEntity universityEntity;
+    private UniversityEntity university;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)

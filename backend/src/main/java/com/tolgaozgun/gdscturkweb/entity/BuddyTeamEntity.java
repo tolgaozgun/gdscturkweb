@@ -4,12 +4,14 @@ import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "buddy_teams")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BuddyTeamEntity {

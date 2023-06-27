@@ -25,9 +25,9 @@ public class CityEntity {
     private CountryEntity country;
 
     @Column(nullable = false)
-    private String latitude;
+    private Double latitude;
 
     @Column(nullable = false)
-    private String longitude;
+    private Double longitude;
 
 }

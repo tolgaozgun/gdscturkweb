@@ -1,8 +1,7 @@
 package com.tolgaozgun.gdscturkweb.dto.request.register;
 
-import com.tolgaozgun.gdscturkweb.dto.user.CoreTeamRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.FacilitatorRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.UserRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.CoreTeamRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

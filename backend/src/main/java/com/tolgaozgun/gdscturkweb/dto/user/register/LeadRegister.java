@@ -1,5 +1,7 @@
-package com.tolgaozgun.gdscturkweb.dto.user;
+package com.tolgaozgun.gdscturkweb.dto.user.register;
 
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,10 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoreTeamRegister {
+public class LeadRegister {
 
     @NotNull
     private Long universityId;
 
+    // Not needed during register
+//    @Nullable
+//    private Long buddyTeamId;
 
 }

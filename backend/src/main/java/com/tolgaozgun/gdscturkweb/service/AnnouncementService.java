@@ -54,7 +54,17 @@ public class AnnouncementService {
 
     }
 
+    public List<Announcement> getAllAnnouncements(){
+        try{
+            List<AnnouncementEntity> announcementEntities = announcementRepository.findAll();
 
+            return announcementMapper.toModel(announcementEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+
+    }
 
     public Announcement createAnnouncement(AnnouncementRequest announcementRequest){
         try {

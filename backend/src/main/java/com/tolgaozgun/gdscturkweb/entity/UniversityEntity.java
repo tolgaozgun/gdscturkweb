@@ -19,10 +19,10 @@ public class UniversityEntity {
     private Long universityId;
 
     @Column(nullable = false)
-    private Long latitude;
+    private Double latitude;
 
     @Column(nullable = false)
-    private Long longitude;
+    private Double longitude;
 
     @Column(nullable = false)
     private String name;

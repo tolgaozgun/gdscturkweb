@@ -34,7 +34,7 @@ public class LeadMapper {
         // Fetch UniversityEntity from the repository and set it
         UniversityEntity universityEntity = universityRepository.findById(lead.getUniversity().getUniversityId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid University ID"));
-        leadEntity.setUniversityEntity(universityEntity);
+        leadEntity.setUniversity(universityEntity);
 
         // Fetch BuddyTeamEntity from the repository and set it
         BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findById(lead.getBuddyTeam().getId())
@@ -49,7 +49,7 @@ public class LeadMapper {
 
         UserDTO userDTO = userMapper.toDTO(leadEntity.getUser());
 
-        UniversityEntity universityEntity = leadEntity.getUniversityEntity();
+        UniversityEntity universityEntity = leadEntity.getUniversity();
         University university = universityMapper.toModel(universityEntity);
 
         BuddyTeamEntity buddyTeamEntity = leadEntity.getBuddyTeam();

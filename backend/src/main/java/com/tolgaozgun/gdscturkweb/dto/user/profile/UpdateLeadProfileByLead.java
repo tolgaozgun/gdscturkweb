@@ -1,4 +1,4 @@
-package com.tolgaozgun.gdscturkweb.dto.user;
+package com.tolgaozgun.gdscturkweb.dto.user.profile;
 
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 //@NoArgsConstructor
 @AllArgsConstructor
-public class FacilitatorRegister {
+public class UpdateLeadProfileByLead {
 
-    // Not needed during register
 //    @Nullable
-//    private Long buddyTeamId;
+//    private Long universityId;
 
 }
