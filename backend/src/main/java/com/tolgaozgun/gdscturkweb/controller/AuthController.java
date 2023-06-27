@@ -46,7 +46,7 @@ public class AuthController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/coreteam")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/core-team")
     public ResponseEntity<Object> registerLead(@Valid @RequestBody CoreTeamRegisterRequest coreTeamRegisterRequest) {
         try {
             CoreTeamMember coreTeamMember = authService.registerCoreTeam(coreTeamRegisterRequest);

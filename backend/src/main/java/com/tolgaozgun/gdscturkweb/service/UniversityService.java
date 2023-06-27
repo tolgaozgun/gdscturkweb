@@ -5,6 +5,7 @@ import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.university.CreateUniversityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.university.EditUniversityRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.university.GetUniversityRequest;
 import com.tolgaozgun.gdscturkweb.entity.CityEntity;
 import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
@@ -37,6 +38,26 @@ public class UniversityService {
         try {
             List<UniversityEntity> universityEntities = universityRepository.findAll();
             return universityMapper.toModel(universityEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public University getUniversityById(GetUniversityRequest getUniversityRequest){
+        try {
+
+            Long universityId = getUniversityRequest.getUniversityId();
+
+
+            Optional<UniversityEntity> optionalUniversityEntity = universityRepository.findById(universityId);
+
+            if (optionalUniversityEntity.isEmpty()) {
+                throw new UniversityNotFoundException();
+            }
+
+            UniversityEntity universityEntity = optionalUniversityEntity.get();
+            return universityMapper.toModel(universityEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

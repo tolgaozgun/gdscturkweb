@@ -2,10 +2,12 @@ package com.tolgaozgun.gdscturkweb.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 @Entity
+@Data
 @Table(name = "topics")
 @AllArgsConstructor
 @NoArgsConstructor

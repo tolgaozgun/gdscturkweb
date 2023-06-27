@@ -1,9 +1,11 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.question.*;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
+import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.model.Question;
 import com.tolgaozgun.gdscturkweb.service.LeadService;
 import com.tolgaozgun.gdscturkweb.service.QuestionService;
@@ -29,6 +31,19 @@ public class QuestionController {
         try {
             List<Question> questions = questionService.getAllQuestions();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
+    public ResponseEntity<Object> getQuestionById(@Valid @RequestBody GetQuestionRequest getQuestionRequest) {
+        try {
+            Question question = questionService.getQuestion(getQuestionRequest);
+            return Response.create("Found the question", HttpStatus.OK, question);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

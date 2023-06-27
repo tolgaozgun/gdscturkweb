@@ -3,6 +3,7 @@ package com.tolgaozgun.gdscturkweb.service;
 
 import com.tolgaozgun.gdscturkweb.dto.request.country.CreateCountryRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.country.EditCountryRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.country.GetCountryRequest;
 import com.tolgaozgun.gdscturkweb.entity.CityEntity;
 import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
 import com.tolgaozgun.gdscturkweb.exception.CountryNotFoundException;
@@ -29,6 +30,24 @@ public class CountryService {
         try {
             List<CountryEntity> countryEntities = countryRepository.findAll();
             return countryMapper.toModel(countryEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public Country getCountry(GetCountryRequest getCountryRequest) {
+        try {
+
+            Long countryId = getCountryRequest.getCountryId();
+            Optional<CountryEntity> optionalCountryEntity = countryRepository.findById(countryId);
+
+            if (optionalCountryEntity.isEmpty()) {
+                throw new CountryNotFoundException();
+            }
+
+            CountryEntity countryEntity = optionalCountryEntity.get();
+            return countryMapper.toModel(countryEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

@@ -3,6 +3,7 @@ package com.tolgaozgun.gdscturkweb.service;
 import com.tolgaozgun.gdscturkweb.dto.request.question.*;
 import com.tolgaozgun.gdscturkweb.entity.QuestionEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
+import com.tolgaozgun.gdscturkweb.exception.QuestionNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.QuestionMapper;
 import com.tolgaozgun.gdscturkweb.model.Question;
@@ -29,6 +30,23 @@ public class QuestionService {
         try {
             List<QuestionEntity> questionEntities = questionRepository.findAll();
             return questionMapper.toModel(questionEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public Question getQuestion(GetQuestionRequest getQuestionRequest) {
+        try {
+            Long questionId = getQuestionRequest.getQuestionId();
+            Optional<QuestionEntity> optionalQuestionEntity = questionRepository.findById(questionId);
+
+            if (optionalQuestionEntity.isEmpty()) {
+                throw new QuestionNotFoundException(questionId);
+            }
+
+            QuestionEntity questionEntity = optionalQuestionEntity.get();
+            return questionMapper.toModel(questionEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

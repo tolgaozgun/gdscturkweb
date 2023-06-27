@@ -1,14 +1,12 @@
 package com.tolgaozgun.gdscturkweb.mapper;
 
-import com.tolgaozgun.gdscturkweb.dto.request.AnnouncementRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.announcement.CreateAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.entity.AnnouncementEntity;
-import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.model.Announcement;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +20,7 @@ public class AnnouncementMapper {
         return modelMapper.map(announcement, AnnouncementEntity.class);
     }
 
-    public AnnouncementEntity toEntity(AnnouncementRequest announcementRequest) {
+    public AnnouncementEntity toEntity(CreateAnnouncementRequest announcementRequest) {
         return modelMapper.map(announcementRequest, AnnouncementEntity.class);
     }
 

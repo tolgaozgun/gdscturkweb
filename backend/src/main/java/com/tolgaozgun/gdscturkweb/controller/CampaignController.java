@@ -1,14 +1,18 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
+import com.tolgaozgun.gdscturkweb.dto.request.announcement.GetAnnouncementRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.campaign.CreateCampaignRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.campaign.EditCampaignRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.campaign.GetCampaignRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.topic.CreateTopicRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.topic.EditTopicRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
+import com.tolgaozgun.gdscturkweb.model.Announcement;
 import com.tolgaozgun.gdscturkweb.model.Campaign;
-import com.tolgaozgun.gdscturkweb.model.City;
-import com.tolgaozgun.gdscturkweb.service.CityService;
+import com.tolgaozgun.gdscturkweb.model.Topic;
+import com.tolgaozgun.gdscturkweb.service.CampaignService;
+import com.tolgaozgun.gdscturkweb.service.TopicService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,29 +24,28 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/v1/cities")
-public class CityController {
+@RequestMapping("api/v1/campaigns")
+public class CampaignController {
 
-    private final CityService cityService;
+    private final CampaignService campaignService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping( path = "")
-    public ResponseEntity<Object> getAllCities() {
+    public ResponseEntity<Object> getAllCampaigns() {
         try {
-            List<City> cityList = cityService.getAllCities();
-            return Response.create("Gathered all cities", HttpStatus.OK, cityList);
+            List<Campaign> campaignList = campaignService.getAllCampaigns();
+            return Response.create("Gathered all campaigns", HttpStatus.OK, campaignList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
-    public ResponseEntity<Object> getCityById(@Valid @RequestBody GetCityRequest getCityRequest) {
+    public ResponseEntity<Object> getCampaignById(@Valid @RequestBody GetCampaignRequest getCampaignRequest) {
         try {
-            City city = cityService.getCity(getCityRequest);
-            return Response.create("Found the city", HttpStatus.OK, city);
+            Campaign campaign = campaignService.getCampaign(getCampaignRequest);
+            return Response.create("Found the campaign", HttpStatus.OK, campaign);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -50,10 +53,10 @@ public class CityController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "create")
-    public ResponseEntity<Object> createCity(@Valid @RequestBody CreateCityRequest createCityRequest) {
+    public ResponseEntity<Object> createCampaign(@Valid @RequestBody CreateCampaignRequest createCampaignRequest) {
         try {
-            City city = cityService.createCity(createCityRequest);
-            return Response.create("City created successfully", HttpStatus.OK, city);
+            Campaign campaign = campaignService.createCampaign(createCampaignRequest);
+            return Response.create("Campaign created successfully", HttpStatus.OK, campaign);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -62,10 +65,10 @@ public class CityController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editCity(@Valid @RequestBody EditCityRequest editCityRequest) {
+    public ResponseEntity<Object> editCity(@Valid @RequestBody EditCampaignRequest editCampaignRequest) {
         try {
-            City city = cityService.editCity(editCityRequest);
-            return Response.create("City edited successfully", HttpStatus.OK, city);
+            Campaign campaign = campaignService.editCampaign(editCampaignRequest);
+            return Response.create("Campaign edited successfully", HttpStatus.OK, campaign);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

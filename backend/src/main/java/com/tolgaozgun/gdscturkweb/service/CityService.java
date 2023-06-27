@@ -4,8 +4,10 @@ package com.tolgaozgun.gdscturkweb.service;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.country.CreateCountryRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.country.EditCountryRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.country.GetCountryRequest;
 import com.tolgaozgun.gdscturkweb.entity.CityEntity;
 import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
@@ -35,6 +37,25 @@ public class CityService {
         try {
             List<CityEntity> cityEntities = cityRepository.findAll();
             return cityMapper.toModel(cityEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+
+    public City getCity(GetCityRequest getCityRequest) {
+        try {
+
+            Long cityId = getCityRequest.getCityId();
+            Optional<CityEntity> optionalCityEntity = cityRepository.findById(cityId);
+
+            if (optionalCityEntity.isEmpty()) {
+                throw new CountryNotFoundException();
+            }
+
+            CityEntity cityEntity = optionalCityEntity.get();
+            return cityMapper.toModel(cityEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

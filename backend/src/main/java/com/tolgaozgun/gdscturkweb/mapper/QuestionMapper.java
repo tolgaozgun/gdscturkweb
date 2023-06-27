@@ -1,25 +1,15 @@
 package com.tolgaozgun.gdscturkweb.mapper;
 
-import com.tolgaozgun.gdscturkweb.dto.request.AnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.question.AnswerQuestionRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.question.AskQuestionRequest;
-import com.tolgaozgun.gdscturkweb.entity.AnnouncementEntity;
 import com.tolgaozgun.gdscturkweb.entity.QuestionEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
-import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.QuestionNotFoundException;
-import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
-import com.tolgaozgun.gdscturkweb.model.Announcement;
 import com.tolgaozgun.gdscturkweb.model.Question;
 import com.tolgaozgun.gdscturkweb.repository.QuestionRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -33,7 +33,7 @@ export async function registerCoreTeam(
 	userDetails: RegisterCoreTeam,
 ): Promise<Response<User>> {
 	const res = await axios.post<Response<User>>(
-		`${baseUrl}/auth/register/coreteam`,
+		`${baseUrl}/auth/register/core-team`,
 		userDetails,
 	);
 	return res.data;
