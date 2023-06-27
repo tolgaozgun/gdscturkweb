@@ -22,18 +22,18 @@ public class SecurityConfig {
 	final private JWTUserService jwtUserService;
 	final private JWTFilter jwtFilter;
 
-	// @Autowired
-	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	private static final String[] AUTH_WHITELIST = {
 			"/v3/api-docs/**",
 			"/swagger-ui/**",
-			"/api/v1/auth/hello",
 			"/api/v1/auth/login",
 			"/api/v1/auth/register",
-			"/api/v1/auth/register/traveler",
-			"/api/v1/auth/register/company",
-			"/api/v1/auth/register/admin"
+			"/api/v1/auth/register/lead",
+			"/api/v1/auth/register/core_team",
+			"/api/v1/auth/register/facilitator",
+			"/api/v1/auth/register/googler",
+			"/api/v1/auth/register/admin",
+			"/api/v1/universities",
 	};
 
 	@Bean
