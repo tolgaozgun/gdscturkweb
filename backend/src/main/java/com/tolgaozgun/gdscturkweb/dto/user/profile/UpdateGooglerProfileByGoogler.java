@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.dto.user.profile;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,8 +9,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class UpdateGooglerProfileByGoogler {
 
-//    @NotNull
-//    private UserRegister user;
+    @Nullable
+    private Long cityId;
+
+    @Nullable
+    private Long countryId;
 
 
 }

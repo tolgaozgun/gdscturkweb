@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-import { useEffect, useState } from 'react';
 import { User } from '../../types/UserTypes';
 
 export const useUser = () => {

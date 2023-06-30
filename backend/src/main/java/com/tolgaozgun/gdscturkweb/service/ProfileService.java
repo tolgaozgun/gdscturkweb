@@ -2,21 +2,20 @@ package com.tolgaozgun.gdscturkweb.service;
 
 import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
 import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
+import com.tolgaozgun.gdscturkweb.dto.GooglerDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.profile.*;
 import com.tolgaozgun.gdscturkweb.dto.user.profile.*;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
+import com.tolgaozgun.gdscturkweb.entity.CityEntity;
+import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.CoreTeamMemberEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.*;
 import com.tolgaozgun.gdscturkweb.exception.*;
-import com.tolgaozgun.gdscturkweb.mapper.CoreTeamMapper;
-import com.tolgaozgun.gdscturkweb.mapper.FacilitatorMapper;
-import com.tolgaozgun.gdscturkweb.mapper.LeadMapper;
-import com.tolgaozgun.gdscturkweb.mapper.TopicMapper;
+import com.tolgaozgun.gdscturkweb.mapper.*;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
+import com.tolgaozgun.gdscturkweb.repository.CityRepository;
+import com.tolgaozgun.gdscturkweb.repository.CountryRepository;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.*;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +38,14 @@ public class ProfileService {
     private final CoreTeamMemberRepository coreTeamMemberRepository;
     private final UniversityRepository universityRepository;
     private final BuddyTeamRepository buddyTeamRepository;
+    private final CityRepository cityRepository;
+    private final CountryRepository countryRepository;
 
     private final TopicMapper topicMapper;
     private final FacilitatorMapper facilitatorMapper;
     private final LeadMapper leadMapper;
     private final CoreTeamMapper coreTeamMapper;
+    private final GooglerMapper googlerMapper;
 
     private UserEntity checkAndUpdateUserProfileByStaff(UpdateUserProfileByStaff updateUserProfileByStaff) {
 
@@ -180,21 +182,97 @@ public class ProfileService {
 
             FacilitatorEntity facilitatorEntity = optionalFacilitatorEntity.get();
 
-//            if (updateFacilitatorProfile.getUniversityId() != null) {
-//
-//                UniversityEntity universityEntity = universityRepository.findById(updateFacilitatorProfile.getUniversityId())
-//                        .orElseThrow(() -> new Exception("University not found"));
-//
-//                facilitatorEntity.setUniversity(universityEntity);
-//            }
-//
-//            facilitatorEntity = facilitatorRepository.save(facilitatorEntity);
-
             return facilitatorMapper.toDTO(facilitatorEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
+    }
+    public GooglerDTO updateGooglerProfileByStaff(UpdateGooglerProfileByStaffRequest updateGooglerProfileByStaffRequest) {
+
+        UpdateUserProfileByStaff updateUserProfileByStaff = updateGooglerProfileByStaffRequest.getUpdateUserProfile();
+        UpdateGooglerProfileByStaff updateGooglerProfileByStaff = updateGooglerProfileByStaffRequest.getUpdateGooglerProfile();
+
+        UserEntity savedEntity = checkAndUpdateUserProfileByStaff(updateUserProfileByStaff);
+
+        Optional<GooglerEntity> optionalGooglerEntity = googlerRepository.findById(updateGooglerProfileByStaff.getGooglerId());
+
+        if (optionalGooglerEntity.isEmpty()) {
+            throw new GooglerNotFoundException();
+        }
+
+        GooglerEntity googlerEntity = optionalGooglerEntity.get();
+
+        if (updateGooglerProfileByStaff.getCityId() != null) {
+            Long cityId = updateGooglerProfileByStaff.getCityId();
+            Optional<CityEntity> optionalCityEntity = cityRepository.findById(cityId);
+
+            if (optionalCityEntity.isEmpty()) {
+                throw new CityNotFoundException();
+            }
+
+            CityEntity cityEntity = optionalCityEntity.get();
+            googlerEntity.setCity(cityEntity);
+        }
+
+        if (updateGooglerProfileByStaff.getCountryId() != null) {
+            Long countryId = updateGooglerProfileByStaff.getCountryId();
+            Optional<CountryEntity> optionalCountryEntity = countryRepository.findById(countryId);
+
+            if (optionalCountryEntity.isEmpty()) {
+                throw new UniversityNotFoundException();
+            }
+
+            CountryEntity countryEntity = optionalCountryEntity.get();
+            googlerEntity.setCountry(countryEntity);
+        }
+
+        return googlerMapper.toDTO(googlerRepository.save(googlerEntity));
+
+    }
+
+    public GooglerDTO updateGooglerProfile(UpdateGooglerProfileByGooglerRequest updateGooglerProfileByGooglerRequest) {
+
+        UpdateUserProfileByUser userRegister = updateGooglerProfileByGooglerRequest.getUpdateUserProfile();
+        UpdateGooglerProfileByGoogler updateGooglerProfile = updateGooglerProfileByGooglerRequest.getUpdateGooglerProfile();
+
+        UserEntity savedEntity = checkAndUpdateUserProfile(userRegister);
+
+        Optional<GooglerEntity> optionalGooglerEntity = googlerRepository.findByUser(savedEntity);
+
+        if (optionalGooglerEntity.isEmpty()) {
+            throw new GooglerNotFoundException();
+        }
+
+        GooglerEntity googlerEntity = optionalGooglerEntity.get();
+
+        if (updateGooglerProfile.getCityId() != null) {
+            Long cityId = updateGooglerProfile.getCityId();
+            Optional<CityEntity> optionalCityEntity = cityRepository.findById(cityId);
+
+            if (optionalCityEntity.isEmpty()) {
+                throw new CityNotFoundException();
+            }
+
+            CityEntity cityEntity = optionalCityEntity.get();
+            googlerEntity.setCity(cityEntity);
+        }
+
+        if (updateGooglerProfile.getCountryId() != null) {
+            Long countryId = updateGooglerProfile.getCountryId();
+            Optional<CountryEntity> optionalCountryEntity = countryRepository.findById(countryId);
+
+            if (optionalCountryEntity.isEmpty()) {
+                throw new UniversityNotFoundException();
+            }
+
+            CountryEntity countryEntity = optionalCountryEntity.get();
+            googlerEntity.setCountry(countryEntity);
+        }
+
+        return googlerMapper.toDTO(googlerRepository.save(googlerEntity));
+
+
     }
 
     public LeadDTO updateLeadProfileByStaff(UpdateLeadProfileByStaffRequest updateLeadProfileByStaffRequest) {
@@ -236,10 +314,7 @@ public class ProfileService {
             leadEntity.setUniversity(universityEntity);
         }
 
-
-
         return leadMapper.toDTO(leadRepository.save(leadEntity));
-
 
     }
 

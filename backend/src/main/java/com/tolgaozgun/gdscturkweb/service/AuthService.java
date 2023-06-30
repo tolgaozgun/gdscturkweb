@@ -1,35 +1,29 @@
 package com.tolgaozgun.gdscturkweb.service;
 
-import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
-import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.*;
 import com.tolgaozgun.gdscturkweb.dto.request.LoginRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.VerifyUserRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.register.GooglerRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.LoginResponse;
-import com.tolgaozgun.gdscturkweb.dto.UserDTO;
-import com.tolgaozgun.gdscturkweb.dto.user.register.CoreTeamRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.register.FacilitatorRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.register.LeadRegister;
-import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
+import com.tolgaozgun.gdscturkweb.dto.user.register.*;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.CoreTeamMemberEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.*;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.PasswordNotMatchException;
 import com.tolgaozgun.gdscturkweb.exception.UserAlreadyExistsException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyUnverifiedException;
+import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyVerifiedException;
+import com.tolgaozgun.gdscturkweb.exception.verification.UserNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.mapper.*;
 import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.CoreTeamMemberRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.FacilitatorRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.LeadRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
+import com.tolgaozgun.gdscturkweb.repository.user.*;
 import com.tolgaozgun.gdscturkweb.security.JWTUserService;
 import com.tolgaozgun.gdscturkweb.security.JWTUtils;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +50,7 @@ public class AuthService {
     private final UserMapper userMapper;
     private final LeadMapper leadMapper;
     private final UniversityMapper universityMapper;
+    private final GooglerMapper googlerMapper;
     private final CoreTeamMapper coreTeamMapper;
     private final FacilitatorMapper facilitatorMapper;
 
@@ -71,6 +66,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final LeadRepository leadRepository;
     private final FacilitatorRepository facilitatorRepository;
+    private final GooglerRepository googlerRepository;
 
 
     @Autowired
@@ -90,9 +86,13 @@ public class AuthService {
 
 
             if (emailEntity.isEmpty()) {
-                throw new UserNotFoundException("user is not found");
+                throw new UserNotFoundException("User is not found");
             }
             UserEntity dbUser = emailEntity.get();
+
+            if (!dbUser.getIsVerified()) {
+                throw new UserNotVerifiedException();
+            }
 
 //            System.out.println(user.getUsername());
 //
@@ -155,9 +155,6 @@ public class AuthService {
 
             UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.LEAD);
 
-            // generate uuid and hash password if user does not exist in the system
-            // user.setId(UUID.randomUUID());
-
             UniversityEntity universityEntity = universityRepository.findById(leadRegister.getUniversityId())
                     .orElseThrow(() -> new Exception("University not found"));
 
@@ -171,7 +168,8 @@ public class AuthService {
             throw e;
         }
     }
-    public CoreTeamMember registerCoreTeam(CoreTeamRegisterRequest coreTeamRegisterRequest) throws Exception {
+
+    public CoreTeamMemberDTO registerCoreTeam(CoreTeamRegisterRequest coreTeamRegisterRequest) throws Exception {
         try {
 
             UserRegister userRegister = coreTeamRegisterRequest.getUserRegister();
@@ -187,7 +185,29 @@ public class AuthService {
 
             CoreTeamMemberEntity savedCoreTeamMemberEntity = coreTeamMemberRepository.save(coreTeamMemberEntity);
 
-            return coreTeamMapper.toModel(savedCoreTeamMemberEntity);
+            return coreTeamMapper.toDTO(savedCoreTeamMemberEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+    public GooglerDTO registerGoogler(GooglerRegisterRequest googlerRegisterRequest) throws Exception {
+        try {
+
+            UserRegister userRegister = googlerRegisterRequest.getUserRegister();
+            GooglerRegister googlerRegister = googlerRegisterRequest.getGooglerRegister();
+
+            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.CORE_TEAM_MEMBER);
+
+            GooglerEntity googlerEntity = new GooglerEntity();
+
+            googlerEntity.setUser(savedEntity);
+
+            googlerEntity = googlerRepository.save(googlerEntity);
+
+            return googlerMapper.toDTO(googlerEntity);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -218,6 +238,53 @@ public class AuthService {
             buddyTeamRepository.save(buddyTeamEntity);
 
             return facilitatorMapper.toDTO(facilitatorEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserDTO verifyUser(VerifyUserRequest verifyUserRequest) {
+        try {
+
+            // TODO: Add permissions
+            Long userId = verifyUserRequest.getUserId();
+
+            UserEntity userEntity = userRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+            if (userEntity.getIsVerified()) {
+                throw new UserAlreadyVerifiedException();
+            }
+
+            userEntity.setIsVerified(true);
+
+            return userMapper.toDTO(userRepository.save(userEntity));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserDTO unverifyUser(VerifyUserRequest verifyUserRequest) {
+        try {
+
+            // TODO: Add permissions
+
+            Long userId = verifyUserRequest.getUserId();
+
+            UserEntity userEntity = userRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+            if (!userEntity.getIsVerified()) {
+                throw new UserAlreadyUnverifiedException();
+            }
+
+            userEntity.setIsVerified(false);
+
+            return userMapper.toDTO(userRepository.save(userEntity));
+
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

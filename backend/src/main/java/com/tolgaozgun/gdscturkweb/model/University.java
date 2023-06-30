@@ -15,10 +15,10 @@ public class University {
     private Long universityId;
 
     @NotNull
-    private Long latitude;
+    private Double latitude;
 
     @NotNull
-    private Long longitude;
+    private Double longitude;
 
     @NotNull
     private String name;

@@ -19,7 +19,7 @@ public class UpdateGooglerProfileByGooglerRequest {
 
     @NotNull
     @JsonProperty("googler")
-    private UpdateGooglerProfileByGoogler updateGooglerProfilez;
+    private UpdateGooglerProfileByGoogler updateGooglerProfile;
 
 
 }

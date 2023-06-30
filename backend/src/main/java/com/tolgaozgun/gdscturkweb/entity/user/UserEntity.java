@@ -46,6 +46,9 @@ public class UserEntity {
     @Column(nullable = true)
     private String biography;
 
+    @Column(nullable = false)
+    private Boolean isVerified;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserType userType;
@@ -65,6 +68,7 @@ public class UserEntity {
         this.surname = userRegister.getSurname();
         this.email = userRegister.getEmail();
         this.userType = userType;
+        this.isVerified = false;
     }
 
 }

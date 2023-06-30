@@ -19,15 +19,13 @@ import { LeadRegisterModel, RegisterLead, UserRegisterModel } from '../../../typ
 import SubtleLinkButton from '../../buttons/SubtleLinkButton';
 import { isErrorResponse } from '../../../utils/utils';
 import { useRegisterLead } from '../../../hooks/auth/useRegisterLead';
-import userGetUniversities from '../../../hooks/university/useGetUniversities';
-import useGetUniversities from '../../../hooks/university/useGetUniversities';
-import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
-import LoadingPage from '../../../pages/LoadingPage';
-import { University } from '../../../types/UniversityTypes';
 import { forwardRef } from 'react';
 import { IconSchool } from '@tabler/icons-react';
 
 
+interface RegisterLeadProps {
+	universityData: Array<SelectItem>;
+}
 
 interface UniversitySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
 	label: string;
@@ -50,7 +48,7 @@ const CustomUniversitySelectItem = forwardRef<HTMLDivElement, UniversitySelectIt
 	),
 );
 
-const RegisterLeadForm = () => {
+const RegisterLeadForm = ({ universityData }: RegisterLeadProps) => {
 	const form = useForm({
 		initialValues: {
 			name: '',
@@ -79,12 +77,6 @@ const RegisterLeadForm = () => {
 	const navigate = useNavigate();
 	const { register } = useRegisterLead();
 
-
-	const {
-		data: allUniversities,
-		isLoading: isUniversitiesLoading,
-		isError: isUniversitiesError,
-	} = useGetUniversities();
 
 
 	const onRegister = async () => {
@@ -140,29 +132,12 @@ const RegisterLeadForm = () => {
 		navigate('/login');
 	};
 
-	if (isUniversitiesLoading) {
-		return <LoadingPage />;
-	}
-	if (isUniversitiesError) {
-		return <div>Error</div>;
-	}
-
-
-	const universitiesList: Array<University> = allUniversities?.data!;
-	const universityData: Array<SelectItem> = universitiesList!
-		.map((university) => {
-			return {
-				value: String(university.universityId),
-				label: university.name,
-				description: university.city.name,
-			};
-		});
 
 	return (
 		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
 			<Stack spacing={'xl'}>
 				<Title size="32px" align="center">
-					Register
+					Lead Register
 				</Title>
 				<form>
 					<Flex direction={'column'} gap={'xs'}>

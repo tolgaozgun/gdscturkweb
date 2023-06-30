@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.mapper;
 
+import com.tolgaozgun.gdscturkweb.dto.BuddyTeamDTO;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
 import com.tolgaozgun.gdscturkweb.model.BuddyTeam;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
@@ -21,6 +22,13 @@ public class BuddyTeamMapper {
         BuddyTeamEntity buddyTeamEntity = modelMapper.map(buddyTeam, BuddyTeamEntity.class);
 
         return buddyTeamEntity;
+    }
+
+    public BuddyTeamDTO toDTO(BuddyTeamEntity buddyTeamEntity) {
+
+        BuddyTeamDTO buddyTeam = modelMapper.map(buddyTeamEntity, BuddyTeamDTO.class);
+
+        return buddyTeam;
     }
 
 

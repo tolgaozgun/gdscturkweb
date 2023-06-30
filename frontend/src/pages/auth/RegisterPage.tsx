@@ -1,11 +1,34 @@
-import { Center, Tabs } from '@mantine/core';
+import { Center, SelectItem, Tabs } from '@mantine/core';
 import { IconBus, IconUser } from '@tabler/icons-react';
 import RegisterLeadForm from '../../components/forms/auth/RegisterLeadForm';
 import RegisterCoreTeamForm from '../../components/forms/auth/RegisterCoreTeamForm';
 import useGetUniversities from '../../hooks/university/useGetUniversities';
-import { useMemo } from 'react';
+import { University } from '../../types/UniversityTypes';
+import LoadingPage from '../LoadingPage';
+import RegisterFacilitatorForm from '../../components/forms/auth/RegisterFacilitatorForm';
+import RegisterGooglerForm from '../../components/forms/auth/RegisterGooglerForm';
 
 const RegisterPage = () => {
+
+	const {
+		data: allUniversities,
+		isLoading: isUniversitiesLoading,
+		// isError: isUniversitiesError,
+	} = useGetUniversities();
+
+	if (isUniversitiesLoading || !allUniversities) {
+		return <LoadingPage />;
+	}
+
+	const universitiesList: Array<University> = allUniversities?.data!;
+	const universityData: Array<SelectItem> = universitiesList!
+		.map((university) => {
+			return {
+				value: String(university.universityId),
+				label: university.name,
+				description: university.city.name + ', ' + university.country.name,
+			};
+		});
 
 	return (
 		<Center miw={400}>
@@ -29,19 +52,19 @@ const RegisterPage = () => {
 				</Tabs.List>
 
 				<Tabs.Panel value="lead" pt="md">
-					<RegisterLeadForm />
+					<RegisterLeadForm universityData={universityData} />
 				</Tabs.Panel>
 				<Tabs.Panel value="core_team" pt="md">
-					<RegisterCoreTeamForm />
+					<RegisterCoreTeamForm universityData={universityData} />
 				</Tabs.Panel>
 				<Tabs.Panel value="facilitator" pt="md">
-					<RegisterLeadForm />
+					<RegisterFacilitatorForm universityData={universityData} />
 				</Tabs.Panel>
 				<Tabs.Panel value="googler" pt="md">
-					<RegisterLeadForm />
+					<RegisterGooglerForm />
 				</Tabs.Panel>
 				<Tabs.Panel value="admin" pt="md">
-					<RegisterLeadForm />
+					{/* <RegisterLeadForm universityData={universityData} /> */}
 				</Tabs.Panel>
 			</Tabs>
 		</Center>

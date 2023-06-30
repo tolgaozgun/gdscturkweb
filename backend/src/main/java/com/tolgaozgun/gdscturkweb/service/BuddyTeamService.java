@@ -1,6 +1,7 @@
 package com.tolgaozgun.gdscturkweb.service;
 
 
+import com.tolgaozgun.gdscturkweb.dto.BuddyTeamDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.BuddyTeamByFacilitatorRequest;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
@@ -24,7 +25,7 @@ public class BuddyTeamService {
     private final UserRepository userRepository;
     private final BuddyTeamMapper buddyTeamMapper;
 
-    public BuddyTeam getBuddyTeamByCurrentUser() {
+    public BuddyTeamDTO getBuddyTeamByCurrentUser() {
         try {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -42,14 +43,14 @@ public class BuddyTeamService {
             BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByLeadsContains(userEntity).orElseThrow(()
                     -> new UserNotFoundException("Error while getting user details"));
 
-            return buddyTeamMapper.toModel(buddyTeamEntity);
+            return buddyTeamMapper.toDTO(buddyTeamEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public BuddyTeam getBuddyTeamByFacilitator(BuddyTeamByFacilitatorRequest buddyTeamByFacilitatorRequest) {
+    public BuddyTeamDTO getBuddyTeamByFacilitator(BuddyTeamByFacilitatorRequest buddyTeamByFacilitatorRequest) {
         try {
             Long facilitatorId = buddyTeamByFacilitatorRequest.getFacilitatorId();
 
@@ -64,7 +65,7 @@ public class BuddyTeamService {
             BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByFacilitator(userEntity).orElseThrow(()
                     -> new UserNotFoundException("Error while getting user details"));
 
-            return buddyTeamMapper.toModel(buddyTeamEntity);
+            return buddyTeamMapper.toDTO(buddyTeamEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

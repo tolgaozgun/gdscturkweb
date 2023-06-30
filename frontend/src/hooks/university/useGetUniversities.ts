@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { getUniversities } from '../../services/university/UniversityService';
 
