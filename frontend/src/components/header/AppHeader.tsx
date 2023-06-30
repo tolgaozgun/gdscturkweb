@@ -1,14 +1,15 @@
-import { Flex, Header, Title } from '@mantine/core';
+import { Flex, Header } from '@mantine/core';
 import ProfileMenu from '../menus/ProfileMenu';
-
+import GDSCLogo from '../../assets/gdsc-logo.png';
 
 const AppHeader = () => {
 	return (
 		<Header w="100%" height={100} p="lg">
 			<Flex align="center" justify="space-between">
-				<Title color="blue" ml={20}>
+				<img src={GDSCLogo} height={40} style={{marginLeft: 20}} />
+				{/* <Title color="blue" ml={20}>
 					GDSC Turkiye
-				</Title>
+				</Title> */}
 				<ProfileMenu />
 			</Flex>
 		</Header>
