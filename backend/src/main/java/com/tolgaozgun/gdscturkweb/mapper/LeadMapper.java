@@ -37,7 +37,7 @@ public class LeadMapper {
         leadEntity.setUniversity(universityEntity);
 
         // Fetch BuddyTeamEntity from the repository and set it
-        BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findById(lead.getBuddyTeam().getId())
+        BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findById(lead.getBuddyTeam().getBuddyTeamId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Buddy Team ID"));
         leadEntity.setBuddyTeam(buddyTeamEntity);
 

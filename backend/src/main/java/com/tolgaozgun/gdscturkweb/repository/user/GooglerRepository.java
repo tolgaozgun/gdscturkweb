@@ -1,6 +1,8 @@
 package com.tolgaozgun.gdscturkweb.repository.user;
 
+import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.GooglerEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +17,5 @@ public interface GooglerRepository extends JpaRepository<GooglerEntity, Long> {
 
     boolean existsById(@NonNull Long leadId);
 
+    Optional<GooglerEntity> findByUser(@NonNull UserEntity userEntity);
 }

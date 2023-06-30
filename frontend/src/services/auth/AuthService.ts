@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
-import { RegisterCoreTeam, RegisterLead } from './../../types/AuthTypes';
+import { RegisterAdmin, RegisterCoreTeam, RegisterFacilitator, RegisterGoogler, RegisterLead } from './../../types/AuthTypes';
 
 import { baseUrl } from '../../constants/api';
 import { Tokens, User } from '../../types';
-import { ErrorResponse, Response } from '../../types/ResponseTypes';
+import { Response } from '../../types/ResponseTypes';
 import { axiosSecure as axios } from '../axios';
 
 export async function login(email: string, password: string): Promise<Response<User>> {
@@ -29,6 +29,36 @@ export async function registerLead(
 	return res.data;
 }
 
+export async function registerGoogler(
+	userDetails: RegisterGoogler,
+): Promise<Response<User>> {
+	const res = await axios.post<Response<User>>(
+		`${baseUrl}/auth/register/googler`,
+		userDetails,
+	);
+	return res.data;
+}
+
+export async function registerAdmin(
+	userDetails: RegisterAdmin,
+): Promise<Response<User>> {
+	const res = await axios.post<Response<User>>(
+		`${baseUrl}/auth/register/admin`,
+		userDetails,
+	);
+	return res.data;
+}
+
+export async function registerFacilitator(
+	userDetails: RegisterFacilitator,
+): Promise<Response<User>> {
+	const res = await axios.post<Response<User>>(
+		`${baseUrl}/auth/register/facilitator`,
+		userDetails,
+	);
+	return res.data;
+}
+
 export async function registerCoreTeam(
 	userDetails: RegisterCoreTeam,
 ): Promise<Response<User>> {
@@ -43,7 +73,7 @@ export async function refresh(
 	refreshToken: string,
 	axiosSecure: AxiosInstance,
 ): Promise<Response<Tokens>> {
-	const res = await axiosSecure.get<Response<Tokens>>('/auth/refresh', {
+	const res = await axiosSecure.get<Response<Tokens>>(`${baseUrl}/auth/refresh`, {
 		withCredentials: true,
 		headers: {
 			Authorization: `Bearer ${refreshToken}`,

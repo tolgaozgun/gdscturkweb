@@ -3,10 +3,12 @@ package com.tolgaozgun.gdscturkweb.controller;
 
 import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
 import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
+import com.tolgaozgun.gdscturkweb.dto.GooglerDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.profile.*;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
+import com.tolgaozgun.gdscturkweb.model.user.Googler;
 import com.tolgaozgun.gdscturkweb.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -59,6 +61,18 @@ public class ProfileController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update/googler")
+    public ResponseEntity<Object> updateGooglerProfile(@Valid @RequestBody UpdateGooglerProfileByGooglerRequest
+                                                                   updateGooglerProfileByGooglerRequest) {
+        try {
+            GooglerDTO googlerDTO = profileService.updateGooglerProfile(updateGooglerProfileByGooglerRequest);
+            return Response.create("Update is successful", HttpStatus.OK, googlerDTO);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -98,18 +112,17 @@ public class ProfileController {
         }
     }
 
-
-//    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update/lead")
-//    public ResponseEntity<Object> updateGooglerProfileByGoogler(@Valid @RequestBody UpdateGooglerProfileByGooglerRequest
-//                                                                  updateGooglerProfileByGooglerRequest) {
-//        try {
-//            LeadDTO leadDTO = profileService.up(updateGooglerProfileByGooglerRequest);
-//            return Response.create("Update is successful", HttpStatus.OK, leadDTO);
-//        } catch (Exception e) {
-//            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/googler")
+    public ResponseEntity<Object> updateGooglerProfileByStaff(@Valid @RequestBody UpdateGooglerProfileByStaffRequest
+                                                                  updateGooglerProfileByStaffRequest) {
+        try {
+            GooglerDTO googlerDTO = profileService.updateGooglerProfileByStaff(updateGooglerProfileByStaffRequest);
+            return Response.create("Update is successful", HttpStatus.OK, googlerDTO);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 

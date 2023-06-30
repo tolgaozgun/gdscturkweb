@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuddyTeam {
-    private Long id;
+    private Long buddyTeamId;
     private Facilitator facilitator;
     private List<Lead> leads;
 

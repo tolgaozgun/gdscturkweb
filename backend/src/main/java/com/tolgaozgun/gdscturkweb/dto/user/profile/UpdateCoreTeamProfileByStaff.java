@@ -17,7 +17,4 @@ public class UpdateCoreTeamProfileByStaff {
     @Nullable
     private Long universityId;
 
-    @NotNull
-    private Long userId;
-
 }

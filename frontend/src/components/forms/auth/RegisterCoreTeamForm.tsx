@@ -15,20 +15,18 @@ import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../../constants/colors';
 import { notifications } from '@mantine/notifications';
-import { CoreTeamRegisterModel, LeadRegisterModel, RegisterCoreTeam, RegisterLead, UserRegisterModel } from '../../../types';
+import { CoreTeamRegisterModel, RegisterCoreTeam, UserRegisterModel } from '../../../types';
 import SubtleLinkButton from '../../buttons/SubtleLinkButton';
 import { isErrorResponse } from '../../../utils/utils';
-import { useRegisterLead } from '../../../hooks/auth/useRegisterLead';
-import userGetUniversities from '../../../hooks/university/useGetUniversities';
-import useGetUniversities from '../../../hooks/university/useGetUniversities';
-import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
-import LoadingPage from '../../../pages/LoadingPage';
-import { University } from '../../../types/UniversityTypes';
 import { forwardRef } from 'react';
 import { IconSchool } from '@tabler/icons-react';
 import { useRegisterCoreTeam } from '../../../hooks/auth/useRegisterCoreTeam';
 
 
+
+interface RegisterCoreTeamProps {
+	universityData: Array<SelectItem>;
+}
 
 
 interface UniversitySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -52,7 +50,7 @@ const CustomUniversitySelectItem = forwardRef<HTMLDivElement, UniversitySelectIt
 	),
 );
 
-const RegisterCoreTeamForm = () => {
+const RegisterCoreTeamForm = ({universityData}: RegisterCoreTeamProps) => {
 
 	const form = useForm({
 		initialValues: {
@@ -83,12 +81,6 @@ const RegisterCoreTeamForm = () => {
 	const { register } = useRegisterCoreTeam();
 
 	
-
-	const {
-		data: allUniversities,
-		isLoading: isUniversitiesLoading,
-		isError: isUniversitiesError,
-	} = useGetUniversities();
 
 	const onRegister = async () => {
 		const validation = form.validate();
@@ -143,29 +135,11 @@ const RegisterCoreTeamForm = () => {
 		navigate('/login');
 	};
 
-	if (isUniversitiesLoading) {
-		return <LoadingPage />;
-	}
-	if (isUniversitiesError) {
-		return <div>Error</div>;
-	}
-
-
-	const universitiesList: Array<University> = allUniversities?.data!;
-	const universityData: Array<SelectItem> = universitiesList
-		.map((university) => {
-			return {
-				value: String(university.universityId),
-				label: university.name,
-				description: university.city.name,
-			};
-		});
-
 	return (
 		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
 			<Stack spacing={'xl'}>
 				<Title size="32px" align="center">
-					Register
+					Core Team Register
 				</Title>
 				<form>
 					<Flex direction={'column'} gap={'xs'}>

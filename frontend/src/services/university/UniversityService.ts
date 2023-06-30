@@ -1,4 +1,3 @@
-import { AxiosInstance } from "axios";
 import { baseUrl } from '../../constants/api';
 import { University } from "../../types/UniversityTypes";
 import { Response } from '../../types/ResponseTypes';

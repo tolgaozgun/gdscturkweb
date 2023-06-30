@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tolgaozgun.gdscturkweb.model.BuddyTeam;
 import com.tolgaozgun.gdscturkweb.model.University;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class FacilitatorDTO {
     private University university;
 
     @NotNull
+    @JsonProperty("user")
     private UserDTO userDTO;
 
     public FacilitatorDTO(UserDTO userDTO, University university, Long facilitatorId) {

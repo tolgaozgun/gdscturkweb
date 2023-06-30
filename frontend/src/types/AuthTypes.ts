@@ -1,5 +1,3 @@
-import { User, UserType } from './UserTypes';
-
 export type Tokens = {
 	accessToken: string;
 	refreshToken: string;
@@ -22,7 +20,7 @@ export type GooglerRegisterModel = {
 }
 
 export type FacilitatorRegisterModel = {
-
+	universityId: number;
 }
 
 export type CoreTeamRegisterModel = {

@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { registerCoreTeam } from '../../services/auth';
 import { isErrorResponse } from '../../utils/utils';
-import { RegisterCoreTeam, RegisterLead } from '../../types/AuthTypes';
+import { RegisterCoreTeam } from '../../types/AuthTypes';
 
 export const useRegisterCoreTeam = () => {
 	const register = async (userDetails: RegisterCoreTeam) => {
