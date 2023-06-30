@@ -13,6 +13,10 @@ export const useRefresh = () => {
 			return null;
 		}
 
+		if(!user.refreshToken) {
+			return null;
+		}
+
 		const res = await refreshFn(user.refreshToken, axiosSecure);
 
 		if (isErrorResponse(res)) {

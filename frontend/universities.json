@@ -1,0 +1,101 @@
+[
+    {
+    "name": "Marmara University",
+    "city": "Istanbul",
+    "city_id": 34,
+    "latitude": 40.986099,
+    "longitude": 29.053600
+    },
+    {
+    "name": "Uludag University",
+    "city": "Bursa",
+    "city_id": 16,
+    "latitude": 40.218899,
+    "longitude": 28.870001
+    },
+    {
+    "name": "Dokuz Eylul University",
+    "city": "Izmir",
+    "city_id": 35,
+    "latitude": 38.430599,
+    "longitude": 27.137199
+    },
+    {
+    "name": "Ege University",
+    "city": "Izmir",
+    "city_id": 35,
+    "latitude": 38.453899,
+    "longitude": 27.211700
+    },
+    {
+    "name": "Sakarya University",
+    "city": "Sakarya",
+    "city_id": 54,
+    "latitude": 40.740799,
+    "longitude": 30.333300
+    },
+    {
+    "name": "Hacettepe University",
+    "city": "Ankara",
+    "city_id": 6,
+    "latitude": 39.867222,
+    "longitude": 32.734444
+    },
+    {
+    "name": "Ankara University",
+    "city": "Ankara",
+    "city_id": 6,
+    "latitude": 39.936699,
+    "longitude": 32.830299
+    },
+    {
+    "name": "Bosphorus University",
+    "city": "Istanbul",
+    "city_id": 34,
+    "latitude": 41.083557,
+    "longitude": 29.050598
+    },
+    {
+    "name": "Istanbul Technical University",
+    "city": "Istanbul",
+    "city_id": 34,
+    "latitude": 41.105000,
+    "longitude": 29.025000
+    },
+    {
+    "name": "Middle East Technical University",
+    "city": "Ankara",
+    "city_id": 6,
+    "latitude": 39.891388,
+    "longitude": 32.784721
+    },
+    {
+    "name": "Istanbul University",
+    "city": "Istanbul",
+    "city_id": 34,
+    "latitude": 41.012604,
+    "longitude": 28.959648
+    },
+    {
+    "name": "Bilkent University",
+    "city": "Ankara",
+    "city_id": 6,
+    "latitude": 39.875275,
+    "longitude": 32.748524
+    },
+    {
+    "name": "Afyon Kocatepe University",
+    "city": "Afyonkarahisar",
+    "city_id": 3,
+    "latitude": 38.812138,
+    "longitude": 30.535946
+    },
+    {
+    "name": "Yüzüncü Yıl Üniversitesi",
+    "city": "Van",
+    "city_id": 65,
+    "latitude": 38.563171,
+    "longitude": 43.283852
+    }
+]
+  
