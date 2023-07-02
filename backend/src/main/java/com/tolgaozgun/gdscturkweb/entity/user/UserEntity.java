@@ -2,6 +2,7 @@ package com.tolgaozgun.gdscturkweb.entity.user;
 
 
 import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
+import com.tolgaozgun.gdscturkweb.entity.PermissionEntity;
 import com.tolgaozgun.gdscturkweb.entity.TopicEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -61,6 +63,14 @@ public class UserEntity {
     )
     private List<TopicEntity> interests;
 
+    @ManyToMany
+    @JoinTable(
+            name = "additional_permissions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private List<PermissionEntity> additionalPermissions;
+
     public UserEntity(UserRegister userRegister, UserType userType){
         this.username = userRegister.getUsername();
         this.password = userRegister.getPassword();
@@ -69,6 +79,8 @@ public class UserEntity {
         this.email = userRegister.getEmail();
         this.userType = userType;
         this.isVerified = false;
+        this.interests = new ArrayList<>();
+        this.additionalPermissions = new ArrayList<>();
     }
 
 }

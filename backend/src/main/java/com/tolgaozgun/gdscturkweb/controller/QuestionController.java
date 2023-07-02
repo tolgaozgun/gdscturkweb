@@ -1,6 +1,7 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.QuestionDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.question.*;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
@@ -29,7 +30,7 @@ public class QuestionController {
     @GetMapping(path = "")
     public ResponseEntity<Object> getAllQuestions() {
         try {
-            List<Question> questions = questionService.getAllQuestions();
+            List<QuestionDTO> questions = questionService.getAllQuestions();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -42,7 +43,7 @@ public class QuestionController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
     public ResponseEntity<Object> getQuestionById(@Valid @RequestBody GetQuestionRequest getQuestionRequest) {
         try {
-            Question question = questionService.getQuestion(getQuestionRequest);
+            QuestionDTO question = questionService.getQuestion(getQuestionRequest);
             return Response.create("Found the question", HttpStatus.OK, question);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,7 +54,7 @@ public class QuestionController {
     @GetMapping(path = "asked-by-me")
     public ResponseEntity<Object> getAllQuestionsAskedByCurrentUser() {
         try {
-            List<Question> questions = questionService.getQuestionsAskedByCurrentUser();
+            List<QuestionDTO> questions = questionService.getQuestionsAskedByCurrentUser();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -64,7 +65,7 @@ public class QuestionController {
     @GetMapping(path = "answered-by-me")
     public ResponseEntity<Object> getAllQuestionsAnsweredByCurrentUser() {
         try {
-            List<Question> questions = questionService.getAnsweredQuestionsByCurrentUser();
+            List<QuestionDTO> questions = questionService.getAnsweredQuestionsByCurrentUser();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -75,7 +76,7 @@ public class QuestionController {
     @GetMapping(path = "asked-answered-by-me")
     public ResponseEntity<Object> getAllQuestionsAskedOrAnsweredByCurrentUser() {
         try {
-            List<Question> questions = questionService.getQuestionsAskedOrAnsweredByCurrentUser();
+            List<QuestionDTO> questions = questionService.getQuestionsAskedOrAnsweredByCurrentUser();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,7 +87,7 @@ public class QuestionController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "asked-by-user")
     public ResponseEntity<Object> getAllQuestionsAskedByUser(GetQuestionsAskedByRequest getQuestionsAskedByRequest) {
         try {
-            List<Question> questions = questionService.getQuestionsAskedByUser(getQuestionsAskedByRequest);
+            List<QuestionDTO> questions = questionService.getQuestionsAskedByUser(getQuestionsAskedByRequest);
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -97,7 +98,7 @@ public class QuestionController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "answered-by-user")
     public ResponseEntity<Object> getAllQuestionsAnsweredByUser(GetQuestionsAnsweredByRequest getQuestionsAnsweredByRequest) {
         try {
-            List<Question> questions = questionService.getAnsweredQuestionsByUser(getQuestionsAnsweredByRequest);
+            List<QuestionDTO> questions = questionService.getAnsweredQuestionsByUser(getQuestionsAnsweredByRequest);
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -108,7 +109,7 @@ public class QuestionController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "asked-answered-by-user")
     public ResponseEntity<Object> getAllQuestionsAskedOrAnsweredByUser(GetQuestionsAskedAnsweredByRequest getQuestionsAskedAnsweredByRequest) {
         try {
-            List<Question> questions = questionService.getQuestionsAskedOrAnsweredByUser(getQuestionsAskedAnsweredByRequest);
+            List<QuestionDTO> questions = questionService.getQuestionsAskedOrAnsweredByUser(getQuestionsAskedAnsweredByRequest);
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -119,7 +120,7 @@ public class QuestionController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "ask")
     public ResponseEntity<Object> askQuestion(@Valid @RequestBody AskQuestionRequest askQuestionRequest) {
         try {
-            Question question = questionService.askQuestion(askQuestionRequest);
+            QuestionDTO question = questionService.askQuestion(askQuestionRequest);
             return Response.create("Successfully asked question", HttpStatus.OK, question);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -131,7 +132,7 @@ public class QuestionController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "answer")
     public ResponseEntity<Object> answerQuestion(@Valid @RequestBody AnswerQuestionRequest answerQuestionRequest) {
         try {
-            Question question = questionService.answerQuestion(answerQuestionRequest);
+            QuestionDTO question = questionService.answerQuestion(answerQuestionRequest);
             return Response.create("Successfully answered question", HttpStatus.OK, question);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -10,6 +10,9 @@ import ProviderWrapper from './components/common/other/ProviderWrapper.tsx';
 import MapPage from './pages/MapPage.tsx';
 import UserListPage from './pages/UserListPage.tsx';
 import LoadingPage from './pages/LoadingPage.tsx';
+import PanelDashboardPage from './pages/panel/PanelDashboardPage.tsx';
+import { ContextMenuProvider } from 'mantine-contextmenu';
+import PanelUserListPage from './pages/panel/PanelUserListPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -42,12 +45,67 @@ const router = createBrowserRouter([
 					{
 						path: '/loading',
 						element: <LoadingPage />
-					}
-          // {
-            // 404 page
-          //   path: '*',
-          //   element: <LoadingPage/>
-          // }
+					},
+					{
+						path: '/panel',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/dashboard',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/users/list',
+						element: <PanelUserListPage />
+					},
+					{
+						path: '/panel/users/add',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/buddy-teams/list',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/buddy-teams/add',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/campaigns/list',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/campaigns/add',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/universities/list',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/universities/add',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/cities/list',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/cities/add',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/countries/list',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/countries/add',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/settings',
+						element: <PanelDashboardPage />
+					},
 				],
 			},
 		],
@@ -58,9 +116,11 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
-			<ProviderWrapper>
-				<RouterProvider router={router} />
-			</ProviderWrapper>
+			<ContextMenuProvider>
+				<ProviderWrapper>
+					<RouterProvider router={router} />
+				</ProviderWrapper>
+			</ContextMenuProvider>
 		</QueryClientProvider>
 	</React.StrictMode>,
 );

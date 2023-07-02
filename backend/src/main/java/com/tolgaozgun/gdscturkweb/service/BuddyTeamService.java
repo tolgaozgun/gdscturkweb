@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,6 +25,15 @@ public class BuddyTeamService {
     private final BuddyTeamRepository buddyTeamRepository;
     private final UserRepository userRepository;
     private final BuddyTeamMapper buddyTeamMapper;
+
+    public List<BuddyTeamDTO> getAllBuddyTeams() {
+        try {
+            return buddyTeamMapper.toDTO(buddyTeamRepository.findAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public BuddyTeamDTO getBuddyTeamByCurrentUser() {
         try {

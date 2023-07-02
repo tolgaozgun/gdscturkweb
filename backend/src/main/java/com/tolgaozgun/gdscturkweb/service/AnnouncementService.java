@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.service;
 
+import com.tolgaozgun.gdscturkweb.dto.AnnouncementDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.CreateAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.EditAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.GetAnnouncementRequest;
@@ -34,7 +35,7 @@ public class AnnouncementService {
     private final AnnouncementRepository announcementRepository;
     private final AnnouncementMapper announcementMapper;
 
-    public List<Announcement> getAllAnnouncementsByUserType(){
+    public List<AnnouncementDTO> getAllAnnouncementsByUserType(){
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -54,7 +55,7 @@ public class AnnouncementService {
 
             List<AnnouncementEntity> announcementEntities = announcementRepository.findAllByPermittedUserTypesContainingAndStartDateIsBeforeAndEndDateIsAfter(userType, date, date);
 
-            return announcementMapper.toModel(announcementEntities);
+            return announcementMapper.toDTO(announcementEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
@@ -62,11 +63,11 @@ public class AnnouncementService {
 
     }
 
-    public List<Announcement> getAllAnnouncements(){
+    public List<AnnouncementDTO> getAllAnnouncements(){
         try{
             List<AnnouncementEntity> announcementEntities = announcementRepository.findAll();
 
-            return announcementMapper.toModel(announcementEntities);
+            return announcementMapper.toDTO(announcementEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
@@ -75,7 +76,7 @@ public class AnnouncementService {
     }
 
 
-    public Announcement getAnnouncementById(GetAnnouncementRequest getAnnouncementRequest) {
+    public AnnouncementDTO getAnnouncementById(GetAnnouncementRequest getAnnouncementRequest) {
         try {
 
             Long announcementId = getAnnouncementRequest.getAnnouncementId();
@@ -86,14 +87,14 @@ public class AnnouncementService {
             }
 
             AnnouncementEntity announcementEntity = optionalAnnouncementEntity.get();
-            return announcementMapper.toModel(announcementEntity);
+            return announcementMapper.toDTO(announcementEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public Announcement createAnnouncement(CreateAnnouncementRequest announcementRequest){
+    public AnnouncementDTO createAnnouncement(CreateAnnouncementRequest announcementRequest){
         try {
             AnnouncementEntity announcementEntity = new AnnouncementEntity();
 
@@ -130,13 +131,13 @@ public class AnnouncementService {
             announcementEntity.setSentBy(userEntity);
             announcementEntity = announcementRepository.save(announcementEntity);
 
-            return announcementMapper.toModel(announcementEntity);
+            return announcementMapper.toDTO(announcementEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
-    public Announcement editAnnouncement(EditAnnouncementRequest editAnnouncementRequest){
+    public AnnouncementDTO editAnnouncement(EditAnnouncementRequest editAnnouncementRequest){
         try {
             Long announcementId = editAnnouncementRequest.getAnnouncementId();
 
@@ -170,7 +171,7 @@ public class AnnouncementService {
 
             announcementEntity = announcementRepository.save(announcementEntity);
 
-            return announcementMapper.toModel(announcementEntity);
+            return announcementMapper.toDTO(announcementEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

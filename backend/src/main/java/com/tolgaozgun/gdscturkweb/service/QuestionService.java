@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.service;
 
+import com.tolgaozgun.gdscturkweb.dto.QuestionDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.question.*;
 import com.tolgaozgun.gdscturkweb.entity.QuestionEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
@@ -26,17 +27,17 @@ public class QuestionService {
     private final UserRepository userRepository;
     private final QuestionMapper questionMapper;
 
-    public List<Question> getAllQuestions() {
+    public List<QuestionDTO> getAllQuestions() {
         try {
             List<QuestionEntity> questionEntities = questionRepository.findAll();
-            return questionMapper.toModel(questionEntities);
+            return questionMapper.toDTO(questionEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public Question getQuestion(GetQuestionRequest getQuestionRequest) {
+    public QuestionDTO getQuestion(GetQuestionRequest getQuestionRequest) {
         try {
             Long questionId = getQuestionRequest.getQuestionId();
             Optional<QuestionEntity> optionalQuestionEntity = questionRepository.findById(questionId);
@@ -46,14 +47,14 @@ public class QuestionService {
             }
 
             QuestionEntity questionEntity = optionalQuestionEntity.get();
-            return questionMapper.toModel(questionEntity);
+            return questionMapper.toDTO(questionEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public List<Question> getAnsweredQuestionsByUser(GetQuestionsAnsweredByRequest getQuestionsAnsweredByRequest) {
+    public List<QuestionDTO> getAnsweredQuestionsByUser(GetQuestionsAnsweredByRequest getQuestionsAnsweredByRequest) {
         try {
             Long userId = getQuestionsAnsweredByRequest.getUserId();
 
@@ -64,14 +65,14 @@ public class QuestionService {
 
             UserEntity userEntity = optionalUserEntity.get();
             List<QuestionEntity> questionEntities = questionRepository.findAllByAnsweredBy(userEntity);
-            return questionMapper.toModel(questionEntities);
+            return questionMapper.toDTO(questionEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public List<Question> getQuestionsAskedByCurrentUser() {
+    public List<QuestionDTO> getQuestionsAskedByCurrentUser() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
@@ -84,7 +85,7 @@ public class QuestionService {
             UserEntity userEntity = optionalUserEntity.get();
 
             List<QuestionEntity> questionEntities = questionRepository.findAllByAskedBy(userEntity);
-            return questionMapper.toModel(questionEntities);
+            return questionMapper.toDTO(questionEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
@@ -92,7 +93,7 @@ public class QuestionService {
     }
 
 
-    public List<Question> getQuestionsAskedOrAnsweredByCurrentUser() {
+    public List<QuestionDTO> getQuestionsAskedOrAnsweredByCurrentUser() {
         try {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -106,14 +107,14 @@ public class QuestionService {
             UserEntity userEntity = optionalUserEntity.get();
 
             List<QuestionEntity> questionEntities = questionRepository.findAllByAskedByOrAnsweredBy(userEntity, userEntity);
-            return questionMapper.toModel(questionEntities);
+            return questionMapper.toDTO(questionEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public List<Question> getAnsweredQuestionsByCurrentUser() {
+    public List<QuestionDTO> getAnsweredQuestionsByCurrentUser() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
@@ -126,14 +127,14 @@ public class QuestionService {
             UserEntity userEntity = optionalUserEntity.get();
 
             List<QuestionEntity> questionEntities = questionRepository.findAllByAnsweredBy(userEntity);
-            return questionMapper.toModel(questionEntities);
+            return questionMapper.toDTO(questionEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public List<Question> getQuestionsAskedByUser(GetQuestionsAskedByRequest getQuestionsAskedByRequest) {
+    public List<QuestionDTO> getQuestionsAskedByUser(GetQuestionsAskedByRequest getQuestionsAskedByRequest) {
         try {
             Long userId = getQuestionsAskedByRequest.getUserId();
 
@@ -144,7 +145,7 @@ public class QuestionService {
 
             UserEntity userEntity = optionalUserEntity.get();
             List<QuestionEntity> questionEntities = questionRepository.findAllByAskedBy(userEntity);
-            return questionMapper.toModel(questionEntities);
+            return questionMapper.toDTO(questionEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
@@ -152,7 +153,7 @@ public class QuestionService {
     }
 
 
-    public List<Question> getQuestionsAskedOrAnsweredByUser(GetQuestionsAskedAnsweredByRequest getQuestionsAskedAnsweredByRequest) {
+    public List<QuestionDTO> getQuestionsAskedOrAnsweredByUser(GetQuestionsAskedAnsweredByRequest getQuestionsAskedAnsweredByRequest) {
         try {
             Long userId = getQuestionsAskedAnsweredByRequest.getUserId();
 
@@ -163,14 +164,14 @@ public class QuestionService {
 
             UserEntity userEntity = optionalUserEntity.get();
             List<QuestionEntity> questionEntities = questionRepository.findAllByAskedByOrAnsweredBy(userEntity, userEntity);
-            return questionMapper.toModel(questionEntities);
+            return questionMapper.toDTO(questionEntities);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public Question askQuestion(AskQuestionRequest askQuestionRequest) {
+    public QuestionDTO askQuestion(AskQuestionRequest askQuestionRequest) {
         try {
             QuestionEntity questionEntity = questionMapper.toEntity(askQuestionRequest);
 
@@ -187,13 +188,13 @@ public class QuestionService {
             questionEntity.setAskedDate(new Date());
 
             questionEntity = questionRepository.save(questionEntity);
-            return questionMapper.toModel(questionEntity);
+            return questionMapper.toDTO(questionEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
-    public Question answerQuestion(AnswerQuestionRequest answerQuestionRequest) {
+    public QuestionDTO answerQuestion(AnswerQuestionRequest answerQuestionRequest) {
         try {
             QuestionEntity questionEntity = questionMapper.toEntity(answerQuestionRequest);
 
@@ -210,7 +211,7 @@ public class QuestionService {
             questionEntity.setAnsweredDate(new Date());
 
             questionEntity = questionRepository.save(questionEntity);
-            return questionMapper.toModel(questionEntity);
+            return questionMapper.toDTO(questionEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
+import com.tolgaozgun.gdscturkweb.dto.AnnouncementDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.CreateAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.EditAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.GetAnnouncementRequest;
@@ -27,7 +28,7 @@ public class AnnouncementController {
     @GetMapping(path = "")
     public ResponseEntity<Object> getUserAnnouncements() {
         try {
-            List<Announcement> announcements = announcementService.getAllAnnouncementsByUserType();
+            List<AnnouncementDTO> announcements = announcementService.getAllAnnouncementsByUserType();
             return Response.create("Gathered all announcements", HttpStatus.OK, announcements);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,7 +39,7 @@ public class AnnouncementController {
     @GetMapping(path = "all")
     public ResponseEntity<Object> getAllAnnouncements() {
         try {
-            List<Announcement> announcements = announcementService.getAllAnnouncements();
+            List<AnnouncementDTO> announcements = announcementService.getAllAnnouncements();
             return Response.create("Gathered all announcements", HttpStatus.OK, announcements);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,7 +50,7 @@ public class AnnouncementController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
     public ResponseEntity<Object> getAnnouncementById(@Valid @RequestBody GetAnnouncementRequest getAnnouncementRequest) {
         try {
-            Announcement announcement = announcementService.getAnnouncementById(getAnnouncementRequest);
+            AnnouncementDTO announcement = announcementService.getAnnouncementById(getAnnouncementRequest);
             return Response.create("Found the announcement", HttpStatus.OK, announcement);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,7 +61,7 @@ public class AnnouncementController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "create")
     public ResponseEntity<Object> createAnnouncement(@Valid @RequestBody CreateAnnouncementRequest announcementRequest) {
         try {
-            Announcement announcement = announcementService.createAnnouncement(announcementRequest);
+            AnnouncementDTO announcement = announcementService.createAnnouncement(announcementRequest);
             return Response.create("Announcement created successfully", HttpStatus.OK, announcement);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,7 +72,7 @@ public class AnnouncementController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
     public ResponseEntity<Object> editAnnouncement(@Valid @RequestBody EditAnnouncementRequest editAnnouncementRequest) {
         try {
-            Announcement announcement = announcementService.editAnnouncement(editAnnouncementRequest);
+            AnnouncementDTO announcement = announcementService.editAnnouncement(editAnnouncementRequest);
             return Response.create("Announcement edited successfully", HttpStatus.OK, announcement);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

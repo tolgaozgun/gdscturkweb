@@ -1,10 +1,6 @@
 import { Center, Tabs } from '@mantine/core';
 import { IconFriends } from '@tabler/icons-react';
-import LeadTable from '../components/table/LeadTable';
 import useAxiosSecure from '../hooks/auth/useAxiosSecure';
-import FacilitatorTable from '../components/table/FacilitatorTable';
-import CoreTeamMemberTable from '../components/table/CoreTeamMemberTable';
-import GooglerTable from '../components/table/GooglerTable';
 import LeadMap from '../components/maps/LeadMap';
 import CoreTeamMemberMap from '../components/maps/CoreTeamMemberMap';
 import FacilitatorMap from '../components/maps/FacilitatorMap';
