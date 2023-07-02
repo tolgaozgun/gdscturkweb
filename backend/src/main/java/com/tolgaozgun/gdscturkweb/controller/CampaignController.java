@@ -65,7 +65,7 @@ public class CampaignController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editCity(@Valid @RequestBody EditCampaignRequest editCampaignRequest) {
+    public ResponseEntity<Object> editCampaign(@Valid @RequestBody EditCampaignRequest editCampaignRequest) {
         try {
             Campaign campaign = campaignService.editCampaign(editCampaignRequest);
             return Response.create("Campaign edited successfully", HttpStatus.OK, campaign);
