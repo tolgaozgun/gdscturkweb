@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.mapper;
 
+import com.tolgaozgun.gdscturkweb.dto.QuestionDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.question.AnswerQuestionRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.question.AskQuestionRequest;
 import com.tolgaozgun.gdscturkweb.entity.QuestionEntity;
@@ -57,6 +58,17 @@ public class QuestionMapper {
 
     public Question toModel(QuestionEntity announcementEntity) {
         return modelMapper.map(announcementEntity, Question.class);
+    }
+
+
+    public QuestionDTO toDTO(QuestionEntity announcementEntity) {
+        return modelMapper.map(announcementEntity, QuestionDTO.class);
+    }
+
+    public List<QuestionDTO> toDTO(List<QuestionEntity> questionEntities) {
+        return questionEntities.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     public List<Question> toModel(List<QuestionEntity> questionEntities) {

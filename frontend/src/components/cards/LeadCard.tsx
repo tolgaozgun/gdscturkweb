@@ -2,6 +2,7 @@ import { AspectRatio, Badge, Card, Grid, Group, Image, Text } from '@mantine/cor
 import { LeadModel } from '../../types';
 import { useNavigate } from 'react-router';
 import DefaultProfilePicture from "../../assets/default_profile_picture.png";
+import { useContextMenu } from 'mantine-contextmenu';
 
 interface LeadCardProps {
     lead: LeadModel;
@@ -10,10 +11,20 @@ interface LeadCardProps {
 
 const LeadCard = ({lead, padding}: LeadCardProps) => {
     const navigate = useNavigate();
+    const showContextMenu = useContextMenu();
 
     const handleClick = () => {
         // Navigate to Lead profile
     }
+
+    const copyImageToClipboard = () => {
+        // Copy image to clipboard
+    }
+
+    const downloadImage = () => {
+        // Download image
+    }
+
 
     return (
         <Card
@@ -22,6 +33,19 @@ const LeadCard = ({lead, padding}: LeadCardProps) => {
           padding="xl"
           component="a"
           onClick={handleClick}
+          onContextMenu={showContextMenu(
+            [
+              {
+                key: 'View Profile',
+                onClick: () => copyImageToClipboard(),
+              },
+              {
+                key: 'download',
+                onClick: () => downloadImage(),
+              },
+            ],
+            { zIndex: 1000, shadow: 'md', borderRadius: 'md' }
+          )}
     
         >
           <Card.Section>

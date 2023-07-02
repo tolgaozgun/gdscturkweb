@@ -14,12 +14,27 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/buddy-teams")
 public class BuddyTeamController {
 
     private final BuddyTeamService buddyTeamService;
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "")
+    public ResponseEntity<Object> getAllBuddyTeams() {
+        try {
+            List<BuddyTeamDTO> buddyTeams = buddyTeamService.getAllBuddyTeams();
+            return Response.create("Gathered all buddy teams", HttpStatus.OK, buddyTeams);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "by-me")

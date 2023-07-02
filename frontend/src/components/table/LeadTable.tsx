@@ -6,12 +6,13 @@ import {
 } from 'mantine-react-table';
 import { Box, Button, Menu, Text, Title, Image } from '@mantine/core';
 import { IconUserCircle, IconSend } from '@tabler/icons-react';
-import { BuddyTeam, UserModel, UserType } from '../../types';
+import { UserModel, UserType } from '../../types';
 import { University } from '../../types/UniversityTypes';
 import { AxiosInstance } from 'axios';
 import useGetLeads from '../../hooks/user/useGetLeads';
 import LoadingPage from '../../pages/LoadingPage';
 import DefaultProfilePicture from "../../assets/default_profile_picture.png";
+import { BuddyTeam } from '../../types/BuddyTeamTypes';
 
 interface LeadTableProps {
   axiosSecure: AxiosInstance

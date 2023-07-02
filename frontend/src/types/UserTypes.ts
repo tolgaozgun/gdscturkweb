@@ -1,6 +1,8 @@
-import { Topic } from "./InfoTypes";
-import { City, Country } from "./LocationTypes";
+import { Topic } from "./TopicTypes";
+import { City } from "./CityTypes";
 import { University } from "./UniversityTypes";
+import { Country } from "./CountryTypes";
+import { BuddyTeam } from "./BuddyTeamTypes";
 
 export enum UserType {
 	Admin = 'ADMIN',
@@ -21,12 +23,6 @@ export type User = {
 	refreshToken: string;
 };
 
-export type BuddyTeam = {
-	buddyTeamId: number;
-	facilitator: FacilitatorModel;
-	leads: Array<LeadModel>;
-}
-
 export type UserModel = {
 	userId: number;
 	name: string;
@@ -39,6 +35,7 @@ export type UserModel = {
 	biography: string;
 	interests: Array<Topic>;
 };
+
 
 export type LeadModel = {
 	leadId: number;

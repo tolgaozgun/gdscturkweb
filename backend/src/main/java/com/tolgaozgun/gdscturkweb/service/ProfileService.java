@@ -6,23 +6,20 @@ import com.tolgaozgun.gdscturkweb.dto.GooglerDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.profile.*;
 import com.tolgaozgun.gdscturkweb.dto.user.profile.*;
-import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
-import com.tolgaozgun.gdscturkweb.entity.CityEntity;
-import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
-import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
+import com.tolgaozgun.gdscturkweb.entity.*;
 import com.tolgaozgun.gdscturkweb.entity.user.*;
+import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.*;
 import com.tolgaozgun.gdscturkweb.mapper.*;
-import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
-import com.tolgaozgun.gdscturkweb.repository.CityRepository;
-import com.tolgaozgun.gdscturkweb.repository.CountryRepository;
-import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
+import com.tolgaozgun.gdscturkweb.model.Permission;
+import com.tolgaozgun.gdscturkweb.repository.*;
 import com.tolgaozgun.gdscturkweb.repository.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -40,12 +37,15 @@ public class ProfileService {
     private final BuddyTeamRepository buddyTeamRepository;
     private final CityRepository cityRepository;
     private final CountryRepository countryRepository;
+    private final UserTypeRepository userTypeRepository;
 
     private final TopicMapper topicMapper;
     private final FacilitatorMapper facilitatorMapper;
     private final LeadMapper leadMapper;
     private final CoreTeamMapper coreTeamMapper;
     private final GooglerMapper googlerMapper;
+    private final PermissionMapper permissionMapper;
+
 
     private UserEntity checkAndUpdateUserProfileByStaff(UpdateUserProfileByStaff updateUserProfileByStaff) {
 

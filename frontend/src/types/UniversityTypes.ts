@@ -1,4 +1,5 @@
-import { City, Country } from "./LocationTypes";
+import { City } from "./CityTypes";
+import { Country } from "./CountryTypes";
 
 export type University = {
     universityId: number;
@@ -9,3 +10,24 @@ export type University = {
     country: Country;
 }
 
+export type CreateUniversity = {
+    latitude: number;
+    longitude: number;
+    name: string;
+    city: City;
+    country: Country;
+}
+
+export type UpdateUniversity = {
+    universityId: number;
+    latitude?: number;
+    longitude?: number;
+    name?: string;
+    city?: City;
+    country?: Country;
+}
+
+export type GetUniversity = {
+    universityId: number;
+}
+    

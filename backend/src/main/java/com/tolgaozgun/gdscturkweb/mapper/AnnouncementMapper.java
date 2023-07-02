@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.mapper;
 
+import com.tolgaozgun.gdscturkweb.dto.AnnouncementDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.CreateAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.entity.AnnouncementEntity;
 import com.tolgaozgun.gdscturkweb.model.Announcement;
@@ -31,6 +32,17 @@ public class AnnouncementMapper {
     public List<Announcement> toModel(List<AnnouncementEntity> announcementEntities) {
         return announcementEntities.stream()
                 .map(this::toModel)
+                .collect(Collectors.toList());
+    }
+
+
+    public AnnouncementDTO toDTO(AnnouncementEntity announcementEntity) {
+        return modelMapper.map(announcementEntity, AnnouncementDTO.class);
+    }
+
+    public List<AnnouncementDTO> toDTO(List<AnnouncementEntity> announcementEntities) {
+        return announcementEntities.stream()
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 }
