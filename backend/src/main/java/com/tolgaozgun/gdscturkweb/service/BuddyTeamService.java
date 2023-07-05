@@ -2,12 +2,10 @@ package com.tolgaozgun.gdscturkweb.service;
 
 
 import com.tolgaozgun.gdscturkweb.dto.BuddyTeamDTO;
-import com.tolgaozgun.gdscturkweb.dto.request.BuddyTeamByFacilitatorRequest;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.BuddyTeamMapper;
-import com.tolgaozgun.gdscturkweb.model.BuddyTeam;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,10 +58,8 @@ public class BuddyTeamService {
         }
     }
 
-    public BuddyTeamDTO getBuddyTeamByFacilitator(BuddyTeamByFacilitatorRequest buddyTeamByFacilitatorRequest) {
+    public BuddyTeamDTO getBuddyTeamByFacilitator(Long facilitatorId) {
         try {
-            Long facilitatorId = buddyTeamByFacilitatorRequest.getFacilitatorId();
-
             Optional<UserEntity> optionalUserEntity = userRepository.findById(facilitatorId);
 
             if (optionalUserEntity.isEmpty()) {

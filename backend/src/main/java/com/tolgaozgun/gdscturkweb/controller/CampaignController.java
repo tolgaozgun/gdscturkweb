@@ -1,18 +1,11 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
-import com.tolgaozgun.gdscturkweb.dto.request.announcement.GetAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.campaign.CreateCampaignRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.campaign.EditCampaignRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.campaign.GetCampaignRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.topic.CreateTopicRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.topic.EditTopicRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.model.Announcement;
 import com.tolgaozgun.gdscturkweb.model.Campaign;
-import com.tolgaozgun.gdscturkweb.model.Topic;
 import com.tolgaozgun.gdscturkweb.service.CampaignService;
-import com.tolgaozgun.gdscturkweb.service.TopicService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,10 +34,10 @@ public class CampaignController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
-    public ResponseEntity<Object> getCampaignById(@Valid @RequestBody GetCampaignRequest getCampaignRequest) {
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{campaignId}")
+    public ResponseEntity<Object> getCampaignById(@PathVariable Long campaignId) {
         try {
-            Campaign campaign = campaignService.getCampaign(getCampaignRequest);
+            Campaign campaign = campaignService.getCampaign(campaignId);
             return Response.create("Found the campaign", HttpStatus.OK, campaign);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -64,10 +57,10 @@ public class CampaignController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editCampaign(@Valid @RequestBody EditCampaignRequest editCampaignRequest) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{campaignId}")
+    public ResponseEntity<Object> editCampaign(@PathVariable Long campaignId, @Valid @RequestBody EditCampaignRequest editCampaignRequest) {
         try {
-            Campaign campaign = campaignService.editCampaign(editCampaignRequest);
+            Campaign campaign = campaignService.editCampaign(campaignId, editCampaignRequest);
             return Response.create("Campaign edited successfully", HttpStatus.OK, campaign);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

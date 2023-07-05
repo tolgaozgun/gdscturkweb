@@ -3,18 +3,12 @@ package com.tolgaozgun.gdscturkweb.service;
 import com.tolgaozgun.gdscturkweb.dto.AnnouncementDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.CreateAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.EditAnnouncementRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.announcement.GetAnnouncementRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.campaign.GetCampaignRequest;
 import com.tolgaozgun.gdscturkweb.entity.AnnouncementEntity;
-import com.tolgaozgun.gdscturkweb.entity.CampaignEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.AnnouncementNotFoundException;
-import com.tolgaozgun.gdscturkweb.exception.CampaignNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.AnnouncementMapper;
-import com.tolgaozgun.gdscturkweb.model.Announcement;
-import com.tolgaozgun.gdscturkweb.model.Campaign;
 import com.tolgaozgun.gdscturkweb.repository.AnnouncementRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -76,10 +70,9 @@ public class AnnouncementService {
     }
 
 
-    public AnnouncementDTO getAnnouncementById(GetAnnouncementRequest getAnnouncementRequest) {
+    public AnnouncementDTO getAnnouncementById(Long announcementId) {
         try {
 
-            Long announcementId = getAnnouncementRequest.getAnnouncementId();
             Optional<AnnouncementEntity> optionalAnnouncementEntity = announcementRepository.findById(announcementId);
 
             if (optionalAnnouncementEntity.isEmpty()) {
@@ -137,9 +130,8 @@ public class AnnouncementService {
             throw ex;
         }
     }
-    public AnnouncementDTO editAnnouncement(EditAnnouncementRequest editAnnouncementRequest){
+    public AnnouncementDTO editAnnouncement(Long announcementId, EditAnnouncementRequest editAnnouncementRequest){
         try {
-            Long announcementId = editAnnouncementRequest.getAnnouncementId();
 
             Optional<AnnouncementEntity> optionalAnnouncementEntity = announcementRepository.findById(announcementId);
 

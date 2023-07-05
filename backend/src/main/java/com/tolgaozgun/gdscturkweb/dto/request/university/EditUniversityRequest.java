@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EditUniversityRequest {
 
-    @Id
-    private Long universityId;
-
     @Nullable
     private Double latitude;
 

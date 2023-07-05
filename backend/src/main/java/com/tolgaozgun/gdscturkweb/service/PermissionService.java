@@ -1,6 +1,5 @@
 package com.tolgaozgun.gdscturkweb.service;
 
-import com.tolgaozgun.gdscturkweb.dto.request.permission.GetPermissionsByUserIdRequest;
 import com.tolgaozgun.gdscturkweb.entity.PermissionEntity;
 import com.tolgaozgun.gdscturkweb.entity.UserTypeEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
@@ -62,10 +61,8 @@ public class PermissionService {
     }
 
 
-    public List<Permission> getUserPermissions(GetPermissionsByUserIdRequest getPermissionsByUserIdRequest){
+    public List<Permission> getUserPermissions(Long userId){
         try {
-            Long userId = getPermissionsByUserIdRequest.getUserId();
-
             Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
 
             if (optionalUserEntity.isEmpty()) {

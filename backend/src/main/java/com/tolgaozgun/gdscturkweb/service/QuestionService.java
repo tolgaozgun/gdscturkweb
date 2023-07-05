@@ -2,12 +2,16 @@ package com.tolgaozgun.gdscturkweb.service;
 
 import com.tolgaozgun.gdscturkweb.dto.QuestionDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.question.*;
+import com.tolgaozgun.gdscturkweb.entity.QuestionCategoryEntity;
 import com.tolgaozgun.gdscturkweb.entity.QuestionEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
+import com.tolgaozgun.gdscturkweb.exception.QuestionCategoryNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.QuestionNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
+import com.tolgaozgun.gdscturkweb.mapper.QuestionCategoryMapper;
 import com.tolgaozgun.gdscturkweb.mapper.QuestionMapper;
-import com.tolgaozgun.gdscturkweb.model.Question;
+import com.tolgaozgun.gdscturkweb.model.QuestionCategory;
+import com.tolgaozgun.gdscturkweb.repository.QuestionCategoryRepository;
 import com.tolgaozgun.gdscturkweb.repository.QuestionRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +28,11 @@ import java.util.Optional;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionCategoryRepository questionCategoryRepository;
     private final UserRepository userRepository;
+
     private final QuestionMapper questionMapper;
+    private final QuestionCategoryMapper questionCategoryMapper;
 
     public List<QuestionDTO> getAllQuestions() {
         try {
@@ -37,9 +44,52 @@ public class QuestionService {
         }
     }
 
-    public QuestionDTO getQuestion(GetQuestionRequest getQuestionRequest) {
+    public List<QuestionCategory> getAllQuestionCategories() {
         try {
-            Long questionId = getQuestionRequest.getQuestionId();
+            List<QuestionCategoryEntity> questionCategoryEntities = questionCategoryRepository.findAll();
+            return questionCategoryMapper.toModel(questionCategoryEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public List<QuestionDTO> getAllQuestionsByCategory(Long categoryId) {
+        try {
+            Optional<QuestionCategoryEntity> optionalQuestionCategoryEntity = questionCategoryRepository.findById(categoryId);
+
+            if (optionalQuestionCategoryEntity.isEmpty()) {
+                throw new QuestionCategoryNotFoundException(categoryId);
+            }
+
+            QuestionCategoryEntity questionCategoryEntity = optionalQuestionCategoryEntity.get();
+            List<QuestionEntity> questionEntities = questionRepository.findAllByCategory(questionCategoryEntity);
+            return questionMapper.toDTO(questionEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public QuestionCategory getQuestionCategoryById(Long categoryId) {
+        try {
+            Optional<QuestionCategoryEntity> optionalQuestionCategoryEntity = questionCategoryRepository.findById(categoryId);
+
+            if (optionalQuestionCategoryEntity.isEmpty()) {
+                throw new QuestionCategoryNotFoundException(categoryId);
+            }
+
+            QuestionCategoryEntity questionCategoryEntity = optionalQuestionCategoryEntity.get();
+
+            return questionCategoryMapper.toModel(questionCategoryEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public QuestionDTO getQuestion(Long questionId) {
+        try {
             Optional<QuestionEntity> optionalQuestionEntity = questionRepository.findById(questionId);
 
             if (optionalQuestionEntity.isEmpty()) {
@@ -54,10 +104,8 @@ public class QuestionService {
         }
     }
 
-    public List<QuestionDTO> getAnsweredQuestionsByUser(GetQuestionsAnsweredByRequest getQuestionsAnsweredByRequest) {
+    public List<QuestionDTO> getAnsweredQuestionsByUser(Long userId) {
         try {
-            Long userId = getQuestionsAnsweredByRequest.getUserId();
-
             Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
             if (optionalUserEntity.isEmpty()) {
                 throw new UserNotFoundException("Error while getting user details");
@@ -134,10 +182,8 @@ public class QuestionService {
         }
     }
 
-    public List<QuestionDTO> getQuestionsAskedByUser(GetQuestionsAskedByRequest getQuestionsAskedByRequest) {
+    public List<QuestionDTO> getQuestionsAskedByUser(Long userId) {
         try {
-            Long userId = getQuestionsAskedByRequest.getUserId();
-
             Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
             if (optionalUserEntity.isEmpty()) {
                 throw new UserNotFoundException("Error while getting user details");
@@ -153,10 +199,8 @@ public class QuestionService {
     }
 
 
-    public List<QuestionDTO> getQuestionsAskedOrAnsweredByUser(GetQuestionsAskedAnsweredByRequest getQuestionsAskedAnsweredByRequest) {
+    public List<QuestionDTO> getQuestionsAskedOrAnsweredByUser(Long userId) {
         try {
-            Long userId = getQuestionsAskedAnsweredByRequest.getUserId();
-
             Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
             if (optionalUserEntity.isEmpty()) {
                 throw new UserNotFoundException("Error while getting user details");
@@ -170,6 +214,7 @@ public class QuestionService {
             throw ex;
         }
     }
+
 
     public QuestionDTO askQuestion(AskQuestionRequest askQuestionRequest) {
         try {

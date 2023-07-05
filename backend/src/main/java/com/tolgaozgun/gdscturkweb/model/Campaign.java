@@ -39,4 +39,7 @@ public class Campaign {
     @NotNull
     private List<UserType> permittedUserTypes;
 
+    @NotNull
+    private List<CampaignPage> campaignPages;
+
 }

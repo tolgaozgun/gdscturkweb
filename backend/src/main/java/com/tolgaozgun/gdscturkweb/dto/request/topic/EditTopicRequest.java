@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EditTopicRequest {
 
-    @Id
-    private Long topicId;
-
     @Nullable
     private String name;
 

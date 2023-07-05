@@ -1,5 +1,5 @@
 import { baseUrl } from '../../constants/api';
-import { AnswerQuestion, AskQuestion, GetQuestion, GetQuestionsAnsweredBy, GetQuestionsAskedAnsweredBy, GetQuestionsAskedBy, Question } from '../../types/QuestionTypes';
+import { AnswerQuestion, AskQuestion, GetQuestionById, GetQuestionCategoryById, GetQuestionsAnsweredBy, GetQuestionsAskedAnsweredBy, GetQuestionsAskedBy, Question, QuestionCategory, getQuestionsByCategory } from '../../types/QuestionTypes';
 import { Response } from '../../types/ResponseTypes';
 import { AxiosInstance } from 'axios';
 
@@ -8,7 +8,22 @@ export async function getAllQuestions(axiosSecure: AxiosInstance) {
 	return res.data;
 }
 
-export async function getQuestionById(axiosSecure: AxiosInstance, getQuestion: GetQuestion) {
+export async function getQuestionsByCategory(axiosSecure: AxiosInstance, getQuestion: getQuestionsByCategory) {
+	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/by-category`, {params: getQuestion});
+	return res.data;
+}
+
+export async function getAllQuestionCategories(axiosSecure: AxiosInstance) {
+	const res = await axiosSecure.get<Response<Array<QuestionCategory>>>(`${baseUrl}/questions/categories`);
+	return res.data;
+}
+
+export async function getQuestionCategoryById(axiosSecure: AxiosInstance, getQuestion: GetQuestionCategoryById) {
+	const res = await axiosSecure.get<Response<Array<QuestionCategory>>>(`${baseUrl}/questions/categories/by-id`, {params: getQuestion});
+	return res.data;
+}
+
+export async function getQuestionById(axiosSecure: AxiosInstance, getQuestion: GetQuestionById) {
 	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/by-id`, {params: getQuestion});
 	return res.data;
 }
@@ -37,3 +52,4 @@ export async function answerQuestion(axiosSecure: AxiosInstance, answerQuestion:
 	const res = await axiosSecure.post<Response<Question>>(`${baseUrl}/questions/answer`, answerQuestion);
 	return res.data;
 }
+

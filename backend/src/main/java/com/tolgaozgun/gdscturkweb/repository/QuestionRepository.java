@@ -1,6 +1,7 @@
 package com.tolgaozgun.gdscturkweb.repository;
 
 
+import com.tolgaozgun.gdscturkweb.entity.QuestionCategoryEntity;
 import com.tolgaozgun.gdscturkweb.entity.QuestionEntity;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
@@ -21,7 +22,10 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> 
     List<QuestionEntity> findAllByAnsweredBy(@NonNull UserEntity answeredBy);
 
     List<QuestionEntity> findAllByAskedBy(@NonNull UserEntity askedBy);
+
     List<QuestionEntity> findAllByAskedByOrAnsweredBy(@NonNull UserEntity askedBy, @NonNull UserEntity answeredBy);
 
+
+    List<QuestionEntity> findAllByCategory(@NonNull QuestionCategoryEntity questionCategory);
 
 }

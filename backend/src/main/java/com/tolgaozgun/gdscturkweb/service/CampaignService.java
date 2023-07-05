@@ -3,20 +3,14 @@ package com.tolgaozgun.gdscturkweb.service;
 
 import com.tolgaozgun.gdscturkweb.dto.request.campaign.CreateCampaignRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.campaign.EditCampaignRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.campaign.GetCampaignRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.topic.CreateTopicRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.topic.EditTopicRequest;
 import com.tolgaozgun.gdscturkweb.entity.*;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.*;
 import com.tolgaozgun.gdscturkweb.mapper.CampaignMapper;
-import com.tolgaozgun.gdscturkweb.mapper.TopicMapper;
 import com.tolgaozgun.gdscturkweb.model.Campaign;
-import com.tolgaozgun.gdscturkweb.model.Topic;
 import com.tolgaozgun.gdscturkweb.repository.AttachmentRepository;
 import com.tolgaozgun.gdscturkweb.repository.CampaignRepository;
 import com.tolgaozgun.gdscturkweb.repository.QuestionRepository;
-import com.tolgaozgun.gdscturkweb.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +38,8 @@ public class CampaignService {
         }
     }
 
-    public Campaign getCampaign(GetCampaignRequest getCampaignRequest) {
+    public Campaign getCampaign(Long campaignId) {
         try {
-
-            Long campaignId = getCampaignRequest.getCampaignId();
             Optional<CampaignEntity> optionalCampaignEntity = campaignRepository.findById(campaignId);
 
             if (optionalCampaignEntity.isEmpty()) {
@@ -135,9 +127,8 @@ public class CampaignService {
         }
     }
 
-    public Campaign editCampaign(EditCampaignRequest editCampaignRequest) {
+    public Campaign editCampaign(Long campaignId, EditCampaignRequest editCampaignRequest) {
         try {
-            Long campaignId = editCampaignRequest.getCampaignId();
             Optional<CampaignEntity> optionalCampaignEntity = campaignRepository.findById(campaignId);
 
             if (optionalCampaignEntity.isEmpty()) {

@@ -1,13 +1,9 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
 import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
-import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
-import com.tolgaozgun.gdscturkweb.dto.request.FindCoreTeamMemberByUniversityRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.service.CoreTeamMemberService;
-import com.tolgaozgun.gdscturkweb.service.LeadService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,11 +32,10 @@ public class CoreTeamMemberController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping( consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-university")
-    public ResponseEntity<Object> getAllCoreTeamMembersByUniversity(
-            @Valid @RequestBody FindCoreTeamMemberByUniversityRequest findCoreTeamMemberByUniversityRequest) {
+    @GetMapping( consumes = MediaType.APPLICATION_JSON_VALUE, path = "/by-university/{universityId}")
+    public ResponseEntity<Object> getAllCoreTeamMembersByUniversity(@PathVariable Long universityId) {
         try {
-            List<CoreTeamMemberDTO> coreTeamMembers = coreTeamMemberService.getAllCoreTeamMembersByUniversity(findCoreTeamMemberByUniversityRequest);
+            List<CoreTeamMemberDTO> coreTeamMembers = coreTeamMemberService.getAllCoreTeamMembersByUniversity(universityId);
             return Response.create("Gathered all core team members", HttpStatus.OK, coreTeamMembers);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

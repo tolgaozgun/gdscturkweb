@@ -8,6 +8,7 @@ import {
     IconTree,
     IconChalkboard,
     IconBrandCampaignmonitor,
+    IconQuestionMark,
   } from '@tabler/icons-react';
 
 export const panelData = [
@@ -59,6 +60,16 @@ export const panelData = [
       links: [
         { label: 'List Countries', link: '/panel/countries/list' },
         { label: 'Add a Country', link: '/panel/countries/add' },
+      ],
+    },
+    {
+      label: 'Questions',
+      icon: IconQuestionMark,
+      links: [
+        { label: 'List Questions', link: '/panel/questions/list' },
+        { label: 'List Question Categories', link: '/panel/questions/categories/list' },
+        { label: 'Add a Question Category', link: '/panel/questions/categories/add' },
+        { label: 'Add a Question', link: '/panel/questions/add' },
       ],
     },
     { label: 'Settings', icon: IconAdjustments, link: 'panel/settings' },

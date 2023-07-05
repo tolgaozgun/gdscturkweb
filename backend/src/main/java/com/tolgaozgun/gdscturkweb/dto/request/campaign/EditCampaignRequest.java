@@ -1,6 +1,7 @@
 package com.tolgaozgun.gdscturkweb.dto.request.campaign;
 
 import com.tolgaozgun.gdscturkweb.enums.UserType;
+import com.tolgaozgun.gdscturkweb.model.CampaignPage;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EditCampaignRequest {
-
-    @NotNull
-    private Long campaignId;
 
     @Nullable
     private String title;
@@ -38,5 +36,8 @@ public class EditCampaignRequest {
 
     @Nullable
     private List<UserType> permittedUserTypes;
+
+    @Nullable
+    private List<Long> campaignPageIds;
 
 }

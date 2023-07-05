@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EditCountryRequest {
 
-    @Id
-    private Long countryId;
-
     @Nullable
     private String name;
 

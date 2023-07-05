@@ -47,4 +47,8 @@ public class CampaignEntity {
     @Column(name = "user_type")
     @Enumerated(EnumType.STRING)
     private List<UserType> permittedUserTypes;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "campaign_id")
+    private List<CampaignPageEntity> campaignPages;
 }

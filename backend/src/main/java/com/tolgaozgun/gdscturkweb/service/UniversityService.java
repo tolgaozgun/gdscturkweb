@@ -1,11 +1,8 @@
 package com.tolgaozgun.gdscturkweb.service;
 
 
-import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.university.CreateUniversityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.university.EditUniversityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.university.GetUniversityRequest;
 import com.tolgaozgun.gdscturkweb.entity.CityEntity;
 import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
@@ -13,7 +10,6 @@ import com.tolgaozgun.gdscturkweb.exception.CityNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.CountryNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.UniversityNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.UniversityMapper;
-import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.model.University;
 import com.tolgaozgun.gdscturkweb.repository.CityRepository;
 import com.tolgaozgun.gdscturkweb.repository.CountryRepository;
@@ -44,12 +40,8 @@ public class UniversityService {
         }
     }
 
-    public University getUniversityById(GetUniversityRequest getUniversityRequest){
+    public University getUniversityById(Long universityId){
         try {
-
-            Long universityId = getUniversityRequest.getUniversityId();
-
-
             Optional<UniversityEntity> optionalUniversityEntity = universityRepository.findById(universityId);
 
             if (optionalUniversityEntity.isEmpty()) {
@@ -107,11 +99,8 @@ public class UniversityService {
         }
     }
 
-    public University editUniversity(EditUniversityRequest editUniversityRequest) {
+    public University editUniversity(Long universityId, EditUniversityRequest editUniversityRequest) {
         try {
-            Long universityId = editUniversityRequest.getUniversityId();
-
-
             Optional<UniversityEntity> optionalUniversityEntity = universityRepository.findById(universityId);
 
             if (optionalUniversityEntity.isEmpty()) {

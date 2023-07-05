@@ -1,22 +1,12 @@
 package com.tolgaozgun.gdscturkweb.service;
 
 
-import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.topic.CreateTopicRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.topic.EditTopicRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.topic.GetTopicRequest;
-import com.tolgaozgun.gdscturkweb.entity.CityEntity;
-import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
 import com.tolgaozgun.gdscturkweb.entity.TopicEntity;
-import com.tolgaozgun.gdscturkweb.exception.CountryNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.TopicNotFoundException;
-import com.tolgaozgun.gdscturkweb.mapper.CityMapper;
 import com.tolgaozgun.gdscturkweb.mapper.TopicMapper;
-import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.model.Topic;
-import com.tolgaozgun.gdscturkweb.repository.CityRepository;
-import com.tolgaozgun.gdscturkweb.repository.CountryRepository;
 import com.tolgaozgun.gdscturkweb.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,9 +31,8 @@ public class TopicService {
         }
     }
 
-    public Topic getTopic(GetTopicRequest getTopicRequest) {
+    public Topic getTopic(Long topicId) {
         try {
-            Long topicId = getTopicRequest.getTopicId();
             Optional<TopicEntity> optionalTopicEntity = topicRepository.findById(topicId);
 
             if (optionalTopicEntity.isEmpty()) {
@@ -79,9 +68,8 @@ public class TopicService {
         }
     }
 
-    public Topic editTopic(EditTopicRequest editTopicRequest) {
+    public Topic editTopic(Long topicId, EditTopicRequest editTopicRequest) {
         try {
-            Long topicId = editTopicRequest.getTopicId();
             Optional<TopicEntity> optionalTopicEntity = topicRepository.findById(topicId);
 
             if (optionalTopicEntity.isEmpty()) {

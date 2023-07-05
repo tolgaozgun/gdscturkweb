@@ -2,17 +2,12 @@ package com.tolgaozgun.gdscturkweb.service;
 
 
 import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
-import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
-import com.tolgaozgun.gdscturkweb.dto.request.FindCoreTeamMemberByUniversityRequest;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.CoreTeamMemberEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
 import com.tolgaozgun.gdscturkweb.exception.UniversityNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.CoreTeamMapper;
-import com.tolgaozgun.gdscturkweb.mapper.FacilitatorMapper;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.CoreTeamMemberRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.FacilitatorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +33,8 @@ public class CoreTeamMemberService {
     }
 
 
-    public List<CoreTeamMemberDTO> getAllCoreTeamMembersByUniversity(
-            FindCoreTeamMemberByUniversityRequest findCoreTeamMemberByUniversityRequest) {
+    public List<CoreTeamMemberDTO> getAllCoreTeamMembersByUniversity(Long universityId) {
         try {
-            Long universityId = findCoreTeamMemberByUniversityRequest.getUniversityId();
-
             Optional<UniversityEntity> optionalUniversityEntity = universityRepository.findById(universityId);
 
             if (optionalUniversityEntity.isEmpty()) {

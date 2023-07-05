@@ -2,13 +2,23 @@ import { UserModel } from "./UserTypes";
 
 export type Question = {
     questionId: number;
+    title: string;
     question: string;
     answer?: string;
     askedBy: UserModel;
     answeredBy?: UserModel;
     askedDate: Date;
     answeredDate?: Date;
+    category: QuestionCategory;
 }
+
+export type QuestionCategory = {
+    questionCategoryId: number;
+    name: string;
+    image: string;
+    shortUrl: string;
+}
+    
 
 export type AnswerQuestion = {
     questionId: number;
@@ -19,7 +29,7 @@ export type AskQuestion = {
     question: string;
 }
 
-export type GetQuestion = {
+export type GetQuestionById = {
     questionId: number;
 }
 
@@ -33,4 +43,12 @@ export type GetQuestionsAskedBy = {
 
 export type GetQuestionsAskedAnsweredBy = {
     userId: number;
+}
+
+export type GetQuestionCategoryById = {
+    categoryId: number;
+}
+
+export type getQuestionsByCategory = {
+    categoryId: number;
 }

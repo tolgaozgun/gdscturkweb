@@ -20,11 +20,11 @@ export async function getAnnouncementById(axiosSecure: AxiosInstance, getAnnounc
 }
 
 export async function createAnnouncement(axiosSecure: AxiosInstance, createAnnouncement: CreateAnnouncement) {
-    const res = await axiosSecure.get<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/create`, {params: createAnnouncement});
+    const res = await axiosSecure.post<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/create`, {params: createAnnouncement});
     return res.data;
 }
 
 export async function editAnnouncement(axiosSecure: AxiosInstance, editAnnouncement: EditAnnouncement) {
-    const res = await axiosSecure.get<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/edit`, {params: editAnnouncement});
+    const res = await axiosSecure.post<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/edit`, {params: editAnnouncement});
     return res.data;
 }

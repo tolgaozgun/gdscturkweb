@@ -1,24 +1,15 @@
 package com.tolgaozgun.gdscturkweb.service;
 
 
-import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.country.CreateCountryRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.country.EditCountryRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.country.GetCountryRequest;
 import com.tolgaozgun.gdscturkweb.entity.CityEntity;
 import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
 import com.tolgaozgun.gdscturkweb.exception.CountryNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.CityMapper;
-import com.tolgaozgun.gdscturkweb.mapper.LeadMapper;
 import com.tolgaozgun.gdscturkweb.model.City;
-import com.tolgaozgun.gdscturkweb.model.Country;
 import com.tolgaozgun.gdscturkweb.repository.CityRepository;
 import com.tolgaozgun.gdscturkweb.repository.CountryRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.LeadRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +35,9 @@ public class CityService {
     }
 
 
-    public City getCity(GetCityRequest getCityRequest) {
+    public City getCity(Long cityId) {
         try {
 
-            Long cityId = getCityRequest.getCityId();
             Optional<CityEntity> optionalCityEntity = cityRepository.findById(cityId);
 
             if (optionalCityEntity.isEmpty()) {
@@ -91,9 +81,8 @@ public class CityService {
         }
     }
 
-    public City editCity(EditCityRequest editCityRequest) {
+    public City editCity(Long cityId, EditCityRequest editCityRequest) {
         try {
-            Long cityId = editCityRequest.getCityId();
             Optional<CityEntity> optionalCityEntity = cityRepository.findById(cityId);
 
             if (optionalCityEntity.isEmpty()) {

@@ -13,6 +13,10 @@ import LoadingPage from './pages/LoadingPage.tsx';
 import PanelDashboardPage from './pages/panel/PanelDashboardPage.tsx';
 import { ContextMenuProvider } from 'mantine-contextmenu';
 import PanelUserListPage from './pages/panel/PanelUserListPage.tsx';
+import { FaqPage } from './pages/faq/FaqPage.tsx';
+import PanelQuestionsListPage from './pages/panel/PanelQuestionsListPage.tsx';
+import PanelAddQuestion from './components/table/panel/PanelAddQuestion.tsx';
+import CampaignPage from './pages/CampaignPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -39,6 +43,10 @@ const router = createBrowserRouter([
 						element: <MapPage />
 					},
 					{
+						path: '/faq',
+						element: <FaqPage />
+					},
+					{
 						path: '/user-list',
 						element: <UserListPage />
 					},
@@ -49,6 +57,10 @@ const router = createBrowserRouter([
 					{
 						path: '/panel',
 						element: <PanelDashboardPage />
+					},
+					{
+						path: '/campaign/:campaignId',
+						element: <CampaignPage />
 					},
 					{
 						path: '/panel/dashboard',
@@ -100,6 +112,22 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/countries/add',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/questions/list',
+						element: <PanelQuestionsListPage />
+					},
+					{
+						path: '/panel/questions/add',
+						element: <PanelAddQuestion />
+					},
+					{
+						path: '/panel/questions/categories/list',
+						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/questions/categories/add',
 						element: <PanelDashboardPage />
 					},
 					{

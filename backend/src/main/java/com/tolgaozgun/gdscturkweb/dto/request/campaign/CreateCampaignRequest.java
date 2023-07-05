@@ -2,6 +2,7 @@ package com.tolgaozgun.gdscturkweb.dto.request.campaign;
 
 import com.tolgaozgun.gdscturkweb.entity.AttachmentEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
+import com.tolgaozgun.gdscturkweb.model.CampaignPage;
 import com.tolgaozgun.gdscturkweb.model.user.User;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
@@ -37,5 +38,8 @@ public class CreateCampaignRequest {
 
     @Nullable
     private List<UserType> permittedUserTypes;
+
+    @Nullable
+    private List<Long> campaignPageIds;
 
 }

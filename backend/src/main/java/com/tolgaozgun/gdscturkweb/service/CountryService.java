@@ -3,15 +3,10 @@ package com.tolgaozgun.gdscturkweb.service;
 
 import com.tolgaozgun.gdscturkweb.dto.request.country.CreateCountryRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.country.EditCountryRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.country.GetCountryRequest;
-import com.tolgaozgun.gdscturkweb.entity.CityEntity;
 import com.tolgaozgun.gdscturkweb.entity.CountryEntity;
 import com.tolgaozgun.gdscturkweb.exception.CountryNotFoundException;
-import com.tolgaozgun.gdscturkweb.mapper.CityMapper;
 import com.tolgaozgun.gdscturkweb.mapper.CountryMapper;
-import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.model.Country;
-import com.tolgaozgun.gdscturkweb.repository.CityRepository;
 import com.tolgaozgun.gdscturkweb.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,10 +31,8 @@ public class CountryService {
         }
     }
 
-    public Country getCountry(GetCountryRequest getCountryRequest) {
+    public Country getCountry(Long countryId) {
         try {
-
-            Long countryId = getCountryRequest.getCountryId();
             Optional<CountryEntity> optionalCountryEntity = countryRepository.findById(countryId);
 
             if (optionalCountryEntity.isEmpty()) {
@@ -71,9 +64,8 @@ public class CountryService {
         }
     }
 
-    public Country editCountry(EditCountryRequest editCountryRequest) {
+    public Country editCountry(Long countryId, EditCountryRequest editCountryRequest) {
         try {
-            Long countryId = editCountryRequest.getCountryId();
             Optional<CountryEntity> optionalCountryEntity = countryRepository.findById(countryId);
 
             if (optionalCountryEntity.isEmpty()) {
