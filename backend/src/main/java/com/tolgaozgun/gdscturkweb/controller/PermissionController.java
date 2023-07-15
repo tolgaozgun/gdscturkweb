@@ -32,7 +32,7 @@ public class PermissionController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-user/{userId}")
+    @GetMapping( path = "by-user/{userId}")
     public ResponseEntity<Object> getPermissionsForUser(@PathVariable Long userId) {
         try {
             List<Permission> permissions = permissionService.getUserPermissions(userId);

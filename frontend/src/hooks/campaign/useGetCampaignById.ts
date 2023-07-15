@@ -1,13 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { getCampaignById } from '../../services/campaign/CampaignService';
-import { GetCampaignByIdRequest } from '../../types/CampaignTypes';
 
 
-const useGetCampaignById = (axiosSecure: AxiosInstance, getCampaignByIdRequest: GetCampaignByIdRequest) => {
+const useGetCampaignById = (axiosSecure: AxiosInstance, campaignId: number) => {
 	return useQuery({
 		queryKey: ['getCampaignById'],
-		queryFn: () => getCampaignById(axiosSecure, getCampaignByIdRequest),
+		queryFn: () => getCampaignById(axiosSecure, campaignId),
 	});
 };
 

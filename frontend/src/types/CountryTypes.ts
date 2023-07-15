@@ -14,7 +14,3 @@ export type UpdateCountry = {
     name?: string;
     flagImage?: string;
 }
-
-export type GetCountry = {
-    countryId: number;
-}

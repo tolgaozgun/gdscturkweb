@@ -35,11 +35,11 @@ public class CampaignEntity {
     private Date endDate;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "campaign_id")
+    @JoinColumn(name = "campaign_id", nullable = false)
     private List<AttachmentEntity> attachments;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "campaign_id")
+    @JoinColumn(name = "campaign_id", nullable = false)
     private List<QuestionEntity> questions;
 
     @ElementCollection
@@ -49,6 +49,6 @@ public class CampaignEntity {
     private List<UserType> permittedUserTypes;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "campaign_id")
+    @JoinColumn(name = "campaign_id", nullable = false)
     private List<CampaignPageEntity> campaignPages;
 }

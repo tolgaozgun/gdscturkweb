@@ -1,5 +1,5 @@
 import { baseUrl } from '../../constants/api';
-import { CreateAnnouncement, EditAnnouncement, GetAnnouncement } from '../../types/AnnouncementTypes';
+import { CreateAnnouncement, EditAnnouncement } from '../../types/AnnouncementTypes';
 import { BuddyTeam } from '../../types/BuddyTeamTypes';
 import { Response } from '../../types/ResponseTypes';
 import { AxiosInstance } from 'axios';
@@ -14,8 +14,8 @@ export async function getAllAnnouncements(axiosSecure: AxiosInstance) {
 	return res.data;
 }
 
-export async function getAnnouncementById(axiosSecure: AxiosInstance, getAnnouncement: GetAnnouncement) {
-    const res = await axiosSecure.get<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/by-id`, {params: getAnnouncement});
+export async function getAnnouncementById(axiosSecure: AxiosInstance, announcementId: number) {
+    const res = await axiosSecure.get<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/${announcementId}`);
     return res.data;
 }
 
@@ -24,7 +24,7 @@ export async function createAnnouncement(axiosSecure: AxiosInstance, createAnnou
     return res.data;
 }
 
-export async function editAnnouncement(axiosSecure: AxiosInstance, editAnnouncement: EditAnnouncement) {
-    const res = await axiosSecure.post<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/edit`, {params: editAnnouncement});
+export async function editAnnouncement(axiosSecure: AxiosInstance, announcementId: number, editAnnouncement: EditAnnouncement) {
+    const res = await axiosSecure.post<Response<Array<BuddyTeam>>>(`${baseUrl}/announcements/edit/${announcementId}`, editAnnouncement);
     return res.data;
 }

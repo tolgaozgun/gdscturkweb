@@ -1,5 +1,5 @@
 import { baseUrl } from '../../constants/api';
-import { AnswerQuestion, AskQuestion, GetQuestionById, GetQuestionCategoryById, GetQuestionsAnsweredBy, GetQuestionsAskedAnsweredBy, GetQuestionsAskedBy, Question, QuestionCategory, getQuestionsByCategory } from '../../types/QuestionTypes';
+import { AnswerQuestion, AskQuestion, Question, QuestionCategory } from '../../types/QuestionTypes';
 import { Response } from '../../types/ResponseTypes';
 import { AxiosInstance } from 'axios';
 
@@ -8,8 +8,8 @@ export async function getAllQuestions(axiosSecure: AxiosInstance) {
 	return res.data;
 }
 
-export async function getQuestionsByCategory(axiosSecure: AxiosInstance, getQuestion: getQuestionsByCategory) {
-	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/by-category`, {params: getQuestion});
+export async function getQuestionsByCategory(axiosSecure: AxiosInstance, categoryId: number) {
+	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/by-category/${categoryId}`);
 	return res.data;
 }
 
@@ -18,28 +18,28 @@ export async function getAllQuestionCategories(axiosSecure: AxiosInstance) {
 	return res.data;
 }
 
-export async function getQuestionCategoryById(axiosSecure: AxiosInstance, getQuestion: GetQuestionCategoryById) {
-	const res = await axiosSecure.get<Response<Array<QuestionCategory>>>(`${baseUrl}/questions/categories/by-id`, {params: getQuestion});
+export async function getQuestionCategoryById(axiosSecure: AxiosInstance, categoryId: number) {
+	const res = await axiosSecure.get<Response<Array<QuestionCategory>>>(`${baseUrl}/questions/categories/${categoryId}`);
 	return res.data;
 }
 
-export async function getQuestionById(axiosSecure: AxiosInstance, getQuestion: GetQuestionById) {
-	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/by-id`, {params: getQuestion});
+export async function getQuestionById(axiosSecure: AxiosInstance, questionId: number) {
+	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/${questionId}`);
 	return res.data;
 }
 
-export async function getQuestionsAskedByUser(axiosSecure: AxiosInstance, getQuestion: GetQuestionsAskedBy) {
-	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/asked-by-user`, {params: getQuestion});
+export async function getQuestionsAskedByUser(axiosSecure: AxiosInstance, userId: number) {
+	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/asked-by-user/${userId}`);
 	return res.data;
 }
 
-export async function getQuestionsAnsweredByUser(axiosSecure: AxiosInstance, getQuestion: GetQuestionsAnsweredBy) {
-	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/answered-by-user`, {params: getQuestion});
+export async function getQuestionsAnsweredByUser(axiosSecure: AxiosInstance, userId: number) {
+	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/answered-by-user/${userId}`);
 	return res.data;
 }
 
-export async function getQuestionsAskedAnsweredByUser(axiosSecure: AxiosInstance, getQuestion: GetQuestionsAskedAnsweredBy) {
-	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/asked-answered-by-user`, {params: getQuestion});
+export async function getQuestionsAskedAnsweredByUser(axiosSecure: AxiosInstance, userId: number) {
+	const res = await axiosSecure.get<Response<Array<Question>>>(`${baseUrl}/questions/asked-answered-by-user/${userId}`);
 	return res.data;
 }
 

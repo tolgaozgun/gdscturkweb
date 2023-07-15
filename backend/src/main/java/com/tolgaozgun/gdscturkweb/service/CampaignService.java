@@ -7,8 +7,11 @@ import com.tolgaozgun.gdscturkweb.entity.*;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.*;
 import com.tolgaozgun.gdscturkweb.mapper.CampaignMapper;
+import com.tolgaozgun.gdscturkweb.mapper.CampaignPageMapper;
 import com.tolgaozgun.gdscturkweb.model.Campaign;
+import com.tolgaozgun.gdscturkweb.model.CampaignPage;
 import com.tolgaozgun.gdscturkweb.repository.AttachmentRepository;
+import com.tolgaozgun.gdscturkweb.repository.CampaignPageRepository;
 import com.tolgaozgun.gdscturkweb.repository.CampaignRepository;
 import com.tolgaozgun.gdscturkweb.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +28,10 @@ public class CampaignService {
 
     private final CampaignRepository campaignRepository;
     private final AttachmentRepository attachmentRepository;
+    private final CampaignPageRepository campaignPageRepository;
     private final QuestionRepository questionRepository;
     private final CampaignMapper campaignMapper;
+    private final CampaignPageMapper campaignPageMapper;
 
     public List<Campaign> getAllCampaigns() {
         try {
@@ -48,6 +53,40 @@ public class CampaignService {
 
             CampaignEntity campaignEntity = optionalCampaignEntity.get();
             return campaignMapper.toModel(campaignEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public CampaignPage getCampaignPageById(Long campaignPageId) {
+        try {
+            Optional<CampaignPageEntity> optionalCampaignPageEntity = campaignPageRepository.findById(campaignPageId);
+
+            if (optionalCampaignPageEntity.isEmpty()) {
+                throw new CampaignPageNotFoundException(campaignPageId);
+            }
+
+            CampaignPageEntity campaignPageEntity = optionalCampaignPageEntity.get();
+
+            return campaignPageMapper.toModel(campaignPageEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public List<CampaignPage> getCampaignPagesByCampaign(Long campaignId) {
+        try {
+            Optional<CampaignEntity> optionalCampaignEntity = campaignRepository.findById(campaignId);
+
+            if (optionalCampaignEntity.isEmpty()) {
+                throw new CampaignNotFoundException(campaignId);
+            }
+
+            CampaignEntity campaignEntity = optionalCampaignEntity.get();
+
+            return campaignPageMapper.toModel(campaignEntity.getCampaignPages());
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

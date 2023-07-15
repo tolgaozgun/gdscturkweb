@@ -1,5 +1,6 @@
 import { createStyles, Box, Text, Group, rem } from '@mantine/core';
 import { IconListSearch } from '@tabler/icons-react';
+import { CampaignPage } from '../../types/CampaignTypes';
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -36,7 +37,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface TableOfContentsProps {
-  links: { label: string; content: CampaignPage }[];
+  links: { label: string; content: CampaignPage; onClick: Function}[];
   active: string;
 }
 
@@ -45,11 +46,13 @@ export function TableOfContents({ links, active }: TableOfContentsProps) {
   const items = links.map((item) => (
     <Box<'a'>
       component="a"
-      href={item.link}
-      onClick={(event) => event.preventDefault()}
+      onClick={(event) => {
+        event.preventDefault()
+        item.onClick(item.content);
+      } }
       key={item.label}
-      className={cx(classes.link, { [classes.linkActive]: active === item.link })}
-      sx={(theme) => ({ paddingLeft: `calc(${item.order} * ${theme.spacing.md})` })}
+      className={cx(classes.link, { [classes.linkActive]: active === item.label })}
+      sx={(theme) => ({ paddingLeft: theme.spacing.md })}
     >
       {item.label}
     </Box>

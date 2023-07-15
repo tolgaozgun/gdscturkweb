@@ -19,6 +19,7 @@ export const panelData = [
       initiallyOpened: true,
       links: [
         { label: 'List Users', link: '/panel/users/list' },
+        { label: 'Verification List', link: '/panel/users/verification' },
         { label: 'Add a User', link: '/panel/users/add' },
       ],
     },

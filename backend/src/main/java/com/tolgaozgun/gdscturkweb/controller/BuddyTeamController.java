@@ -45,7 +45,7 @@ public class BuddyTeamController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-facilitator/{facilitatorId}")
+    @GetMapping(path = "by-facilitator/{facilitatorId}")
     public ResponseEntity<Object> getBuddyTeamOfFacilitator(@PathVariable Long facilitatorId) {
         try {
             BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamByFacilitator(facilitatorId);

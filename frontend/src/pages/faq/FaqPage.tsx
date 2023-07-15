@@ -115,10 +115,6 @@ import LoadingPage from '../LoadingPage';
     },
   }));
   
-  interface FaqPageProps {
-    categories: { image: string; label: string }[];
-  }
-  
   export function FaqPage() {
     const { classes } = useStyles();
     const axiosSecure = useAxiosSecure();

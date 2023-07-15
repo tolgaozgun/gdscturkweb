@@ -16,7 +16,13 @@ import PanelUserListPage from './pages/panel/PanelUserListPage.tsx';
 import { FaqPage } from './pages/faq/FaqPage.tsx';
 import PanelQuestionsListPage from './pages/panel/PanelQuestionsListPage.tsx';
 import PanelAddQuestion from './components/table/panel/PanelAddQuestion.tsx';
-import CampaignPage from './pages/CampaignPage.tsx';
+import CampaignPage from './pages/CampaignDisplayPage.tsx';
+import PanelBuddyTeamListPage from './pages/panel/PanelBuddyListPage.tsx';
+import PanelUniversityListPage from './pages/panel/PanelUniversityListPage.tsx';
+import PanelCityListPage from './pages/panel/PanelCityListPage.tsx';
+import PanelCountryListPage from './pages/panel/PanelCountryListPage.tsx';
+import PanelCampaignListPage from './pages/panel/PanelCampaignListPage.tsx';
+import PanelQuestionCategoriesListPage from './pages/panel/PanelQuestionCategoriesListPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -75,8 +81,12 @@ const router = createBrowserRouter([
 						element: <PanelDashboardPage />
 					},
 					{
-						path: '/panel/buddy-teams/list',
+						path: '/panel/users/verification',
 						element: <PanelDashboardPage />
+					},
+					{
+						path: '/panel/buddy-teams/list',
+						element: <PanelBuddyTeamListPage />
 					},
 					{
 						path: '/panel/buddy-teams/add',
@@ -84,7 +94,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/campaigns/list',
-						element: <PanelDashboardPage />
+						element: <PanelCampaignListPage />
 					},
 					{
 						path: '/panel/campaigns/add',
@@ -92,7 +102,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/universities/list',
-						element: <PanelDashboardPage />
+						element: <PanelUniversityListPage />
 					},
 					{
 						path: '/panel/universities/add',
@@ -100,7 +110,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/cities/list',
-						element: <PanelDashboardPage />
+						element: <PanelCityListPage />
 					},
 					{
 						path: '/panel/cities/add',
@@ -108,7 +118,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/countries/list',
-						element: <PanelDashboardPage />
+						element: <PanelCountryListPage />
 					},
 					{
 						path: '/panel/countries/add',
@@ -124,7 +134,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/questions/categories/list',
-						element: <PanelDashboardPage />
+						element: <PanelQuestionCategoriesListPage />
 					},
 					{
 						path: '/panel/questions/categories/add',

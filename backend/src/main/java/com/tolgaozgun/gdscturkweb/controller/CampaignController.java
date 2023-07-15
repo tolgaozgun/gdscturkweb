@@ -5,6 +5,7 @@ import com.tolgaozgun.gdscturkweb.dto.request.campaign.EditCampaignRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.model.Campaign;
+import com.tolgaozgun.gdscturkweb.model.CampaignPage;
 import com.tolgaozgun.gdscturkweb.service.CampaignService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -34,11 +35,33 @@ public class CampaignController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{campaignId}")
+    @GetMapping(path = "{campaignId}")
     public ResponseEntity<Object> getCampaignById(@PathVariable Long campaignId) {
         try {
             Campaign campaign = campaignService.getCampaign(campaignId);
             return Response.create("Found the campaign", HttpStatus.OK, campaign);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "/pages/by-campaign/{campaignId}")
+    public ResponseEntity<Object> getCampaignPagesByCampaign(@PathVariable Long campaignId) {
+        try {
+            List<CampaignPage> campaignPages = campaignService.getCampaignPagesByCampaign(campaignId);
+            return Response.create("Found the campaign pages", HttpStatus.OK, campaignPages);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "/pages/{campaignPageId}")
+    public ResponseEntity<Object> getCampaignPageById(@PathVariable Long campaignPageId) {
+        try {
+            CampaignPage campaignPage = campaignService.getCampaignPageById(campaignPageId);
+            return Response.create("Found the campaign page", HttpStatus.OK, campaignPage);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

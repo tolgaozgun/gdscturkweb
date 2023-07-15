@@ -36,7 +36,7 @@ public class TopicController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{topicId}")
+    @GetMapping( path = "{topicId}")
     public ResponseEntity<Object> getCityById(@PathVariable Long topicId) {
         try {
             Topic topic = topicService.getTopic(topicId);

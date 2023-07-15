@@ -1,12 +1,11 @@
 import { AxiosInstance } from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { GetQuestionCategoryById } from '../../types/QuestionTypes';
 import { getQuestionCategoryById } from '../../services/question/QuestionService';
 
-const useGetQuestionCategoryById = (axiosSecure: AxiosInstance, getQuestionCategoryByIdRequest: GetQuestionCategoryById) => {
+const useGetQuestionCategoryById = (axiosSecure: AxiosInstance, categoryId: number) => {
 	return useQuery({
 		queryKey: ['getQuestionById'],
-		queryFn: () => getQuestionCategoryById(axiosSecure, getQuestionCategoryByIdRequest),
+		queryFn: () => getQuestionCategoryById(axiosSecure, categoryId),
 	});
 };
 

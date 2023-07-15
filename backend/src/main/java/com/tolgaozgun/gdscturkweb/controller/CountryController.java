@@ -35,7 +35,7 @@ public class CountryController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{countryId}")
+    @GetMapping( path = "{countryId}")
     public ResponseEntity<Object> getCountryById(@PathVariable Long countryId) {
         try {
             Country country = countryService.getCountry(countryId);

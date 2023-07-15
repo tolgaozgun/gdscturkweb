@@ -35,7 +35,7 @@ public class CityController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{cityId}")
+    @GetMapping(path = "{cityId}")
     public ResponseEntity<Object> getCityById(@PathVariable Long cityId) {
         try {
             City city = cityService.getCity(cityId);

@@ -19,7 +19,6 @@ export type QuestionCategory = {
     shortUrl: string;
 }
     
-
 export type AnswerQuestion = {
     questionId: number;
     answer: string;
@@ -27,28 +26,4 @@ export type AnswerQuestion = {
 
 export type AskQuestion = {
     question: string;
-}
-
-export type GetQuestionById = {
-    questionId: number;
-}
-
-export type GetQuestionsAnsweredBy = {
-    userId: number;
-}
-
-export type GetQuestionsAskedBy = {
-    userId: number;
-}
-
-export type GetQuestionsAskedAnsweredBy = {
-    userId: number;
-}
-
-export type GetQuestionCategoryById = {
-    categoryId: number;
-}
-
-export type getQuestionsByCategory = {
-    categoryId: number;
 }

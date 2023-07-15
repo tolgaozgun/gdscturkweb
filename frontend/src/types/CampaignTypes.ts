@@ -22,10 +22,6 @@ export type CampaignPage = {
     permittedUserTypes: Array<UserType>;
 }
 
-export type GetCampaignByIdRequest = {
-    campaignId: number;
-}
-
 export type CreateCampaignRequest = {
     title: string;
     description: string;
@@ -34,18 +30,17 @@ export type CreateCampaignRequest = {
     attachmentIds?: Array<number>
     questionIds?: Array<number>;
     permittedUserTypes?: Array<UserType>;
-    campaignPageIds: Array<number>;
+    campaignPageIds?: Array<number>;
 }
 
 export type EditCampaignRequest = {
-    campaignId: number;
-    title: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
+    title?: string;
+    description?: string;
+    startDate?: Date;
+    endDate?: Date;
     attachmentIds?: Array<number>
     questionIds?: Array<number>;
     permittedUserTypes?: Array<UserType>;
-    campaignPageIds: Array<number>;
+    campaignPageIds?: Array<number>;
 }
 

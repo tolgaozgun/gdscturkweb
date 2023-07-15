@@ -34,7 +34,7 @@ public class QuestionController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-category/{categoryId}")
+    @GetMapping(path = "by-category/{categoryId}")
     public ResponseEntity<Object> getAllQuestions(@PathVariable Long categoryId) {
         try {
             List<QuestionDTO> questions = questionService.getAllQuestionsByCategory(categoryId);
@@ -56,7 +56,7 @@ public class QuestionController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "categories/{categoryId}")
+    @GetMapping(path = "categories/{categoryId}")
     public ResponseEntity<Object> getQuestionCategoryById(@PathVariable Long categoryId) {
         try {
             QuestionCategory questionCategory = questionService.getQuestionCategoryById(categoryId);
@@ -68,7 +68,7 @@ public class QuestionController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{questionId}")
+    @GetMapping(path = "{questionId}")
     public ResponseEntity<Object> getQuestionById(@PathVariable Long questionId) {
         try {
             QuestionDTO question = questionService.getQuestion(questionId);
@@ -112,7 +112,7 @@ public class QuestionController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "asked-by-user/{userId}")
+    @GetMapping( path = "asked-by-user/{userId}")
     public ResponseEntity<Object> getAllQuestionsAskedByUser(@PathVariable Long userId) {
         try {
             List<QuestionDTO> questions = questionService.getQuestionsAskedByUser(userId);
@@ -123,7 +123,7 @@ public class QuestionController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "answered-by-user/{userId}")
+    @GetMapping( path = "answered-by-user/{userId}")
     public ResponseEntity<Object> getAllQuestionsAnsweredByUser(@PathVariable Long userId) {
         try {
             List<QuestionDTO> questions = questionService.getAnsweredQuestionsByUser(userId);
@@ -134,7 +134,7 @@ public class QuestionController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "asked-answered-by-user/{userId}")
+    @GetMapping( path = "asked-answered-by-user/{userId}")
     public ResponseEntity<Object> getAllQuestionsAskedOrAnsweredByUser(@PathVariable Long userId) {
         try {
             List<QuestionDTO> questions = questionService.getQuestionsAskedOrAnsweredByUser(userId);

@@ -45,7 +45,7 @@ public class AnnouncementController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{id}")
+    @GetMapping(path = "{id}")
     public ResponseEntity<Object> getAnnouncementById(@PathVariable Long id) {
         try {
             AnnouncementDTO announcement = announcementService.getAnnouncementById(id);

@@ -6,7 +6,3 @@ export type BuddyTeam = {
 	facilitator: FacilitatorModel;
 	leads: Array<LeadModel>;
 }
-
-export type BuddyTeamByFacilitator = {
-    facilitatorId: number;
-}

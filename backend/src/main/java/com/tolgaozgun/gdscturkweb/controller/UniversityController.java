@@ -36,7 +36,7 @@ public class UniversityController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{universityId}")
+    @GetMapping( path = "{universityId}")
     public ResponseEntity<Object> getUniversityById(@PathVariable Long universityId) {
         try {
             University university = universityService.getUniversityById(universityId);
