@@ -1,5 +1,4 @@
 import { Button, DefaultMantineColor } from '@mantine/core';
-import { primaryButtonColor } from '../../constants/colors';
 
 interface CustomElevatedButtonProps {
 	text: string;
