@@ -118,7 +118,7 @@ export function SecondHeader({ user, tabs }: SecondHeaderProps) {
     <div className={classes.header}>
       <Container className={classes.mainSection}>
         <Group position="apart">
-          <Image src={GDSCLogo} height={28} />
+          <Image src={GDSCLogo} height={28} width={60} />
 
           { isLoggedIn && 
           <>

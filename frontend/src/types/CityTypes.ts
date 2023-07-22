@@ -8,9 +8,9 @@ export type City = {
     longitude: number;
 }
 
-export type CreateCity = {
+export type AddCity = {
     name: string;
-    country: Country;
+    countryId: number;
     latitude: number;
     longitude: number;
 }

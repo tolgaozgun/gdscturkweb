@@ -12,9 +12,7 @@ import { notifications } from '@mantine/notifications';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../../constants/colors';
-import { useLogin } from '../../../hooks/auth';
 import { login } from '../../../services/auth';
-import { isErrorResponse } from '../../../utils/utils';
 import { useMutation } from '@tanstack/react-query';
 import SubtleLinkButton from '../../buttons/SubtleLinkButton';
 

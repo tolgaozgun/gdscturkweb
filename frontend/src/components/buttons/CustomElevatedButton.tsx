@@ -14,7 +14,6 @@ const CustomElevatedButton = ({
 	leftIcon,
 	onClick,
 	isLoading,
-	color,
 	size,
 }: CustomElevatedButtonProps) => {
 	return (
@@ -22,7 +21,6 @@ const CustomElevatedButton = ({
 			loading={isLoading}
 			leftIcon={leftIcon}
 			onClick={onClick}
-			bg={color ? color : primaryButtonColor}
 			size={size}
 		>
 			{text}

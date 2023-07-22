@@ -1,5 +1,5 @@
 import { baseUrl } from '../../constants/api';
-import { City, CreateCity, UpdateCity } from '../../types/CityTypes';
+import { City, AddCity, UpdateCity } from '../../types/CityTypes';
 import { Response } from '../../types/ResponseTypes';
 import { AxiosInstance } from 'axios';
 
@@ -13,7 +13,7 @@ export async function getCityById(axiosSecure: AxiosInstance, cityId: number) {
 	return res.data;
 }
 
-export async function createCity(axiosSecure: AxiosInstance, createCity: CreateCity) {
+export async function createCity(axiosSecure: AxiosInstance, createCity: AddCity) {
 	const res = await axiosSecure.post<Response<City>>(`${baseUrl}/cities/create`, createCity);
 	return res.data;
 }

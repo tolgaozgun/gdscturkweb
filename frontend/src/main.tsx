@@ -23,6 +23,10 @@ import PanelCityListPage from './pages/panel/PanelCityListPage.tsx';
 import PanelCountryListPage from './pages/panel/PanelCountryListPage.tsx';
 import PanelCampaignListPage from './pages/panel/PanelCampaignListPage.tsx';
 import PanelQuestionCategoriesListPage from './pages/panel/PanelQuestionCategoriesListPage.tsx';
+import AddCityForm from './components/forms/panel/city/AddCityForm.tsx';
+import AddCityPage from './pages/panel/AddCityPage.tsx';
+import AddCountryPage from './pages/panel/AddCountryPage.tsx';
+import AddUniversityPage from './pages/panel/AddUniversityPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -106,7 +110,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/universities/add',
-						element: <PanelDashboardPage />
+						element: <AddUniversityPage />
 					},
 					{
 						path: '/panel/cities/list',
@@ -114,7 +118,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/cities/add',
-						element: <PanelDashboardPage />
+						element: <AddCityPage />
 					},
 					{
 						path: '/panel/countries/list',
@@ -122,7 +126,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/countries/add',
-						element: <PanelDashboardPage />
+						element: <AddCountryPage />
 					},
 					{
 						path: '/panel/questions/list',

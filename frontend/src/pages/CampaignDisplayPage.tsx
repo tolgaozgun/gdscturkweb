@@ -22,7 +22,6 @@ const CampaignDisplayPage = () => {
 	const {
 		data: currentCampaign,
 		isLoading: isCampaignLoading,
-		// isError: isLeadsError,
 	} = useGetCampaignById(axiosSecure, parseInt(campaignId));
 
 	const onClickPage = (campaignPage: CampaignPage) => {
