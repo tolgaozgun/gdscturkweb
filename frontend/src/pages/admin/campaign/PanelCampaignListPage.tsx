@@ -1,33 +1,34 @@
 import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
-import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
-import LoadingPage from '../LoadingPage';
-import BaseTable from '../../components/table/BaseTable';
+import LoadingPage from '../../LoadingPage';
+import BaseTable from '../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { City } from '../../types/CityTypes';
-import useGetCities from '../../hooks/city/useGetCities';
+import { Campaign } from '../../../types/CampaignTypes';
+import useGetAllCampaigns from '../../../hooks/campaign/useGetAllCampaigns';
+import { PageContainer } from '../../../components/PageContainer';
 
-type PageType = City
+type PageType = Campaign
 
-const PanelCityListPage = () => {
+const PanelCampaignListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
-		data: allCities,
-		isLoading: isCitiesLoading,
-	} = useGetCities(axiosSecure);
+		data: allCampaigns,
+		isLoading: isCampaignsLoading,
+	} = useGetAllCampaigns(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [
 		  {
-			id: 'city', //id used to define `group` column
-			header: 'City',
+			id: 'campaign', //id used to define `group` column
+			header: 'Campaign',
 			columns: [
 			  {
-				accessorFn: (row) => `${row.name}`, //accessorFn used to join multiple data into a single cell
-				id: 'name', //id is still required when using accessorFn instead of accessorKey
-				header: 'Name',
+				accessorFn: (row) => `${row.title}`, //accessorFn used to join multiple data into a single cell
+				id: 'title', //id is still required when using accessorFn instead of accessorKey
+				header: 'Title',
 				size: 250,
 				filterVariant: 'autocomplete',
 				Cell: ({ renderedCellValue, /*row*/ }) => (
@@ -43,9 +44,27 @@ const PanelCityListPage = () => {
 				),
 			  },
 			  {
-				accessorFn: (row) => `${row.country.name}`, //accessorFn used to join multiple data into a single cell
+				accessorFn: (row) => `${row.attachments.length}`, //accessorFn used to join multiple data into a single cell
 				enableClickToCopy: true,
-				header: 'Country',
+				header: '# Attachments',
+				size: 300,
+			  },
+			  {
+				accessorFn: (row) => `${row.startDate}`, //accessorFn used to join multiple data into a single cell
+				enableClickToCopy: true,
+				header: 'Start Date',
+				size: 300,
+			  },
+			  {
+				accessorFn: (row) => `${row.endDate}`, //accessorFn used to join multiple data into a single cell
+				enableClickToCopy: true,
+				header: 'End Date',
+				size: 300,
+			  },
+			  {
+				accessorFn: (row) => `${row.questions.length}`, //accessorFn used to join multiple data into a single cell
+				enableClickToCopy: true,
+				header: '# Questions',
 				size: 300,
 			  },
 			],
@@ -70,7 +89,7 @@ const PanelCityListPage = () => {
 			>
 				<Box sx={{ textAlign: 'center' }}>
 				<Title>Biography:</Title>
-				<Text>&quot;{props.row.original.name}&quot;</Text>
+				<Text>&quot;{props.row.original.title}&quot;</Text>
 				</Box>
 			</Box>
 		)
@@ -137,21 +156,21 @@ const PanelCityListPage = () => {
 		)
 	}
 
-	if (isCitiesLoading || !allCities) {
+	if (isCampaignsLoading || !allCampaigns) {
 		return <LoadingPage />
 	}
 
 	return (
-		<Center>
+		<PageContainer title="Campaigns">
 			<BaseTable 
-				data={allCities?.data!} 
+				data={allCampaigns?.data!} 
 				columns={columns} 
 				renderDetailPanel={renderDetailPanel}
 				renderTopToolbarCustomActions={renderTopToolbarCustomActions}
 				rowActionMenuItems={rowActionMenuItems}
 				  />
-		</Center>
+		</PageContainer>
 	);
 };
 
-export default PanelCityListPage;
+export default PanelCampaignListPage;

@@ -7,6 +7,7 @@ import {
     createStyles,
   } from '@mantine/core';
   import { IconChevronRight } from '@tabler/icons-react';
+import { MouseEventHandler } from 'react';
   
   const useStyles = createStyles((theme) => ({
     user: {
@@ -25,14 +26,15 @@ import {
     image: string;
     name: string;
     email: string;
+    onClick: MouseEventHandler<HTMLButtonElement>;
     icon?: React.ReactNode;
   }
   
-  export function UserButton({ image, name, email, icon, ...others }: UserButtonProps) {
+  export function UserButton({ image, name, email, onClick, icon, ...others }: UserButtonProps) {
     const { classes } = useStyles();
   
     return (
-      <UnstyledButton className={classes.user} {...others}>
+      <UnstyledButton onClick={onClick} className={classes.user} {...others}>
         <Group>
           <Avatar src={image} radius="xl" />
   

@@ -42,7 +42,7 @@ const BaseTable = <T extends Record<string, any>>({data, columns, renderDetailPa
     enablePinning: true,
     enableRowActions: true,
     enableRowSelection: true,
-    initialState: { showColumnFilters: true },
+    initialState: { showColumnFilters: false },
     positionToolbarAlertBanner: 'bottom',
     renderDetailPanel: renderDetailPanel,
     renderRowActionMenuItems: rowActionMenuItems,

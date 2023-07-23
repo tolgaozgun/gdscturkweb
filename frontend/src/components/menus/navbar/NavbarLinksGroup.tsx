@@ -52,11 +52,11 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface LinksGroupProps {
-  icon: React.FC<any>;
   label: string;
-  initiallyOpened?: boolean;
+  icon: React.ElementType;
   link?: string;
-  links?: { label: string; link: string }[];
+  initiallyOpened?: boolean;
+  links?: PanelLink[];
 }
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: LinksGroupProps) {

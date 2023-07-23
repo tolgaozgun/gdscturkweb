@@ -1,28 +1,29 @@
 import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
-import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
-import LoadingPage from '../LoadingPage';
-import BaseTable from '../../components/table/BaseTable';
+import { University } from '../../../types/UniversityTypes';
+import { useGetUniversitiesWithAuth } from '../../../hooks/university';
+import LoadingPage from '../../LoadingPage';
+import BaseTable from '../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { Country } from '../../types/CountryTypes';
-import useGetCountries from '../../hooks/country/useGetCountries';
+import { PageContainer } from '../../../components/PageContainer';
 
-type PageType = Country
+type PageType = University
 
-const PanelCountryListPage = () => {
+const PanelUniversityListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
-		data: allCountries,
-		isLoading: isCountriesLoading,
-	} = useGetCountries(axiosSecure);
+		data: allUniversities,
+		isLoading: isUniversitiesLoading,
+	} = useGetUniversitiesWithAuth(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [
 		  {
-			id: 'country', //id used to define `group` column
-			header: 'Country',
+			id: 'university', //id used to define `group` column
+			header: 'University',
 			columns: [
 			  {
 				accessorFn: (row) => `${row.name}`, //accessorFn used to join multiple data into a single cell
@@ -43,7 +44,13 @@ const PanelCountryListPage = () => {
 				),
 			  },
 			  {
-				accessorFn: (row) => `${row.flagImage}`, //accessorFn used to join multiple data into a single cell
+				accessorFn: (row) => `${row.city.name}`, //accessorFn used to join multiple data into a single cell
+				enableClickToCopy: true,
+				header: 'City',
+				size: 300,
+			  },
+			  {
+				accessorFn: (row) => `${row.country.name}`, //accessorFn used to join multiple data into a single cell
 				enableClickToCopy: true,
 				header: 'Country',
 				size: 300,
@@ -137,21 +144,21 @@ const PanelCountryListPage = () => {
 		)
 	}
 
-	if (isCountriesLoading || !allCountries) {
+	if (isUniversitiesLoading || !allUniversities) {
 		return <LoadingPage />
 	}
 
 	return (
-		<Center>
+		<PageContainer title="Universities">
 			<BaseTable 
-				data={allCountries?.data!} 
+				data={allUniversities?.data!} 
 				columns={columns} 
 				renderDetailPanel={renderDetailPanel}
 				renderTopToolbarCustomActions={renderTopToolbarCustomActions}
 				rowActionMenuItems={rowActionMenuItems}
 				  />
-		</Center>
+		</PageContainer>
 	);
 };
 
-export default PanelCountryListPage;
+export default PanelUniversityListPage;

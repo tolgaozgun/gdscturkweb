@@ -1,5 +1,4 @@
 import { Badge, Card, Grid, Image, Text } from '@mantine/core';
-import { useNavigate } from 'react-router';
 import { GooglerModel } from '../../types';
 
 
@@ -9,7 +8,7 @@ interface GooglerCardProps {
 }
 
 const GooglerCard = ({googler, padding}: GooglerCardProps) => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const handleClick = () => {
         // Navigate to Googler profile

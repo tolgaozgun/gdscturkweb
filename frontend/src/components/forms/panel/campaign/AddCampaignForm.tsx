@@ -25,7 +25,7 @@ import LoadingPage from '../../../../pages/LoadingPage';
 import { isErrorResponse } from '../../../../utils/utils';
 import CustomElevatedButton from '../../../buttons/CustomElevatedButton';
 
-interface AddCityFormProps {
+interface AddCampaignFormProps {
 	padding?: number;
 	mt?: number;
 }
@@ -51,7 +51,7 @@ const CustomCountrySelectItem = forwardRef<HTMLDivElement, CountrySelectItemProp
 	),
 );
 
-const AddCityForm = ({padding, mt}: AddCityFormProps) => {
+const AddCampaignForm = ({padding, mt}: AddCampaignFormProps) => {
 	const axiosSecure = useAxiosSecure();
 
 	const form = useForm({
@@ -115,7 +115,7 @@ const AddCityForm = ({padding, mt}: AddCityFormProps) => {
 		});
 	console.log(countryData);
 
-	const handleAddCity = async () => {
+	const handleAddCampaign = async () => {
 		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
@@ -177,11 +177,11 @@ const AddCityForm = ({padding, mt}: AddCityFormProps) => {
 			<Affix position={{ bottom: rem(20), right: rem(20) }}>	
 				<Flex gap="md">
 					<CustomElevatedButton text={'Cancel'} color="red" />
-					<CustomElevatedButton text={'Add City'} onClick={handleAddCity} />
+					<CustomElevatedButton text={'Add City'} onClick={handleAddCampaign} />
 				</Flex>		
 			</Affix>
 		</Flex>
 	);
 };
 
-export default AddCityForm;
+export default AddCampaignForm;

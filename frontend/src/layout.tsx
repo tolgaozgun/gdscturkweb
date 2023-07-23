@@ -1,7 +1,11 @@
 import { AppShell } from '@mantine/core';
 import { Outlet, useLocation } from 'react-router-dom';
-import { AdminPanelNavbar } from './components/menus/navbar/AdminPanelNavbar';
-import { SecondHeader } from './components/header/SecondHeader';
+import { PanelNavbar } from './components/menus/navbar/PanelNavbar';
+import { AppHeader } from './components/header/AppHeader';
+import { AdminPanelData } from './components/menus/navbar/AdminPanelData';
+import { LeadPanelData } from './components/menus/navbar/LeadPanelData';
+import { FacilitatorPanelData } from './components/menus/navbar/FacilitatorPanelData';
+
 
 
 const Layout = () => {
@@ -31,15 +35,30 @@ const Layout = () => {
 		}
 	] 
 	
-	// user: { name: string; image: string };
-	// tabs: { name: string; link: string }[];
+	let header = <></>;
+	let navbar = <></>;
 
+	const checkLink = (link: string) => {
+		return pathname.toLowerCase().startsWith(link);
+	}
+
+	if (checkLink("/panel/admin")) {
+		navbar = <PanelNavbar panelName="Admin Panel" panelData={AdminPanelData}/>;
+	} else if (checkLink("/panel/lead")) {
+		navbar = <PanelNavbar panelName="Lead Panel" panelData={LeadPanelData} />;
+	} else if (checkLink("/panel/facilitator")) {
+		navbar = <PanelNavbar panelName='Facilitator Panel' panelData={FacilitatorPanelData}/>;
+	} else {
+		header = <AppHeader user={user} tabs={tabs} />;
+	}
+
+	
 	return (
 		<main className="App">
 			<AppShell
 				padding="md"
-				header={pathname.toLowerCase().startsWith("/panel") ? <></> : <SecondHeader user={user} tabs={tabs} />}
-				navbar={pathname.toLowerCase().startsWith("/panel") ? <AdminPanelNavbar/> : <></>}
+				header={header}
+				navbar={navbar}
 				styles={(theme) => ({
 					main: {
 						backgroundColor:

@@ -1,33 +1,34 @@
 import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
-import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
-import LoadingPage from '../LoadingPage';
-import BaseTable from '../../components/table/BaseTable';
+import LoadingPage from '../../LoadingPage';
+import BaseTable from '../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { Campaign } from '../../types/CampaignTypes';
-import useGetAllCampaigns from '../../hooks/campaign/useGetAllCampaigns';
+import { QuestionCategory } from '../../../types/QuestionTypes';
+import useGetAllQuestionCategories from '../../../hooks/question/useGetAllQuestionCategories';
+import { PageContainer } from '../../../components/PageContainer';
 
-type PageType = Campaign
+type PageType = QuestionCategory
 
-const PanelCampaignListPage = () => {
+const PanelQuestionCategoriesListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
-		data: allCampaigns,
-		isLoading: isCampaignsLoading,
-	} = useGetAllCampaigns(axiosSecure);
+		data: allQuestionCategories,
+		isLoading: isQuestionCategoriesLoading,
+	} = useGetAllQuestionCategories(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [
 		  {
-			id: 'campaign', //id used to define `group` column
-			header: 'Campaign',
+			id: 'category', //id used to define `group` column
+			header: 'Category',
 			columns: [
 			  {
-				accessorFn: (row) => `${row.title}`, //accessorFn used to join multiple data into a single cell
-				id: 'title', //id is still required when using accessorFn instead of accessorKey
-				header: 'Title',
+				accessorFn: (row) => `${row.name}`, //accessorFn used to join multiple data into a single cell
+				id: 'name', //id is still required when using accessorFn instead of accessorKey
+				header: 'Name',
 				size: 250,
 				filterVariant: 'autocomplete',
 				Cell: ({ renderedCellValue, /*row*/ }) => (
@@ -43,27 +44,15 @@ const PanelCampaignListPage = () => {
 				),
 			  },
 			  {
-				accessorFn: (row) => `${row.attachments.length}`, //accessorFn used to join multiple data into a single cell
+				accessorFn: (row) => `${row.shortUrl}`, //accessorFn used to join multiple data into a single cell
 				enableClickToCopy: true,
-				header: '# Attachments',
+				header: 'Slug',
 				size: 300,
 			  },
 			  {
-				accessorFn: (row) => `${row.startDate}`, //accessorFn used to join multiple data into a single cell
+				accessorFn: (row) => `${row.image}`, //accessorFn used to join multiple data into a single cell
 				enableClickToCopy: true,
-				header: 'Start Date',
-				size: 300,
-			  },
-			  {
-				accessorFn: (row) => `${row.endDate}`, //accessorFn used to join multiple data into a single cell
-				enableClickToCopy: true,
-				header: 'End Date',
-				size: 300,
-			  },
-			  {
-				accessorFn: (row) => `${row.questions.length}`, //accessorFn used to join multiple data into a single cell
-				enableClickToCopy: true,
-				header: '# Questions',
+				header: 'Image',
 				size: 300,
 			  },
 			],
@@ -88,7 +77,7 @@ const PanelCampaignListPage = () => {
 			>
 				<Box sx={{ textAlign: 'center' }}>
 				<Title>Biography:</Title>
-				<Text>&quot;{props.row.original.title}&quot;</Text>
+				<Text>&quot;{props.row.original.name}&quot;</Text>
 				</Box>
 			</Box>
 		)
@@ -155,21 +144,21 @@ const PanelCampaignListPage = () => {
 		)
 	}
 
-	if (isCampaignsLoading || !allCampaigns) {
+	if (isQuestionCategoriesLoading || !allQuestionCategories) {
 		return <LoadingPage />
 	}
 
 	return (
-		<Center>
+		<PageContainer title="Question Categories">
 			<BaseTable 
-				data={allCampaigns?.data!} 
+				data={allQuestionCategories?.data!} 
 				columns={columns} 
 				renderDetailPanel={renderDetailPanel}
 				renderTopToolbarCustomActions={renderTopToolbarCustomActions}
 				rowActionMenuItems={rowActionMenuItems}
 				  />
-		</Center>
+		</PageContainer>
 	);
 };
 
-export default PanelCampaignListPage;
+export default PanelQuestionCategoriesListPage;

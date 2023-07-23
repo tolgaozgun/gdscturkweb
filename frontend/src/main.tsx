@@ -10,23 +10,24 @@ import ProviderWrapper from './components/common/other/ProviderWrapper.tsx';
 import MapPage from './pages/MapPage.tsx';
 import UserListPage from './pages/UserListPage.tsx';
 import LoadingPage from './pages/LoadingPage.tsx';
-import PanelDashboardPage from './pages/panel/PanelDashboardPage.tsx';
+import PanelDashboardPage from './pages/admin/PanelDashboardPage.tsx';
 import { ContextMenuProvider } from 'mantine-contextmenu';
-import PanelUserListPage from './pages/panel/PanelUserListPage.tsx';
+import PanelUserListPage from './pages/admin/PanelUserListPage.tsx';
 import { FaqPage } from './pages/faq/FaqPage.tsx';
-import PanelQuestionsListPage from './pages/panel/PanelQuestionsListPage.tsx';
-import PanelAddQuestion from './components/table/panel/PanelAddQuestion.tsx';
+import PanelQuestionsListPage from './pages/admin/question/PanelQuestionsListPage.tsx';
 import CampaignPage from './pages/CampaignDisplayPage.tsx';
-import PanelBuddyTeamListPage from './pages/panel/PanelBuddyListPage.tsx';
-import PanelUniversityListPage from './pages/panel/PanelUniversityListPage.tsx';
-import PanelCityListPage from './pages/panel/PanelCityListPage.tsx';
-import PanelCountryListPage from './pages/panel/PanelCountryListPage.tsx';
-import PanelCampaignListPage from './pages/panel/PanelCampaignListPage.tsx';
-import PanelQuestionCategoriesListPage from './pages/panel/PanelQuestionCategoriesListPage.tsx';
-import AddCityForm from './components/forms/panel/city/AddCityForm.tsx';
-import AddCityPage from './pages/panel/AddCityPage.tsx';
-import AddCountryPage from './pages/panel/AddCountryPage.tsx';
-import AddUniversityPage from './pages/panel/AddUniversityPage.tsx';
+import PanelBuddyTeamListPage from './pages/admin/PanelBuddyTeamListPage.tsx';
+import PanelUniversityListPage from './pages/admin/university/PanelUniversityListPage.tsx';
+import PanelCityListPage from './pages/admin/city/PanelCityListPage.tsx';
+import PanelCountryListPage from './pages/admin/country/PanelCountryListPage.tsx';
+import PanelCampaignListPage from './pages/admin/campaign/PanelCampaignListPage.tsx';
+import PanelQuestionCategoriesListPage from './pages/admin/question/PanelQuestionCategoriesListPage.tsx';
+import AddCityPage from './pages/admin/city/AddCityPage.tsx';
+import AddCountryPage from './pages/admin/country/AddCountryPage.tsx';
+import AddUniversityPage from './pages/admin/university/AddUniversityPage.tsx';
+import PanelAddQuestionPage from './pages/admin/question/PanelAddQuestionPage.tsx';
+import MainPage from './pages/MainPage.tsx';
+import NotFoundPage from './pages/NotFoundPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
 				children: [
 					{
 						path: '',
-						element: <RegisterPage />,
+						element: <MainPage />,
 					},
 					{
 						path: '/login',
@@ -65,7 +66,7 @@ const router = createBrowserRouter([
 						element: <LoadingPage />
 					},
 					{
-						path: '/panel',
+						path: '/panel/admin',
 						element: <PanelDashboardPage />
 					},
 					{
@@ -73,81 +74,85 @@ const router = createBrowserRouter([
 						element: <CampaignPage />
 					},
 					{
-						path: '/panel/dashboard',
+						path: '/panel/admin/dashboard',
 						element: <PanelDashboardPage />
 					},
 					{
-						path: '/panel/users/list',
+						path: '/panel/admin/users/list',
 						element: <PanelUserListPage />
 					},
 					{
-						path: '/panel/users/add',
+						path: '/panel/admin/users/add',
 						element: <PanelDashboardPage />
 					},
 					{
-						path: '/panel/users/verification',
+						path: '/panel/admin/users/verification',
 						element: <PanelDashboardPage />
 					},
 					{
-						path: '/panel/buddy-teams/list',
+						path: '/panel/admin/buddy-teams/list',
 						element: <PanelBuddyTeamListPage />
 					},
 					{
-						path: '/panel/buddy-teams/add',
+						path: '/panel/admin/buddy-teams/add',
 						element: <PanelDashboardPage />
 					},
 					{
-						path: '/panel/campaigns/list',
+						path: '/panel/admin/campaigns/list',
 						element: <PanelCampaignListPage />
 					},
 					{
-						path: '/panel/campaigns/add',
+						path: '/panel/admin/campaigns/add',
 						element: <PanelDashboardPage />
 					},
 					{
-						path: '/panel/universities/list',
+						path: '/panel/admin/universities/list',
 						element: <PanelUniversityListPage />
 					},
 					{
-						path: '/panel/universities/add',
+						path: '/panel/admin/universities/add',
 						element: <AddUniversityPage />
 					},
 					{
-						path: '/panel/cities/list',
+						path: '/panel/admin/cities/list',
 						element: <PanelCityListPage />
 					},
 					{
-						path: '/panel/cities/add',
+						path: '/panel/admin/cities/add',
 						element: <AddCityPage />
 					},
 					{
-						path: '/panel/countries/list',
+						path: '/panel/admin/countries/list',
 						element: <PanelCountryListPage />
 					},
 					{
-						path: '/panel/countries/add',
+						path: '/panel/admin/countries/add',
 						element: <AddCountryPage />
 					},
 					{
-						path: '/panel/questions/list',
+						path: '/panel/admin/questions/list',
 						element: <PanelQuestionsListPage />
 					},
 					{
-						path: '/panel/questions/add',
-						element: <PanelAddQuestion />
+						path: '/panel/admin/questions/add',
+						element: <PanelAddQuestionPage />
 					},
 					{
-						path: '/panel/questions/categories/list',
+						path: '/panel/admin/questions/categories/list',
 						element: <PanelQuestionCategoriesListPage />
 					},
 					{
-						path: '/panel/questions/categories/add',
+						path: '/panel/admin/questions/categories/add',
 						element: <PanelDashboardPage />
 					},
 					{
-						path: '/panel/settings',
+						path: '/panel/admin/settings',
 						element: <PanelDashboardPage />
 					},
+					{
+						path: '*',
+						element: <NotFoundPage />
+					}
 				],
 			},
 		],

@@ -2,45 +2,44 @@ import {
 	Affix,
 	Card,
 	Flex,
-	TextInput,
+	Input,
 	Title,
 	rem,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useMutation } from '@tanstack/react-query';
-import { CreateCountry } from '../../../../types/CountryTypes';
 import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import { isErrorResponse } from '../../../../utils/utils';
 import CustomElevatedButton from '../../../buttons/CustomElevatedButton';
-import { createCountry } from '../../../../services/country/CountryService';
+import { AskQuestion } from '../../../../types/QuestionTypes';
+import { askQuestion } from '../../../../services/question/QuestionService';
+import CustomTextEditor from '../../CustomTextEditor';
 
-interface AddCountryFormProps {
+interface AddQuestionFormProps {
 	padding?: number;
 	mt?: number;
 }
 
-const AddCountryForm = ({padding, mt}: AddCountryFormProps) => {
+const AddQuestionForm = ({padding, mt}: AddQuestionFormProps) => {
 	const axiosSecure = useAxiosSecure();
 
 	const form = useForm({
 		initialValues: {
-			name: "",
-			flagImage: "",
+			question: ""
 		},
 		validate: {
-			name: (value) => (value.length > 0 ? null : 'Name is required'),
-			flagImage: (value) => (value.length > 0 ? null : 'Flag Image is required'),
+			question: (value) => (value.trim().length > 0 ? null : 'Question is required'),
 		},
 	});
 
-	const { mutateAsync: addCountry } = useMutation({
-		mutationKey: ['addCountry'],
-		mutationFn: (addCountry: CreateCountry) => createCountry(axiosSecure, addCountry),
+	const { mutateAsync: addQuestion } = useMutation({
+		mutationKey: ['addQuestion'],
+		mutationFn: (addQuestion: AskQuestion) => askQuestion(axiosSecure, addQuestion),
 		onError: (error: any) =>
 			notifications.show({
-				id: 'country-create-fail',
-				title: 'Create Country failed!',
+				id: 'question-create-fail',
+				title: 'Asking Question failed!',
 				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
@@ -52,55 +51,55 @@ const AddCountryForm = ({padding, mt}: AddCountryFormProps) => {
 			}),
 	});
 
-	const handleAddCountry = async () => {
+
+
+	const handleAddQuestion = async () => {
 		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;
 		}
 
-		const countryDetails: CreateCountry = {
-			name: form.values.name,
-			flagImage: form.values.flagImage,
+		const questionDetails: AskQuestion = {
+			question: form.values.question,
 		};
-		const res = await addCountry(countryDetails);
+
+		const res = await addQuestion(questionDetails);
 		if (isErrorResponse(res)) {
 			notifications.show({
-				message: res?.msg || "Something went wrong. Couldn't add the country",
+				message: res?.msg || "Something went wrong. Couldn't add the city",
 				color: 'red',
 			});
 		} else {
 			notifications.show({
-				message: 'Country added successfully.',
+				message: 'University added successfully.',
 				color: 'green',
 			});
 		}
 	};
 
+
 	return (
-		<Flex p={padding} mt={mt} direction={'column'} gap={'xl'}>
+		<Flex direction={'column'} gap={'xs'} p={padding} mt={mt}>
 			<form>
-				<Flex direction={'column'} gap={'xl'}>
-					<TextInput
+				<Flex direction={'column'} gap={'xs'}>
+					<Input.Wrapper
 						withAsterisk
-						label="Name"
-						{...form.getInputProps('name')}
-					/>
-					<TextInput
-						withAsterisk
-						label="Flag Image"
-						{...form.getInputProps('flagImage')}
-					/>
+						label="Question"
+						{...form.getInputProps('question')}
+					>
+						<CustomTextEditor />
+					</Input.Wrapper>
 				</Flex>
 			</form>
 			<Affix position={{ bottom: rem(20), right: rem(20) }}>	
 				<Flex gap="md">
 					<CustomElevatedButton text={'Cancel'} color="red" />
-					<CustomElevatedButton text={'Add Country'} onClick={handleAddCountry} />
+					<CustomElevatedButton text={'Add Question'} onClick={handleAddQuestion} />
 				</Flex>		
 			</Affix>
 		</Flex>
 	);
 };
 
-export default AddCountryForm;
+export default AddQuestionForm;

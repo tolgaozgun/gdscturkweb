@@ -1,4 +1,5 @@
 import {
+    Affix,
 	Card,
 	Flex,
 	Group,
@@ -8,6 +9,7 @@ import {
 	Text,
 	TextInput,
 	Title,
+    rem,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
@@ -190,51 +192,53 @@ const AddUniversityForm = ({padding, mt}: AddUniversityFormProps) => {
 
 
 	return (
-		<Card padding={padding} mt={mt} withBorder radius="xl" shadow="xl">
-			<Title>Add A New University</Title>
-			<Flex direction={'column'} gap={'xs'}>
-				<form>
-					<Flex direction={'column'} gap={'xs'}>
-						<TextInput
-							withAsterisk
-							label="Name"
-							{...form.getInputProps('name')}
-						/>
-						<Select
-							label="Country"
-							placeholder="Pick one"
-							itemComponent={CountrySelectItem}
-							data={countryData}
-							searchable
-							withAsterisk
-							{...form.getInputProps('countryId')}
-						/>
-						<Select
-							label="City"
-							placeholder="Pick one"
-							itemComponent={CitySelectItem}
-							data={cityData}
-							searchable
-							withAsterisk
-							{...form.getInputProps('cityId')}
-						/>
-						<NumberInput
-							withAsterisk
-							label="Latitude"
-							precision={6}
-							{...form.getInputProps('latitude')}
-						/>
-						<NumberInput
-							withAsterisk
-							label="Longitude"
-							precision={6}
-							{...form.getInputProps('longitude')}
-						/>
-					</Flex>
-				</form>
-				<CustomElevatedButton text={'Add University'} onClick={handleAddUniversity} />
-			</Flex>
-		</Card>
+			<Flex direction={'column'} gap={'xl'} p={padding} mt={mt}>
+            <form>
+                <Flex direction={'column'} gap={'xl'}>
+                    <TextInput
+                        withAsterisk
+                        label="Name"
+                        {...form.getInputProps('name')}
+                    />
+                    <Select
+                        label="Country"
+                        placeholder="Pick one"
+                        itemComponent={CountrySelectItem}
+                        data={countryData}
+                        searchable
+                        withAsterisk
+                        {...form.getInputProps('countryId')}
+                    />
+                    <Select
+                        label="City"
+                        placeholder="Pick one"
+                        itemComponent={CitySelectItem}
+                        data={cityData}
+                        searchable
+                        withAsterisk
+                        {...form.getInputProps('cityId')}
+                    />
+                    <NumberInput
+                        withAsterisk
+                        label="Latitude"
+                        precision={6}
+                        {...form.getInputProps('latitude')}
+                    />
+                    <NumberInput
+                        withAsterisk
+                        label="Longitude"
+                        precision={6}
+                        {...form.getInputProps('longitude')}
+                    />
+                </Flex>
+            </form>
+			<Affix position={{ bottom: rem(20), right: rem(20) }}>	
+				<Flex gap="md">
+					<CustomElevatedButton text={'Cancel'} color="red" />
+					<CustomElevatedButton text={'Add University'} onClick={handleAddUniversity} />
+				</Flex>		
+			</Affix>
+        </Flex>
 	);
 };
 
