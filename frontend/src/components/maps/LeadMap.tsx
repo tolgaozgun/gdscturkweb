@@ -1,25 +1,20 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import 'leaflet/dist/leaflet.css';
 import './Map.css'
-import { AxiosInstance } from "axios";
-import useGetLeads from "../../hooks/user/useGetLeads";
 import LoadingPage from "../../pages/LoadingPage";
 import LeadCard from "../cards/LeadCard";
+import { LeadModel } from "../../types";
 
 
 interface LeadMapProps {
-  axiosSecure: AxiosInstance
+  data: LeadModel[];
+  isLoading: boolean;
+  
 }
 
-const LeadMap = ({axiosSecure}: LeadMapProps) => {
+const LeadMap = ({data, isLoading}: LeadMapProps) => {
 
-	const {
-		data: allLeads,
-		isLoading: isLeadsLoading,
-		// isError: isLeadsError,
-	} = useGetLeads(axiosSecure);
-
-  if (isLeadsLoading || !allLeads) {
+  if (isLoading || !data) {
     return <LoadingPage/>
   }
 
@@ -29,7 +24,7 @@ const LeadMap = ({axiosSecure}: LeadMapProps) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-        {allLeads?.data?.map((lead) => {
+        {data.map((lead) => {
           return (
             <Marker key={lead.leadId} position={[lead.university.latitude, lead.university.longitude]}>
               <Popup>

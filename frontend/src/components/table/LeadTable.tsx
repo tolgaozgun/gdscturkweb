@@ -1,125 +1,26 @@
 import { useMemo } from 'react';
 import {
-  MantineReactTable,
-  useMantineReactTable,
   type MRT_ColumnDef,
+  MRT_Row,
+  MRT_TableInstance,
 } from 'mantine-react-table';
 import { Box, Button, Menu, Text, Title, Image } from '@mantine/core';
 import { IconUserCircle, IconSend } from '@tabler/icons-react';
-import { UserModel, UserType } from '../../types';
-import { University } from '../../types/UniversityTypes';
-import { AxiosInstance } from 'axios';
-import useGetLeads from '../../hooks/user/useGetLeads';
+import { LeadModel } from '../../types';
 import LoadingPage from '../../pages/LoadingPage';
 import DefaultProfilePicture from "../../assets/default_profile_picture.png";
-import { BuddyTeam } from '../../types/BuddyTeamTypes';
+import BaseTable from './BaseTable';
+
+type PageType = LeadModel;
 
 interface LeadTableProps {
-  axiosSecure: AxiosInstance
+  data: PageType[];
+  isLoading: boolean;
 }
 
-type LeadModel = {
-	leadId: number;
-	university: University;
-	buddyTeam: BuddyTeam;
-	user: UserModel;
-};
 
-let data: LeadModel[] = [
-  {
-    leadId: 1,
-    university: {
-      universityId: 1,
-      latitude: 123.456,
-      longitude: 789.012,
-      name: "Example University",
-      city: {
-        cityId: 1,
-        name: "Example City",
-        country: {
-          countryId: 1,
-          name: "Example Country",
-          flagImage: "example-flag.png",
-        },
-        latitude: 123.456,
-        longitude: 789.012,
-      },
-      country: {
-        countryId: 1,
-        name: "Example Country",
-        flagImage: "example-flag.png",
-      },
-    },
-    buddyTeam: {
-      buddyTeamId: 1,
-      facilitator: {
-        facilitatorId: 1,
-        university: {
-          universityId: 1,
-          latitude: 123.456,
-          longitude: 789.012,
-          name: "Example University",
-          city: {
-            cityId: 1,
-            name: "Example City",
-            country: {
-              countryId: 1,
-              name: "Example Country",
-              flagImage: "example-flag.png",
-            },
-            latitude: 123.456,
-            longitude: 789.012,
-          },
-          country: {
-            countryId: 1,
-            name: "Example Country",
-            flagImage: "example-flag.png",
-          },
-        },
-        user: {
-          userId: 1,
-          name: "John",
-          surname: "Doe",
-          email: "john.doe@example.com",
-          username: "johndoe",
-          userType: UserType.Facilitator,
-          profileImage: "john-doe.png",
-          phoneNumber: "1234567890",
-          biography: "Lorem ipsum dolor sit amet...",
-          interests: []
-        },
-      },
-      leads: [],
-    },
-    user: {
-      userId: 1,
-      name: "John",
-      surname: "Doe",
-      email: "john.doe@example.com",
-      username: "johndoe",
-      userType: UserType.Lead,
-      profileImage: "john-doe.png",
-      phoneNumber: "1234567890",
-      biography: "Lorem ipsum dolor sit amet...",
-      interests: []
-    },
-  },
-];
+const LeadTable = ({data, isLoading}: LeadTableProps) => {
 
-
-const LeadTable = ({axiosSecure}: LeadTableProps) => {
-
-	const {
-		data: allLeads,
-		isLoading: isLeadsLoading,
-		// isError: isLeadsError,
-	} = useGetLeads(axiosSecure);
-
-  if (allLeads) {
-    data = allLeads.data!;
-  } else {
-    data = [];
-  }
 
   const columns = useMemo<MRT_ColumnDef<LeadModel>[]>(
     () => [
@@ -203,101 +104,109 @@ const LeadTable = ({axiosSecure}: LeadTableProps) => {
     [],
   );
 
-  const table = useMantineReactTable({
-    columns,
-    data,
-    enableColumnFilterModes: true,
-    enableColumnOrdering: true,
-    enableFacetedValues: true,
-    enableGrouping: true,
-    enablePinning: true,
-    enableRowActions: true,
-    enableRowSelection: true,
-    initialState: { showColumnFilters: true },
-    positionToolbarAlertBanner: 'bottom',
-    renderDetailPanel: ({ row }) => (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          gap: '16px',
-          padding: '16px',
-        }}
-      >
-        <img
-          alt="avatar"
-          height={200}
-          src={row.original.user.profileImage}
-          style={{ borderRadius: '50%' }}
-        />
-        <Box sx={{ textAlign: 'center' }}>
-          <Title>Biography:</Title>
-          <Text>&quot;{row.original.user.biography}&quot;</Text>
-        </Box>
-      </Box>
-    ),
-    renderRowActionMenuItems: () => (
-      <>
-        <Menu.Item icon={<IconUserCircle />}>View Profile</Menu.Item>
-        <Menu.Item icon={<IconSend />}>Send Email</Menu.Item>
-      </>
-    ),
-    renderTopToolbarCustomActions: ({ table }) => {
-      const handleDeactivate = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert('deactivating ' + row.getValue('name'));
-        });
-      };
+  const renderTopToolbarCustomActions = ( props: {
+		table: MRT_TableInstance<PageType>
+	}) => {
+		const table = props.table;
 
-      const handleActivate = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert('activating ' + row.getValue('name'));
-        });
-      };
-
-      const handleContact = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert('contact ' + row.getValue('name'));
-        });
-      };
-
+		const handleDeactivate = () => {
+		  table.getSelectedRowModel().flatRows.map((row) => {
+			alert('deactivating ' + row.getValue('name'));
+		  });
+		};
+  
+		const handleActivate = () => {
+		  table.getSelectedRowModel().flatRows.map((row) => {
+			alert('activating ' + row.getValue('name'));
+		  });
+		};
+  
+		const handleContact = () => {
+		  table.getSelectedRowModel().flatRows.map((row) => {
+			alert('contact ' + row.getValue('name'));
+		  });
+		};
+		return (
+			<div style={{ display: 'flex', gap: '8px' }}>
+			  <Button
+				color="red"
+				disabled={!table.getIsSomeRowsSelected()}
+				onClick={handleDeactivate}
+				variant="filled"
+			  >
+				Deactivate
+			  </Button>
+			  <Button
+				color="green"
+				disabled={!table.getIsSomeRowsSelected()}
+				onClick={handleActivate}
+				variant="filled"
+			  >
+				Activate
+			  </Button>
+			  <Button
+				color="blue"
+				disabled={!table.getIsSomeRowsSelected()}
+				onClick={handleContact}
+				variant="filled"
+			  >
+				Contact
+			  </Button>
+			</div>
+		  );
+		}
+    const renderDetailPanel = (props: {
+      row: MRT_Row<PageType>;
+      table: MRT_TableInstance<PageType>
+    }): React.ReactNode => {
       return (
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Button
-            color="red"
-            disabled={!table.getIsSomeRowsSelected()}
-            onClick={handleDeactivate}
-            variant="filled"
-          >
-            Deactivate
-          </Button>
-          <Button
-            color="green"
-            disabled={!table.getIsSomeRowsSelected()}
-            onClick={handleActivate}
-            variant="filled"
-          >
-            Activate
-          </Button>
-          <Button
-            color="blue"
-            disabled={!table.getIsSomeRowsSelected()}
-            onClick={handleContact}
-            variant="filled"
-          >
-            Contact
-          </Button>
-        </div>
-      );
-    },
-  });
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px',
+          }}
+        >
+          <img
+            alt="avatar"
+            height={200}
+            src={props.row.original.user.profileImage}
+            style={{ borderRadius: '50%' }}
+          />
+          <Box sx={{ textAlign: 'center' }}>
+            <Title>Biography:</Title>
+            <Text>&quot;{props.row.original.user.biography}&quot;</Text>
+          </Box>
+        </Box>
+      )
+    };
 
 
-	if (isLeadsLoading || !allLeads) {
+
+	const rowActionMenuItems = () => {
+		return (
+			<>
+				<Menu.Item icon={<IconUserCircle />}>View Profile</Menu.Item>
+				<Menu.Item icon={<IconSend />}>Send Email</Menu.Item>
+			</>
+		)
+	}
+
+	if (isLoading || !data) {
 		return <LoadingPage />;
 	}
-  return <MantineReactTable table={table} />;
+
+  return (
+			<BaseTable 
+      data={data} 
+      columns={columns} 
+      renderDetailPanel={renderDetailPanel}
+      renderTopToolbarCustomActions={renderTopToolbarCustomActions}
+      rowActionMenuItems={rowActionMenuItems}
+        />
+  )
 };
 
 export default LeadTable;

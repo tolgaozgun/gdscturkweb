@@ -19,18 +19,17 @@ export const FacilitatorPanelData: PanelItem[] = [
       initiallyOpened: true,
       icon: IconChalkboard,
       links: [
-        { label: 'View Buddy Team', link: '/panel/facilitator/buddy-teams/list' },
+        { label: 'View Buddy Team', link: '/panel/facilitator/buddy-teams/my' },
         { label: 'Attendance', link: '/panel/facilitator/buddy-teams/attendance' },
-        { label: 'List All Buddy Teams', link: '/panel/facilitator/buddy-teams/add' },
+        { label: 'List All Buddy Teams', link: '/panel/facilitator/buddy-teams/all' },
       ],
     },
     {
       label: 'Campaigns',
       icon: IconBrandCampaignmonitor,
       links: [
-        { label: 'List Current Campaigns', link: '/panel/facilitator/campaigns/list' },
-        { label: 'List All Campaigns', link: '/panel/facilitator/campaigns/list' },
-        { label: 'Add a Campaign', link: '/panel/facilitator/campaigns/add' },
+        { label: 'List Current Campaigns', link: '/panel/facilitator/campaigns/current' },
+        { label: 'List All Campaigns', link: '/panel/facilitator/campaigns/all' },
       ],
     },
     {
@@ -59,7 +58,7 @@ export const FacilitatorPanelData: PanelItem[] = [
       icon: IconQuestionMark,
       links: [
         { label: 'List Questions', link: '/panel/facilitator/questions/list' },
-        { label: 'Ask a Question', link: '/panel/facilitator/questions/add' },
+        { label: 'Ask a Question', link: '/panel/facilitator/questions/ask' },
       ],
     },
     { label: 'Settings', icon: IconAdjustments, link: '/panel/facilitator/settings' },

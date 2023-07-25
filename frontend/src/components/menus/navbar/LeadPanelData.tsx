@@ -21,7 +21,7 @@ export const LeadPanelData: PanelItem[] = [
       initiallyOpened: true,
       icon: IconUsersGroup,
       links: [
-        { label: 'List Users', link: '/panel/lead/core-team/list' },
+        { label: 'List Users', link: '/panel/lead/core-team/my' },
         { label: 'Invite a User', link: '/panel/lead/core-team/invite' },
       ],
     },
@@ -30,18 +30,17 @@ export const LeadPanelData: PanelItem[] = [
       initiallyOpened: true,
       icon: IconChalkboard,
       links: [
-        { label: 'View Buddy Team', link: '/panel/lead/buddy-teams/list' },
+        { label: 'View Buddy Team', link: '/panel/lead/buddy-teams/my' },
         { label: 'Attendance', link: '/panel/lead/buddy-teams/attendance' },
-        { label: 'List All Buddy Teams', link: '/panel/lead/buddy-teams/add' },
+        { label: 'List All Buddy Teams', link: '/panel/lead/buddy-teams/all' },
       ],
     },
     {
       label: 'Campaigns',
       icon: IconBrandCampaignmonitor,
       links: [
-        { label: 'List Current Campaigns', link: '/panel/lead/campaigns/list' },
-        { label: 'List All Campaigns', link: '/panel/lead/campaigns/list' },
-        { label: 'Add a Campaign', link: '/panel/lead/campaigns/add' },
+        { label: 'List Current Campaigns', link: '/panel/lead/campaigns/current' },
+        { label: 'List All Campaigns', link: '/panel/lead/campaigns/all' },
       ],
     },
     {
@@ -77,7 +76,7 @@ export const LeadPanelData: PanelItem[] = [
       icon: IconQuestionMark,
       links: [
         { label: 'List Questions', link: '/panel/lead/questions/list' },
-        { label: 'Ask a Question', link: '/panel/lead/questions/add' },
+        { label: 'Ask a Question', link: '/panel/lead/questions/ask' },
       ],
     },
     { label: 'Settings', icon: IconAdjustments, link: '/panel/lead/settings' },

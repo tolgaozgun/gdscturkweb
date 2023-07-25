@@ -1,37 +1,38 @@
-import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
-import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import { Box, Text, Title, Button, Menu, Image } from '@mantine/core';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
+import { IconSend, IconUserCircle } from '@tabler/icons-react';
+import { BuddyTeam } from '../../../types/BuddyTeamTypes';
+import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import useGetBuddyTeams from '../../../hooks/buddy-team/useGetBuddyTeams';
+import { PageContainer } from '../../../components/PageContainer';
 import LoadingPage from '../../LoadingPage';
 import BaseTable from '../../../components/table/BaseTable';
-import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { Country } from '../../../types/CountryTypes';
-import useGetCountries from '../../../hooks/country/useGetCountries';
-import { PageContainer } from '../../../components/PageContainer';
 
-type PageType = Country
 
-const PanelCountryListPage = () => {
+type PageType = BuddyTeam
+
+const PanelBuddyTeamListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
-		data: allCountries,
-		isLoading: isCountriesLoading,
-	} = useGetCountries(axiosSecure);
+		data: allBuddyTeams,
+		isLoading: isBuddyTeamsLoading,
+	} = useGetBuddyTeams(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [
 		  {
-			id: 'country', //id used to define `group` column
-			header: 'Country',
+			id: 'team', //id used to define `group` column
+			header: 'Team',
 			columns: [
 			  {
-				accessorFn: (row) => `${row.name}`, //accessorFn used to join multiple data into a single cell
-				id: 'name', //id is still required when using accessorFn instead of accessorKey
-				header: 'Name',
+				accessorFn: (row) => `${row.facilitator.user.name} ${row.facilitator.user.surname}`, //accessorFn used to join multiple data into a single cell
+				id: 'facilitator', //id is still required when using accessorFn instead of accessorKey
+				header: 'Facilitator',
 				size: 250,
 				filterVariant: 'autocomplete',
-				Cell: ({ renderedCellValue, /*row*/ }) => (
+				Cell: ({ renderedCellValue, row }) => (
 				  <Box
 					sx={{
 					  display: 'flex',
@@ -39,14 +40,20 @@ const PanelCountryListPage = () => {
 					  gap: '16px',
 					}}
 				  >
+					<img
+					  alt="avatar"
+					  height={30}
+					  src={row.original.facilitator.user.profileImage}
+					  style={{ borderRadius: '50%' }}
+					/>
 					<span>{renderedCellValue}</span>
 				  </Box>
 				),
 			  },
 			  {
-				accessorFn: (row) => `${row.flagImage}`, //accessorFn used to join multiple data into a single cell
+				accessorFn: (row) => `${row.leads.length}`, //accessorFn used to join multiple data into a single cell
 				enableClickToCopy: true,
-				header: 'Flag Image',
+				header: 'No of Leads',
 				size: 300,
 			  },
 			],
@@ -55,24 +62,32 @@ const PanelCountryListPage = () => {
 		[],
 	  );
 
+	
+
 	const renderDetailPanel = (props: {
 		row: MRT_Row<PageType>;
 		table: MRT_TableInstance<PageType>
 	}): React.ReactNode => {
 		return (
 			<Box
-				sx={{
+			  sx={{
 				display: 'flex',
 				justifyContent: 'flex-start',
 				alignItems: 'center',
 				gap: '16px',
 				padding: '16px',
-				}}
+			  }}
 			>
-				<Box sx={{ textAlign: 'center' }}>
+			  <img
+				alt="avatar"
+				height={200}
+				src={props.row.original.facilitator.user.profileImage}
+				style={{ borderRadius: '50%' }}
+			  />
+			  <Box sx={{ textAlign: 'center' }}>
 				<Title>Biography:</Title>
-				<Text>&quot;{props.row.original.name}&quot;</Text>
-				</Box>
+				<Text>&quot;{props.row.original.facilitator.user.biography}&quot;</Text>
+			  </Box>
 			</Box>
 		)
 	};
@@ -138,15 +153,15 @@ const PanelCountryListPage = () => {
 		)
 	}
 
-	if (isCountriesLoading || !allCountries) {
+	if (isBuddyTeamsLoading || !allBuddyTeams) {
 		return <LoadingPage />
 	}
 
 	return (
 
-		<PageContainer title="Country List">
+		<PageContainer title="Buddy Teams List">
 			<BaseTable 
-				data={allCountries?.data!} 
+				data={allBuddyTeams?.data!} 
 				columns={columns} 
 				renderDetailPanel={renderDetailPanel}
 				renderTopToolbarCustomActions={renderTopToolbarCustomActions}
@@ -156,4 +171,4 @@ const PanelCountryListPage = () => {
 	);
 };
 
-export default PanelCountryListPage;
+export default PanelBuddyTeamListPage;

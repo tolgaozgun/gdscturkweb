@@ -22,10 +22,10 @@ public class CampaignPageEntity {
     @Column(name = "campaign_page_id", nullable = false)
     private Long campaignPageId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

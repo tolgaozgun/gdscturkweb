@@ -1,38 +1,37 @@
-import { Box, Text, Title, Button, Menu, Image } from '@mantine/core';
+import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
+import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
+import LoadingPage from '../../../LoadingPage';
+import BaseTable from '../../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { BuddyTeam } from '../../types/BuddyTeamTypes';
-import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
-import useGetBuddyTeams from '../../hooks/buddy-team/useGetBuddyTeams';
-import { PageContainer } from '../../components/PageContainer';
-import LoadingPage from '../LoadingPage';
-import BaseTable from '../../components/table/BaseTable';
+import { Campaign } from '../../../../types/CampaignTypes';
+import useGetAllCampaigns from '../../../../hooks/campaign/useGetAllCampaigns';
+import { PageContainer } from '../../../../components/PageContainer';
 
+type PageType = Campaign
 
-type PageType = BuddyTeam
-
-const PanelBuddyTeamListPage = () => {
+const PanelCampaignListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
-		data: allBuddyTeams,
-		isLoading: isBuddyTeamsLoading,
-	} = useGetBuddyTeams(axiosSecure);
+		data: allCampaigns,
+		isLoading: isCampaignsLoading,
+	} = useGetAllCampaigns(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [
 		  {
-			id: 'team', //id used to define `group` column
-			header: 'Team',
+			id: 'campaign', //id used to define `group` column
+			header: 'Campaign',
 			columns: [
 			  {
-				accessorFn: (row) => `${row.facilitator.user.name} ${row.facilitator.user.surname}`, //accessorFn used to join multiple data into a single cell
-				id: 'facilitator', //id is still required when using accessorFn instead of accessorKey
-				header: 'Facilitator',
+				accessorFn: (row) => `${row.title}`, //accessorFn used to join multiple data into a single cell
+				id: 'title', //id is still required when using accessorFn instead of accessorKey
+				header: 'Title',
 				size: 250,
 				filterVariant: 'autocomplete',
-				Cell: ({ renderedCellValue, row }) => (
+				Cell: ({ renderedCellValue, /*row*/ }) => (
 				  <Box
 					sx={{
 					  display: 'flex',
@@ -40,20 +39,32 @@ const PanelBuddyTeamListPage = () => {
 					  gap: '16px',
 					}}
 				  >
-					<img
-					  alt="avatar"
-					  height={30}
-					  src={row.original.facilitator.user.profileImage}
-					  style={{ borderRadius: '50%' }}
-					/>
 					<span>{renderedCellValue}</span>
 				  </Box>
 				),
 			  },
 			  {
-				accessorFn: (row) => `${row.leads.length}`, //accessorFn used to join multiple data into a single cell
+				accessorFn: (row) => `${row.attachments.length}`, //accessorFn used to join multiple data into a single cell
 				enableClickToCopy: true,
-				header: 'No of Leads',
+				header: '# Attachments',
+				size: 300,
+			  },
+			  {
+				accessorFn: (row) => `${row.startDate}`, //accessorFn used to join multiple data into a single cell
+				enableClickToCopy: true,
+				header: 'Start Date',
+				size: 300,
+			  },
+			  {
+				accessorFn: (row) => `${row.endDate}`, //accessorFn used to join multiple data into a single cell
+				enableClickToCopy: true,
+				header: 'End Date',
+				size: 300,
+			  },
+			  {
+				accessorFn: (row) => `${row.questions.length}`, //accessorFn used to join multiple data into a single cell
+				enableClickToCopy: true,
+				header: '# Questions',
 				size: 300,
 			  },
 			],
@@ -62,32 +73,24 @@ const PanelBuddyTeamListPage = () => {
 		[],
 	  );
 
-	
-
 	const renderDetailPanel = (props: {
 		row: MRT_Row<PageType>;
 		table: MRT_TableInstance<PageType>
 	}): React.ReactNode => {
 		return (
 			<Box
-			  sx={{
+				sx={{
 				display: 'flex',
 				justifyContent: 'flex-start',
 				alignItems: 'center',
 				gap: '16px',
 				padding: '16px',
-			  }}
+				}}
 			>
-			  <img
-				alt="avatar"
-				height={200}
-				src={props.row.original.facilitator.user.profileImage}
-				style={{ borderRadius: '50%' }}
-			  />
-			  <Box sx={{ textAlign: 'center' }}>
+				<Box sx={{ textAlign: 'center' }}>
 				<Title>Biography:</Title>
-				<Text>&quot;{props.row.original.facilitator.user.biography}&quot;</Text>
-			  </Box>
+				<Text>&quot;{props.row.original.title}&quot;</Text>
+				</Box>
 			</Box>
 		)
 	};
@@ -153,15 +156,14 @@ const PanelBuddyTeamListPage = () => {
 		)
 	}
 
-	if (isBuddyTeamsLoading || !allBuddyTeams) {
+	if (isCampaignsLoading || !allCampaigns) {
 		return <LoadingPage />
 	}
 
 	return (
-
-		<PageContainer title="Buddy Teams List">
+		<PageContainer title="Campaigns">
 			<BaseTable 
-				data={allBuddyTeams?.data!} 
+				data={allCampaigns?.data!} 
 				columns={columns} 
 				renderDetailPanel={renderDetailPanel}
 				renderTopToolbarCustomActions={renderTopToolbarCustomActions}
@@ -171,4 +173,4 @@ const PanelBuddyTeamListPage = () => {
 	);
 };
 
-export default PanelBuddyTeamListPage;
+export default PanelCampaignListPage;

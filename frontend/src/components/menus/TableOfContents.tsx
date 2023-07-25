@@ -37,19 +37,17 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface TableOfContentsProps {
-  links: { label: string; content: CampaignPage; onClick: Function}[];
-  active: string;
+  links: { label: string; content: CampaignPage}[];
+  onClick?: Function;
 }
 
-export function TableOfContents({ links, active }: TableOfContentsProps) {
+export function TableOfContents({ links, onClick }: TableOfContentsProps) {
   const { classes, cx } = useStyles();
-  const items = links.map((item) => (
+  let active = "";
+  const items = links.map((item, index) => (
     <Box<'a'>
       component="a"
-      onClick={(event) => {
-        event.preventDefault()
-        item.onClick(item.content);
-      } }
+      onClick={onClick && onClick(index)}
       key={item.label}
       className={cx(classes.link, { [classes.linkActive]: active === item.label })}
       sx={(theme) => ({ paddingLeft: theme.spacing.md })}

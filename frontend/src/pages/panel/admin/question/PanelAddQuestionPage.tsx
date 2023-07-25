@@ -1,7 +1,7 @@
 
 import { Center } from '@mantine/core';
-import AddQuestionForm from '../../../components/forms/panel/question/AddQuestionForm';
-import { PageContainer } from '../../../components/PageContainer';
+import AddQuestionForm from '../../../../components/forms/panel/question/AddQuestionForm';
+import { PageContainer } from '../../../../components/PageContainer';
 
 const PanelAddQuestionPage = () => {
 	return (

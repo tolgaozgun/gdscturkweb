@@ -22,10 +22,10 @@ public class CampaignEntity {
     @Column(name = "campaign_id", nullable = false)
     private Long campaignId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String description;
 
     @Column(nullable = false)

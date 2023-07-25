@@ -62,7 +62,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface HeroComponentProps {
-    bg: string;
+    bg?: string;
     title: string;
     description: string;
     buttons: Array<string>;
@@ -70,10 +70,16 @@ interface HeroComponentProps {
 
 const HeroComponent = ({bg, title, description, buttons}: HeroComponentProps) => {
   const { classes } = useStyles();
+    
+  if (!bg) {
+    bg =  "";
+  }
 
   return (
-    <BackgroundImage src={bg}>
+    
     <div className={classes.hero}>
+      
+    <BackgroundImage src={bg}>
       <Overlay
         gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, .65) 40%)"
         opacity={1}
@@ -97,8 +103,8 @@ const HeroComponent = ({bg, title, description, buttons}: HeroComponentProps) =>
         </Flex>
 
       </Container>
-    </div>
     </BackgroundImage>
+    </div>
   );
 }
 

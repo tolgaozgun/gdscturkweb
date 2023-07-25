@@ -1,7 +1,7 @@
 
 import { Center } from '@mantine/core';
-import AddCityForm from '../../../components/forms/panel/city/AddCityForm';
-import { PageContainer } from '../../../components/PageContainer';
+import AddCityForm from '../../../../components/forms/panel/city/AddCityForm';
+import { PageContainer } from '../../../../components/PageContainer';
 
 const AddCityPage = () => {
 	return (

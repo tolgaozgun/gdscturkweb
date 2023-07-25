@@ -1,7 +1,7 @@
 
 import { Center } from '@mantine/core';
-import AddUniversityForm from '../../../components/forms/panel/university/AddUniversityForm';
-import { PageContainer } from '../../../components/PageContainer';
+import AddUniversityForm from '../../../../components/forms/panel/university/AddUniversityForm';
+import { PageContainer } from '../../../../components/PageContainer';
 
 const AddUniversityPage = () => {
 	return (

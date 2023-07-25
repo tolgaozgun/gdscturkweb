@@ -1,25 +1,19 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import 'leaflet/dist/leaflet.css';
 import './Map.css'
-import { AxiosInstance } from "axios";
 import LoadingPage from "../../pages/LoadingPage";
-import useGetCoreTeamMembers from "../../hooks/user/useGetCoreTeamMembers";
 import CoreTeamMemberCard from "../cards/CoreTeamMemberCard";
+import { CoreTeamMemberModel } from "../../types";
 
 
-interface LeadMapProps {
-  axiosSecure: AxiosInstance
+interface CoreTeamMapProps {
+  data: CoreTeamMemberModel[];
+  isLoading: boolean;
 }
 
-const LeadMap = ({axiosSecure}: LeadMapProps) => {
+const CoreTeamMap = ({data, isLoading}: CoreTeamMapProps) => {
 
-	const {
-		data: allCoreTeamMembers,
-		isLoading: isCoreTeamMembersLoading,
-		// isError: isLeadsError,
-	} = useGetCoreTeamMembers(axiosSecure);
-
-  if (isCoreTeamMembersLoading || !allCoreTeamMembers) {
+  if (isLoading || !data) {
     return <LoadingPage/>
   }
 
@@ -29,7 +23,7 @@ const LeadMap = ({axiosSecure}: LeadMapProps) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-        {allCoreTeamMembers?.data?.map((coreTeamMember) => {
+        {data.map((coreTeamMember) => {
           return (
             <Marker key={coreTeamMember.coreTeamMemberId} position={[coreTeamMember.university.latitude, coreTeamMember.university.longitude]}>
               <Popup>
@@ -42,4 +36,4 @@ const LeadMap = ({axiosSecure}: LeadMapProps) => {
   )
 }
 
-export default LeadMap;
+export default CoreTeamMap;

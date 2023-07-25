@@ -1,7 +1,7 @@
 
 import { Center } from '@mantine/core';
-import AddCountryForm from '../../../components/forms/panel/country/AddCountryForm';
-import { PageContainer } from '../../../components/PageContainer';
+import AddCountryForm from '../../../../components/forms/panel/country/AddCountryForm';
+import { PageContainer } from '../../../../components/PageContainer';
 
 const AddCountryPage = () => {
 	return (

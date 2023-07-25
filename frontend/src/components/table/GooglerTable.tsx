@@ -1,68 +1,25 @@
 import { useMemo } from 'react';
 import {
-  MantineReactTable,
-  useMantineReactTable,
   type MRT_ColumnDef,
+  MRT_Row,
+  MRT_TableInstance,
 } from 'mantine-react-table';
 import { Box, Button, Menu, Text, Title } from '@mantine/core';
 import { IconUserCircle, IconSend } from '@tabler/icons-react';
-import { GooglerModel, UserType } from '../../types';
-import { AxiosInstance } from 'axios';
+import { GooglerModel } from '../../types';
 import LoadingPage from '../../pages/LoadingPage';
-import useGetGooglers from '../../hooks/user/useGetGooglers';
+import BaseTable from './BaseTable';
+
+type PageType = GooglerModel;
 
 interface GooglerTableProps {
-  axiosSecure: AxiosInstance
+  data: PageType[];
+  isLoading: boolean;
 }
 
-let data: GooglerModel[] = [
-  {
-    googlerId: 1,
-    city: {
-      cityId: 1,
-      name: "Example City",
-      country: {
-        countryId: 1,
-        name: "Example Country",
-        flagImage: "example-flag.png",
-      },
-      latitude: 123.456,
-      longitude: 789.012,
-    },
-    country: {
-      countryId: 1,
-      name: "Example Country",
-      flagImage: "example-flag.png",
-    },
-    user: {
-      userId: 1,
-      name: "John",
-      surname: "Doe",
-      email: "john.doe@example.com",
-      username: "johndoe",
-      userType: UserType.Googler,
-      profileImage: "john-doe.png",
-      phoneNumber: "1234567890",
-      biography: "Lorem ipsum dolor sit amet...",
-      interests: []
-    },
-  },
-];
 
+const GooglerTable = ({data, isLoading}: GooglerTableProps) => {
 
-const GooglerTable = ({axiosSecure}: GooglerTableProps) => {
-
-	const {
-		data: allGooglers,
-		isLoading: isGooglersLoading,
-		// isError: isCoreTeamMembersError,
-	} = useGetGooglers(axiosSecure);
-
-  if (allGooglers) {
-	  data = allGooglers.data!;
-  } else {
-    data = [];
-  }
 
   const columns = useMemo<MRT_ColumnDef<GooglerModel>[]>(
     () => [
@@ -124,101 +81,109 @@ const GooglerTable = ({axiosSecure}: GooglerTableProps) => {
     [],
   );
 
-  const table = useMantineReactTable({
-    columns,
-    data,
-    enableColumnFilterModes: true,
-    enableColumnOrdering: true,
-    enableFacetedValues: true,
-    enableGrouping: true,
-    enablePinning: true,
-    enableRowActions: true,
-    enableRowSelection: true,
-    initialState: { showColumnFilters: true },
-    positionToolbarAlertBanner: 'bottom',
-    renderDetailPanel: ({ row }) => (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          gap: '16px',
-          padding: '16px',
-        }}
-      >
-        <img
-          alt="avatar"
-          height={200}
-          src={row.original.user.profileImage}
-          style={{ borderRadius: '50%' }}
-        />
-        <Box sx={{ textAlign: 'center' }}>
-          <Title>Biography:</Title>
-          <Text>&quot;{row.original.user.biography}&quot;</Text>
-        </Box>
-      </Box>
-    ),
-    renderRowActionMenuItems: () => (
-      <>
-        <Menu.Item icon={<IconUserCircle />}>View Profile</Menu.Item>
-        <Menu.Item icon={<IconSend />}>Send Email</Menu.Item>
-      </>
-    ),
-    renderTopToolbarCustomActions: ({ table }) => {
-      const handleDeactivate = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert('deactivating ' + row.getValue('name'));
-        });
-      };
+  const renderTopToolbarCustomActions = ( props: {
+		table: MRT_TableInstance<PageType>
+	}) => {
+		const table = props.table;
 
-      const handleActivate = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert('activating ' + row.getValue('name'));
-        });
-      };
-
-      const handleContact = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert('contact ' + row.getValue('name'));
-        });
-      };
-
+		const handleDeactivate = () => {
+		  table.getSelectedRowModel().flatRows.map((row) => {
+			alert('deactivating ' + row.getValue('name'));
+		  });
+		};
+  
+		const handleActivate = () => {
+		  table.getSelectedRowModel().flatRows.map((row) => {
+			alert('activating ' + row.getValue('name'));
+		  });
+		};
+  
+		const handleContact = () => {
+		  table.getSelectedRowModel().flatRows.map((row) => {
+			alert('contact ' + row.getValue('name'));
+		  });
+		};
+		return (
+			<div style={{ display: 'flex', gap: '8px' }}>
+			  <Button
+				color="red"
+				disabled={!table.getIsSomeRowsSelected()}
+				onClick={handleDeactivate}
+				variant="filled"
+			  >
+				Deactivate
+			  </Button>
+			  <Button
+				color="green"
+				disabled={!table.getIsSomeRowsSelected()}
+				onClick={handleActivate}
+				variant="filled"
+			  >
+				Activate
+			  </Button>
+			  <Button
+				color="blue"
+				disabled={!table.getIsSomeRowsSelected()}
+				onClick={handleContact}
+				variant="filled"
+			  >
+				Contact
+			  </Button>
+			</div>
+		  );
+		}
+    const renderDetailPanel = (props: {
+      row: MRT_Row<PageType>;
+      table: MRT_TableInstance<PageType>
+    }): React.ReactNode => {
       return (
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Button
-            color="red"
-            disabled={!table.getIsSomeRowsSelected()}
-            onClick={handleDeactivate}
-            variant="filled"
-          >
-            Deactivate
-          </Button>
-          <Button
-            color="green"
-            disabled={!table.getIsSomeRowsSelected()}
-            onClick={handleActivate}
-            variant="filled"
-          >
-            Activate
-          </Button>
-          <Button
-            color="blue"
-            disabled={!table.getIsSomeRowsSelected()}
-            onClick={handleContact}
-            variant="filled"
-          >
-            Contact
-          </Button>
-        </div>
-      );
-    },
-  });
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px',
+          }}
+        >
+          <img
+            alt="avatar"
+            height={200}
+            src={props.row.original.user.profileImage}
+            style={{ borderRadius: '50%' }}
+          />
+          <Box sx={{ textAlign: 'center' }}>
+            <Title>Biography:</Title>
+            <Text>&quot;{props.row.original.user.biography}&quot;</Text>
+          </Box>
+        </Box>
+      )
+    };
 
-	if (isGooglersLoading || !allGooglers) {
-		return <LoadingPage />;
+
+
+	const rowActionMenuItems = () => {
+		return (
+			<>
+				<Menu.Item icon={<IconUserCircle />}>View Profile</Menu.Item>
+				<Menu.Item icon={<IconSend />}>Send Email</Menu.Item>
+			</>
+		)
 	}
 
-  return <MantineReactTable table={table} />;
+	if (isLoading || !data) {
+		return <LoadingPage />;
+	}
+  
+  return (
+    <BaseTable 
+      data={data} 
+      columns={columns} 
+      renderDetailPanel={renderDetailPanel}
+      renderTopToolbarCustomActions={renderTopToolbarCustomActions}
+      rowActionMenuItems={rowActionMenuItems}
+    />
+)
 };
 
 export default GooglerTable;

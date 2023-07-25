@@ -1,38 +1,25 @@
 import { Button, Center, Tabs } from '@mantine/core';
 import { IconFriends, IconGridDots, IconList } from '@tabler/icons-react';
-import LeadTable from '../components/table/LeadTable';
-import useAxiosSecure from '../hooks/auth/useAxiosSecure';
-import FacilitatorTable from '../components/table/FacilitatorTable';
-import CoreTeamMemberTable from '../components/table/CoreTeamMemberTable';
-import GooglerTable from '../components/table/GooglerTable';
+import LeadTable from '../../../components/table/LeadTable';
+import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import FacilitatorTable from '../../../components/table/FacilitatorTable';
+import CoreTeamMemberTable from '../../../components/table/CoreTeamMemberTable';
+import GooglerTable from '../../../components/table/GooglerTable';
 import { useState } from 'react';
-import useGetCoreTeamMembers from '../hooks/user/useGetCoreTeamMembers';
-import { CoreTeamMemberModel, FacilitatorModel, GooglerModel, LeadModel } from '../types';
-import useGetLeads from '../hooks/user/useGetLeads';
-import useGetFacilitators from '../hooks/user/useGetFacilitators';
-import useGetGooglers from '../hooks/user/useGetGooglers';
-import LeadGrid from '../components/grid/LeadGrid';
-import CoreTeamMemberGrid from '../components/grid/CoreTeamMemberGrid';
-import FacilitatorGrid from '../components/grid/FacilitatorGrid';
-import GooglerGrid from '../components/grid/GooglerGrid';
+import useGetLeads from '../../../hooks/user/useGetLeads';
+import useGetFacilitators from '../../../hooks/user/useGetFacilitators';
+import useGetGooglers from '../../../hooks/user/useGetGooglers';
+import LeadGrid from '../../../components/grid/LeadGrid';
+import CoreTeamMemberGrid from '../../../components/grid/CoreTeamMemberGrid';
+import FacilitatorGrid from '../../../components/grid/FacilitatorGrid';
+import GooglerGrid from '../../../components/grid/GooglerGrid';
+import { CoreTeamMemberModel, FacilitatorModel, GooglerModel, LeadModel } from '../../../types';
+import useGetCoreTeamMembers from '../../../hooks/user/useGetCoreTeamMembers';
+import { PageContainer } from '../../../components/PageContainer';
 
 
 
-const UserListPage = () => {
-
-	// const [selectedIndex, setSelectedIndex] = useState<number>(0);
-	
-	// const [allCoreTeamMembers, setCoreTeamMembers] = useState<CoreTeamMemberModel[]>([]);
-	// const [isCoreTeamMembersLoading, setCoreTeamMembersLoading] = useState<boolean>(true);
-
-	// const [allLeads, setLeads] = useState<LeadModel[]>([]);
-	// const [isLeadsLoading, setLeadsLoading] = useState<boolean>(true);
-
-	// const [allFacilitators, setFacilitators] = useState<FacilitatorModel[]>([]);
-	// const [isFacilitatorsLoading, setFacilitatorsLoading] = useState<boolean>(true);
-
-	// const [allGooglers, setGooglers] = useState<GooglerModel[]>([]);
-	// const [isGooglersLoading, setGooglersLoading] = useState<boolean>(true);
+const PanelUserListPage = () => {
 
 	const axiosSecure = useAxiosSecure();
 
@@ -179,7 +166,7 @@ const UserListPage = () => {
 	}
 
 	return (
-		<>
+		<PageContainer title="User List">
 			<Button.Group defaultValue="grid">
 				<Button disabled={useGrid} leftIcon={<IconGridDots size="1rem" />} value="grid" onClick={handleSelectGrid} variant="default">
 					Grid
@@ -210,8 +197,8 @@ const UserListPage = () => {
 					{panels}
 				</Tabs>
 			</Center>
-		</>
+		</PageContainer>
 	);
 };
 
-export default UserListPage;
+export default PanelUserListPage;

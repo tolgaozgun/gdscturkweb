@@ -1,29 +1,29 @@
 import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
-import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
-import LoadingPage from '../../LoadingPage';
-import BaseTable from '../../../components/table/BaseTable';
+import LoadingPage from '../../../LoadingPage';
+import BaseTable from '../../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { City } from '../../../types/CityTypes';
-import useGetCities from '../../../hooks/city/useGetCities';
-import { PageContainer } from '../../../components/PageContainer';
+import { Country } from '../../../../types/CountryTypes';
+import useGetCountries from '../../../../hooks/country/useGetCountries';
+import { PageContainer } from '../../../../components/PageContainer';
 
-type PageType = City
+type PageType = Country
 
-const PanelCityListPage = () => {
+const PanelCountryListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
-		data: allCities,
-		isLoading: isCitiesLoading,
-	} = useGetCities(axiosSecure);
+		data: allCountries,
+		isLoading: isCountriesLoading,
+	} = useGetCountries(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [
 		  {
-			id: 'city', //id used to define `group` column
-			header: 'City',
+			id: 'country', //id used to define `group` column
+			header: 'Country',
 			columns: [
 			  {
 				accessorFn: (row) => `${row.name}`, //accessorFn used to join multiple data into a single cell
@@ -44,9 +44,9 @@ const PanelCityListPage = () => {
 				),
 			  },
 			  {
-				accessorFn: (row) => `${row.country.name}`, //accessorFn used to join multiple data into a single cell
+				accessorFn: (row) => `${row.flagImage}`, //accessorFn used to join multiple data into a single cell
 				enableClickToCopy: true,
-				header: 'Country',
+				header: 'Flag Image',
 				size: 300,
 			  },
 			],
@@ -138,14 +138,15 @@ const PanelCityListPage = () => {
 		)
 	}
 
-	if (isCitiesLoading || !allCities) {
+	if (isCountriesLoading || !allCountries) {
 		return <LoadingPage />
 	}
 
 	return (
-		<PageContainer title="Cities">
+
+		<PageContainer title="Country List">
 			<BaseTable 
-				data={allCities?.data!} 
+				data={allCountries?.data!} 
 				columns={columns} 
 				renderDetailPanel={renderDetailPanel}
 				renderTopToolbarCustomActions={renderTopToolbarCustomActions}
@@ -155,4 +156,4 @@ const PanelCityListPage = () => {
 	);
 };
 
-export default PanelCityListPage;
+export default PanelCountryListPage;

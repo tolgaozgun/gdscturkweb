@@ -1,14 +1,14 @@
 import { Box, Text, Title, Button, Menu, Image } from '@mantine/core';
-import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
-import LoadingPage from '../../LoadingPage';
-import BaseTable from '../../../components/table/BaseTable';
+import LoadingPage from '../../../LoadingPage';
+import BaseTable from '../../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { PageContainer } from '../../../components/PageContainer';
-import useGetAllQuestions from '../../../hooks/question/useGetAllQuestions';
-import { Question } from '../../../types/QuestionTypes';
-import DefaultProfilePicture from "../../../assets/default_profile_picture.png";
+import { PageContainer } from '../../../../components/PageContainer';
+import useGetAllQuestions from '../../../../hooks/question/useGetAllQuestions';
+import { Question } from '../../../../types/QuestionTypes';
+import DefaultProfilePicture from "../../../../assets/default_profile_picture.png";
 
 
 type PageType = Question

@@ -1,13 +1,13 @@
 import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
-import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
-import LoadingPage from '../../LoadingPage';
-import BaseTable from '../../../components/table/BaseTable';
+import LoadingPage from '../../../LoadingPage';
+import BaseTable from '../../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
-import { QuestionCategory } from '../../../types/QuestionTypes';
-import useGetAllQuestionCategories from '../../../hooks/question/useGetAllQuestionCategories';
-import { PageContainer } from '../../../components/PageContainer';
+import { QuestionCategory } from '../../../../types/QuestionTypes';
+import useGetAllQuestionCategories from '../../../../hooks/question/useGetAllQuestionCategories';
+import { PageContainer } from '../../../../components/PageContainer';
 
 type PageType = QuestionCategory
 
