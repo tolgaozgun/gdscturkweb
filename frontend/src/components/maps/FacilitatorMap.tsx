@@ -1,25 +1,20 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import 'leaflet/dist/leaflet.css';
 import './Map.css'
-import { AxiosInstance } from "axios";
 import LoadingPage from "../../pages/LoadingPage";
 import FacilitatorCard from "../cards/FacilitatorCard";
-import useGetFacilitators from "../../hooks/user/useGetFacilitators";
+import { FacilitatorModel } from "../../types";
 
 
 interface FacilitatorMapProps {
-  axiosSecure: AxiosInstance
+  data: FacilitatorModel[];
+  isLoading: boolean;
 }
 
-const FacilitatorMap = ({axiosSecure}: FacilitatorMapProps) => {
+const FacilitatorMap = ({data, isLoading}: FacilitatorMapProps) => {
 
-	const {
-		data: allFacilitators,
-		isLoading: isFacilitatorsLoading,
-		// isError: isLeadsError,
-	} = useGetFacilitators(axiosSecure);
 
-  if (isFacilitatorsLoading || !allFacilitators) {
+  if (isLoading || !data) {
     return <LoadingPage/>
   }
 
@@ -29,7 +24,7 @@ const FacilitatorMap = ({axiosSecure}: FacilitatorMapProps) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-        {allFacilitators?.data?.map((facilitator) => {
+        {data.map((facilitator) => {
           return (
             <Marker key={facilitator.facilitatorId} position={[facilitator.university.latitude, facilitator.university.longitude]}>
               <Popup>

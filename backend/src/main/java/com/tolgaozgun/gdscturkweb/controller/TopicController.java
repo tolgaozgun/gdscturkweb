@@ -1,16 +1,10 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
-import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.topic.CreateTopicRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.topic.EditTopicRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.topic.GetTopicRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.model.Topic;
-import com.tolgaozgun.gdscturkweb.service.CityService;
 import com.tolgaozgun.gdscturkweb.service.TopicService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -42,10 +36,10 @@ public class TopicController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
-    public ResponseEntity<Object> getCityById(@Valid @RequestBody GetTopicRequest getTopicRequest) {
+    @GetMapping( path = "{topicId}")
+    public ResponseEntity<Object> getCityById(@PathVariable Long topicId) {
         try {
-            Topic topic = topicService.getTopic(getTopicRequest);
+            Topic topic = topicService.getTopic(topicId);
             return Response.create("Found the topic", HttpStatus.OK, topic);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,10 +59,10 @@ public class TopicController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editTopic(@Valid @RequestBody EditTopicRequest editTopicRequest) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{topicId}")
+    public ResponseEntity<Object> editTopic(@PathVariable Long topicId, @Valid @RequestBody EditTopicRequest editTopicRequest) {
         try {
-            Topic topic = topicService.editTopic(editTopicRequest);
+            Topic topic = topicService.editTopic(topicId, editTopicRequest);
             return Response.create("Topic edited successfully", HttpStatus.OK, topic);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

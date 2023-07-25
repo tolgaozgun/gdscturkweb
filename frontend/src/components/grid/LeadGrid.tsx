@@ -1,22 +1,17 @@
 import { Box, SimpleGrid } from '@mantine/core';
-import { AxiosInstance } from 'axios';
-import useGetLeads from '../../hooks/user/useGetLeads';
 import LoadingPage from '../../pages/LoadingPage';
 import LeadCard from '../cards/LeadCard';
+import { LeadModel } from '../../types';
 
 interface LeadTableProps {
-  axiosSecure: AxiosInstance
+  data: LeadModel[];
+  isLoading: boolean;
 }
 
-const LeadGrid = ({axiosSecure}: LeadTableProps) => {
+const LeadGrid = ({data, isLoading}: LeadTableProps) => {
 
-	const {
-		data: allLeads,
-		isLoading: isLeadsLoading,
-		// isError: isLeadsError,
-	} = useGetLeads(axiosSecure);
 
-	if (isLeadsLoading || !allLeads) {
+	if (isLoading || !data) {
 		return <LoadingPage />;
 	}
 
@@ -28,7 +23,7 @@ const LeadGrid = ({axiosSecure}: LeadTableProps) => {
           { maxWidth: 'sm', cols: 2, spacing: 'sm' },
           { maxWidth: 'xs', cols: 1, spacing: 'sm' },
         ]}>
-            {allLeads?.data!.map((lead) => 
+            {data.map((lead) => 
                 <Box key={lead.leadId}>
                     <LeadCard key={lead.leadId} lead={lead} padding='xl' />
                 </Box>

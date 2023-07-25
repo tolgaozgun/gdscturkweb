@@ -6,70 +6,20 @@ import {
 } from 'mantine-react-table';
 import { Box, Button, Menu, Text, Title } from '@mantine/core';
 import { IconUserCircle, IconSend } from '@tabler/icons-react';
-import { CoreTeamMemberModel, UserType } from '../../types';
-import { AxiosInstance } from 'axios';
+import { CoreTeamMemberModel } from '../../types';
 import LoadingPage from '../../pages/LoadingPage';
-import useGetCoreTeamMembers from '../../hooks/user/useGetCoreTeamMembers';
+
+type PageType = CoreTeamMemberModel;
 
 interface CoreTeamMemberTableProps {
-  axiosSecure: AxiosInstance
+  data: PageType[];
+  isLoading: boolean
 }
 
-let data: CoreTeamMemberModel[] = [
-  {
-    coreTeamMemberId: 1,
-    university: {
-      universityId: 1,
-      latitude: 123.456,
-      longitude: 789.012,
-      name: "Example University",
-      city: {
-        cityId: 1,
-        name: "Example City",
-        country: {
-          countryId: 1,
-          name: "Example Country",
-          flagImage: "example-flag.png",
-        },
-        latitude: 123.456,
-        longitude: 789.012,
-      },
-      country: {
-        countryId: 1,
-        name: "Example Country",
-        flagImage: "example-flag.png",
-      },
-    },
-    user: {
-      userId: 1,
-      name: "John",
-      surname: "Doe",
-      email: "john.doe@example.com",
-      username: "johndoe",
-      userType: UserType.CoreTeamMember,
-      profileImage: "john-doe.png",
-      phoneNumber: "1234567890",
-      biography: "Lorem ipsum dolor sit amet...",
-      interests: []
-    },
-  },
-  // Additional CoreTeamMemberModel objects...
-];
 
+const CoreTeamMemberTable = ({data, isLoading}: CoreTeamMemberTableProps) => {
 
-const CoreTeamMemberTable = ({axiosSecure}: CoreTeamMemberTableProps) => {
-
-	const {
-		data: allCoreTeamMembers,
-		isLoading: isCoreTeamMembersLoading,
-		// isError: isCoreTeamMembersError,
-	} = useGetCoreTeamMembers(axiosSecure);
-
-  if (allCoreTeamMembers) {
-	  data = allCoreTeamMembers.data!;
-  } else {
-    data = [];
-  }
+  console.log(data);
 
   const columns = useMemo<MRT_ColumnDef<CoreTeamMemberModel>[]>(
     () => [
@@ -227,7 +177,7 @@ const CoreTeamMemberTable = ({axiosSecure}: CoreTeamMemberTableProps) => {
     },
   });
 
-	if (isCoreTeamMembersLoading || !allCoreTeamMembers) {
+	if (isLoading || !data) {
 		return <LoadingPage />;
 	}
 

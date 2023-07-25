@@ -22,10 +22,10 @@ public class CampaignEntity {
     @Column(name = "campaign_id", nullable = false)
     private Long campaignId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String description;
 
     @Column(nullable = false)
@@ -35,11 +35,11 @@ public class CampaignEntity {
     private Date endDate;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "campaign_id")
+    @JoinColumn(name = "campaign_id", nullable = false)
     private List<AttachmentEntity> attachments;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "campaign_id")
+    @JoinColumn(name = "campaign_id", nullable = false)
     private List<QuestionEntity> questions;
 
     @ElementCollection
@@ -47,4 +47,8 @@ public class CampaignEntity {
     @Column(name = "user_type")
     @Enumerated(EnumType.STRING)
     private List<UserType> permittedUserTypes;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "campaign_id", nullable = false)
+    private List<CampaignPageEntity> campaignPages;
 }

@@ -16,9 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class EditAnnouncementRequest {
 
-    @Id
-    private Long announcementId;
-
     @Nullable
     private String title;
 

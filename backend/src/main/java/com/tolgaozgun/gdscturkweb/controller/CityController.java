@@ -1,12 +1,9 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
-import com.tolgaozgun.gdscturkweb.dto.request.campaign.GetCampaignRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.model.Campaign;
 import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.service.CityService;
 import jakarta.validation.Valid;
@@ -38,10 +35,10 @@ public class CityController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
-    public ResponseEntity<Object> getCityById(@Valid @RequestBody GetCityRequest getCityRequest) {
+    @GetMapping(path = "{cityId}")
+    public ResponseEntity<Object> getCityById(@PathVariable Long cityId) {
         try {
-            City city = cityService.getCity(getCityRequest);
+            City city = cityService.getCity(cityId);
             return Response.create("Found the city", HttpStatus.OK, city);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,10 +58,10 @@ public class CityController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editCity(@Valid @RequestBody EditCityRequest editCityRequest) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{cityId}")
+    public ResponseEntity<Object> editCity(@PathVariable Long cityId, @Valid @RequestBody EditCityRequest editCityRequest) {
         try {
-            City city = cityService.editCity(editCityRequest);
+            City city = cityService.editCity(cityId, editCityRequest);
             return Response.create("City edited successfully", HttpStatus.OK, city);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

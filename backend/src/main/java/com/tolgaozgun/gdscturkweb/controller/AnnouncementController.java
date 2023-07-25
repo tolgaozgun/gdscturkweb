@@ -3,10 +3,8 @@ package com.tolgaozgun.gdscturkweb.controller;
 import com.tolgaozgun.gdscturkweb.dto.AnnouncementDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.CreateAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.announcement.EditAnnouncementRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.announcement.GetAnnouncementRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.model.Announcement;
 import com.tolgaozgun.gdscturkweb.service.AnnouncementService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -47,10 +45,10 @@ public class AnnouncementController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
-    public ResponseEntity<Object> getAnnouncementById(@Valid @RequestBody GetAnnouncementRequest getAnnouncementRequest) {
+    @GetMapping(path = "{id}")
+    public ResponseEntity<Object> getAnnouncementById(@PathVariable Long id) {
         try {
-            AnnouncementDTO announcement = announcementService.getAnnouncementById(getAnnouncementRequest);
+            AnnouncementDTO announcement = announcementService.getAnnouncementById(id);
             return Response.create("Found the announcement", HttpStatus.OK, announcement);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,10 +67,10 @@ public class AnnouncementController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editAnnouncement(@Valid @RequestBody EditAnnouncementRequest editAnnouncementRequest) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{id}")
+    public ResponseEntity<Object> editAnnouncement(@PathVariable Long id, @Valid @RequestBody EditAnnouncementRequest editAnnouncementRequest) {
         try {
-            AnnouncementDTO announcement = announcementService.editAnnouncement(editAnnouncementRequest);
+            AnnouncementDTO announcement = announcementService.editAnnouncement(id, editAnnouncementRequest);
             return Response.create("Announcement edited successfully", HttpStatus.OK, announcement);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

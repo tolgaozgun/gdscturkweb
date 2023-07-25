@@ -10,9 +10,26 @@ import ProviderWrapper from './components/common/other/ProviderWrapper.tsx';
 import MapPage from './pages/MapPage.tsx';
 import UserListPage from './pages/UserListPage.tsx';
 import LoadingPage from './pages/LoadingPage.tsx';
-import PanelDashboardPage from './pages/panel/PanelDashboardPage.tsx';
+import AdminDashboardPage from './pages/panel/admin/AdminDashboardPage.tsx';
 import { ContextMenuProvider } from 'mantine-contextmenu';
-import PanelUserListPage from './pages/panel/PanelUserListPage.tsx';
+import PanelUserListPage from './pages/panel/admin/PanelUserListPage.tsx';
+import { FaqPage } from './pages/faq/FaqPage.tsx';
+import PanelQuestionsListPage from './pages/panel/admin/question/PanelQuestionsListPage.tsx';
+import CampaignPage from './pages/CampaignDisplayPage.tsx';
+import PanelBuddyTeamListPage from './pages/panel/admin/PanelBuddyTeamListPage.tsx';
+import PanelUniversityListPage from './pages/panel/admin/university/PanelUniversityListPage.tsx';
+import PanelCityListPage from './pages/panel/admin/city/PanelCityListPage.tsx';
+import PanelCountryListPage from './pages/panel/admin/country/PanelCountryListPage.tsx';
+import PanelCampaignListPage from './pages/panel/admin/campaign/PanelCampaignListPage.tsx';
+import PanelQuestionCategoriesListPage from './pages/panel/admin/question/PanelQuestionCategoriesListPage.tsx';
+import AddCityPage from './pages/panel/admin/city/AddCityPage.tsx';
+import AddCountryPage from './pages/panel/admin/country/AddCountryPage.tsx';
+import AddUniversityPage from './pages/panel/admin/university/AddUniversityPage.tsx';
+import PanelAddQuestionPage from './pages/panel/admin/question/PanelAddQuestionPage.tsx';
+import MainPage from './pages/MainPage.tsx';
+import NotFoundPage from './pages/NotFoundPage.tsx';
+import LeadDashboardPage from './pages/panel/lead/LeadDashboardPage.tsx';
+import FacilitatorDashboardPage from './pages/panel/facilitator/FacilitatorDashboardPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -24,7 +41,7 @@ const router = createBrowserRouter([
 				children: [
 					{
 						path: '',
-						element: <RegisterPage />,
+						element: <MainPage />,
 					},
 					{
 						path: '/login',
@@ -39,6 +56,10 @@ const router = createBrowserRouter([
 						element: <MapPage />
 					},
 					{
+						path: '/faq',
+						element: <FaqPage />
+					},
+					{
 						path: '/user-list',
 						element: <UserListPage />
 					},
@@ -47,65 +68,205 @@ const router = createBrowserRouter([
 						element: <LoadingPage />
 					},
 					{
-						path: '/panel',
-						element: <PanelDashboardPage />
+						path: '/panel/admin',
+						element: <AdminDashboardPage />
 					},
 					{
-						path: '/panel/dashboard',
-						element: <PanelDashboardPage />
+						path: '/campaign/:campaignId',
+						element: <CampaignPage />
 					},
 					{
-						path: '/panel/users/list',
+						path: '/panel/admin/dashboard',
+						element: <AdminDashboardPage />
+					},
+					{
+						path: '/panel/admin/users/list',
 						element: <PanelUserListPage />
 					},
 					{
-						path: '/panel/users/add',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/users/add',
+						element: <AdminDashboardPage />
 					},
 					{
-						path: '/panel/buddy-teams/list',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/users/verification',
+						element: <AdminDashboardPage />
 					},
 					{
-						path: '/panel/buddy-teams/add',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/buddy-teams/list',
+						element: <PanelBuddyTeamListPage />
 					},
 					{
-						path: '/panel/campaigns/list',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/buddy-teams/add',
+						element: <AdminDashboardPage />
 					},
 					{
-						path: '/panel/campaigns/add',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/campaigns/list',
+						element: <PanelCampaignListPage />
 					},
 					{
-						path: '/panel/universities/list',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/campaigns/add',
+						element: <AdminDashboardPage />
 					},
 					{
-						path: '/panel/universities/add',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/universities/list',
+						element: <PanelUniversityListPage />
 					},
 					{
-						path: '/panel/cities/list',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/universities/add',
+						element: <AddUniversityPage />
 					},
 					{
-						path: '/panel/cities/add',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/cities/list',
+						element: <PanelCityListPage />
 					},
 					{
-						path: '/panel/countries/list',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/cities/add',
+						element: <AddCityPage />
 					},
 					{
-						path: '/panel/countries/add',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/countries/list',
+						element: <PanelCountryListPage />
 					},
 					{
-						path: '/panel/settings',
-						element: <PanelDashboardPage />
+						path: '/panel/admin/countries/add',
+						element: <AddCountryPage />
 					},
+					{
+						path: '/panel/admin/questions/list',
+						element: <PanelQuestionsListPage />
+					},
+					{
+						path: '/panel/admin/questions/add',
+						element: <PanelAddQuestionPage />
+					},
+					{
+						path: '/panel/admin/questions/categories/list',
+						element: <PanelQuestionCategoriesListPage />
+					},
+					{
+						path: '/panel/admin/questions/categories/add',
+						element: <AdminDashboardPage />
+					},
+					{
+						path: '/panel/admin/settings',
+						element: <AdminDashboardPage />
+					},
+					{
+						path: '/panel/facilitator',
+						element: <FacilitatorDashboardPage />
+					},
+					{
+						path: '/panel/facilitator/dashboard',
+						element: <FacilitatorDashboardPage />
+					},
+					{
+						path: '/panel/facilitator/buddy-teams/my',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/buddy-teams/attendance',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/buddy-teams/all',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/campaigns/current',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/campaigns/all',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/universities/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/cities/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/countries/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/questions/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/questions/ask',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/settings',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead',
+						element: <LeadDashboardPage />
+					},
+					{
+						path: '/panel/lead/dashboard',
+						element: <LeadDashboardPage />
+					},
+					{
+						path: '/panel/lead/core-team/my',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/core-team/invite',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/buddy-teams/my',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/buddy-teams/attendance',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/buddy-teams/all',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/campaigns/current',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/campaigns/all',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/universities/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/cities/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/countries/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/questions/list',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/questions/ask',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/lead/settings',
+						element: <NotFoundPage />
+					},
+					{
+						path: '*',
+						element: <NotFoundPage />
+					}
 				],
 			},
 		],

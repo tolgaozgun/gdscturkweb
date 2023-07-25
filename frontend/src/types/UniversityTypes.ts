@@ -11,23 +11,17 @@ export type University = {
 }
 
 export type CreateUniversity = {
+    name: string;
     latitude: number;
     longitude: number;
-    name: string;
-    city: City;
-    country: Country;
+    cityId: number;
+    countryId: number;
 }
 
 export type UpdateUniversity = {
-    universityId: number;
     latitude?: number;
     longitude?: number;
     name?: string;
     city?: City;
     country?: Country;
 }
-
-export type GetUniversity = {
-    universityId: number;
-}
-    

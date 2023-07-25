@@ -2,12 +2,9 @@ package com.tolgaozgun.gdscturkweb.controller;
 
 
 import com.tolgaozgun.gdscturkweb.dto.BuddyTeamDTO;
-import com.tolgaozgun.gdscturkweb.dto.request.BuddyTeamByFacilitatorRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.model.BuddyTeam;
 import com.tolgaozgun.gdscturkweb.service.BuddyTeamService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,11 +45,10 @@ public class BuddyTeamController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-facilitator")
-    public ResponseEntity<Object> getBuddyTeamOfFacilitator(@Valid @RequestBody BuddyTeamByFacilitatorRequest
-                                                                        buddyTeamByFacilitatorRequest) {
+    @GetMapping(path = "by-facilitator/{facilitatorId}")
+    public ResponseEntity<Object> getBuddyTeamOfFacilitator(@PathVariable Long facilitatorId) {
         try {
-            BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamByFacilitator(buddyTeamByFacilitatorRequest);
+            BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamByFacilitator(facilitatorId);
             return Response.create("Gathered the buddy team", HttpStatus.OK, buddyTeam);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

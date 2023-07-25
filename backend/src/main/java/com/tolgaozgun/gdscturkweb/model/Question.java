@@ -17,6 +17,9 @@ public class Question {
     private Long questionId;
 
     @NotNull
+    private String title;
+
+    @NotNull
     private String question;
 
     @Nullable
@@ -27,4 +30,7 @@ public class Question {
 
     @Nullable
     private User answeredBy;
+
+    @NotNull
+    private QuestionCategory category;
 }

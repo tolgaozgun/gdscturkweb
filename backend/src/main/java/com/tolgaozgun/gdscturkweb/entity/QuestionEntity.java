@@ -21,6 +21,9 @@ public class QuestionEntity {
     private Long questionId;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String question;
 
     @Column(nullable = true)
@@ -39,4 +42,8 @@ public class QuestionEntity {
 
     @Column(nullable = true)
     private Date answeredDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_category_id", nullable = false)
+    private QuestionCategoryEntity category;
 }

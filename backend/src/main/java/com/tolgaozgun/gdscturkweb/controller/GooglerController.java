@@ -1,16 +1,11 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
-import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
 import com.tolgaozgun.gdscturkweb.dto.GooglerDTO;
-import com.tolgaozgun.gdscturkweb.dto.request.FindCoreTeamMemberByUniversityRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.service.CoreTeamMemberService;
 import com.tolgaozgun.gdscturkweb.service.GooglerService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

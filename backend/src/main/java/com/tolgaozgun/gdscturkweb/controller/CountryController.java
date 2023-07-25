@@ -1,18 +1,11 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
-import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
-import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.country.CreateCountryRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.country.EditCountryRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.country.GetCountryRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.model.Country;
 import com.tolgaozgun.gdscturkweb.service.CountryService;
-import com.tolgaozgun.gdscturkweb.service.LeadService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,10 +35,10 @@ public class CountryController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
-    public ResponseEntity<Object> getCountryById(@Valid @RequestBody GetCountryRequest getCountryRequest) {
+    @GetMapping( path = "{countryId}")
+    public ResponseEntity<Object> getCountryById(@PathVariable Long countryId) {
         try {
-            Country country = countryService.getCountry(getCountryRequest);
+            Country country = countryService.getCountry(countryId);
             return Response.create("Found the countru", HttpStatus.OK, country);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,10 +58,10 @@ public class CountryController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editCountry(@Valid @RequestBody EditCountryRequest editCountryRequest) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{countryId}")
+    public ResponseEntity<Object> editCountry(@PathVariable Long countryId, @Valid @RequestBody EditCountryRequest editCountryRequest) {
         try {
-            Country country = countryService.editCountry(editCountryRequest);
+            Country country = countryService.editCountry(countryId, editCountryRequest);
             return Response.create("Country edited successfully", HttpStatus.OK, country);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

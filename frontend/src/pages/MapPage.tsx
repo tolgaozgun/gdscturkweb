@@ -9,11 +9,55 @@ import LeadGrid from '../components/grid/LeadGrid';
 import CoreTeamMemberGrid from '../components/grid/CoreTeamMemberGrid';
 import FacilitatorGrid from '../components/grid/FacilitatorGrid';
 import GooglerGrid from '../components/grid/GooglerGrid';
+import useGetLeads from '../hooks/user/useGetLeads';
+import { CoreTeamMemberModel, FacilitatorModel, GooglerModel, LeadModel } from '../types';
+import useGetCoreTeamMembers from '../hooks/user/useGetCoreTeamMembers';
+import useGetFacilitators from '../hooks/user/useGetFacilitators';
+import useGetGooglers from '../hooks/user/useGetGooglers';
 
 
 
 const MapPage = () => {
 	const axiosSecure = useAxiosSecure();
+
+	let {
+		data: leadsData,
+		isLoading: leadsLoading,
+	} = useGetLeads(axiosSecure);
+
+	let leads: LeadModel[] = [];
+	if (leadsData && leadsData?.data){
+		leads = leadsData?.data!
+	}
+	let {
+		data: coreTeamMemberData,
+		isLoading: coreTeamLoading,
+	} = useGetCoreTeamMembers(axiosSecure);
+	
+	let coreTeamMembers : CoreTeamMemberModel[] = [];
+	if (coreTeamMemberData && coreTeamMemberData?.data) {
+		coreTeamMembers = coreTeamMemberData?.data!
+	}
+
+	let {
+		data: facilitatorData,
+		isLoading: facilitatorLoading,
+	} = useGetFacilitators(axiosSecure);
+
+	let facilitators: FacilitatorModel[] = [];
+	if (facilitatorData && facilitatorData?.data) {
+		facilitators = facilitatorData?.data!
+	}
+
+	let {
+		data: googlerData,
+		isLoading: googlerLoading,
+	} = useGetGooglers(axiosSecure);
+
+	let googlers: GooglerModel[] = [];
+	if (googlerData && googlerData?.data) {
+		googlers = googlerData?.data!
+	}
 
 	return (
 		<Center>
@@ -37,20 +81,20 @@ const MapPage = () => {
 					</Tabs.Tab>
 				</Tabs.List>
 				<Tabs.Panel value="lead" pt="xs">
-					<LeadMap axiosSecure={axiosSecure} />
-					<LeadGrid axiosSecure={axiosSecure} />
+					<LeadMap data={leads} isLoading={leadsLoading} />
+					<LeadGrid data={leads} isLoading={leadsLoading} />
 				</Tabs.Panel>
 				<Tabs.Panel value="core-team" pt="xs">
-					<CoreTeamMemberMap axiosSecure={axiosSecure} />
-					<CoreTeamMemberGrid axiosSecure={axiosSecure} />
+					<CoreTeamMemberMap data={coreTeamMembers} isLoading={coreTeamLoading} />
+					<CoreTeamMemberGrid data={coreTeamMembers} isLoading={coreTeamLoading} />
 				</Tabs.Panel>
 				<Tabs.Panel value="facilitator" pt="xs">
-					<FacilitatorMap axiosSecure={axiosSecure} />
-					<FacilitatorGrid axiosSecure={axiosSecure} />
+					<FacilitatorMap data={facilitators} isLoading={facilitatorLoading} />
+					<FacilitatorGrid data={facilitators} isLoading={facilitatorLoading} />
 				</Tabs.Panel>
 				<Tabs.Panel value="googler" pt="xs">
-					<GooglerMap axiosSecure={axiosSecure} />
-					<GooglerGrid axiosSecure={axiosSecure} />
+					<GooglerMap data={googlers} isLoading={googlerLoading} />
+					<GooglerGrid data={googlers} isLoading={googlerLoading} />
 				</Tabs.Panel>
 				<Tabs.Panel value="admin" pt="xs">
 					{/* <AdminMap axiosSecure={axiosSecure} /> */}

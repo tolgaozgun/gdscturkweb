@@ -1,14 +1,9 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
-import com.tolgaozgun.gdscturkweb.dto.request.city.CreateCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.EditCityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.city.GetCityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.university.CreateUniversityRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.university.EditUniversityRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.university.GetUniversityRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
-import com.tolgaozgun.gdscturkweb.model.City;
 import com.tolgaozgun.gdscturkweb.model.University;
 import com.tolgaozgun.gdscturkweb.service.UniversityService;
 import jakarta.validation.Valid;
@@ -41,10 +36,10 @@ public class UniversityController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "by-id")
-    public ResponseEntity<Object> getUniversityById(@Valid @RequestBody GetUniversityRequest getUniversityRequest) {
+    @GetMapping( path = "{universityId}")
+    public ResponseEntity<Object> getUniversityById(@PathVariable Long universityId) {
         try {
-            University university = universityService.getUniversityById(getUniversityRequest);
+            University university = universityService.getUniversityById(universityId);
             return Response.create("Found the university", HttpStatus.OK, university);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -64,10 +59,10 @@ public class UniversityController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit")
-    public ResponseEntity<Object> editCity(@Valid @RequestBody EditUniversityRequest editUniversityRequest) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{universityId}")
+    public ResponseEntity<Object> editCity(@PathVariable Long universityId, @Valid @RequestBody EditUniversityRequest editUniversityRequest) {
         try {
-            University university = universityService.editUniversity(editUniversityRequest);
+            University university = universityService.editUniversity(universityId, editUniversityRequest);
             return Response.create("University edited successfully", HttpStatus.OK, university);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

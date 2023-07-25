@@ -14,13 +14,8 @@ export type CreateTopic = {
 }
 
 export type UpdateTopic = {
-    topicId: number;
     name?: string;
     description?: string;
     iconUrl?: string;
     color?: string;
-}
-
-export type GetTopic = {
-    topicId: number;
 }

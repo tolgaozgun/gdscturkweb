@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EditCityRequest {
 
-    @Id
-    private Long cityId;
-
     @Nullable
     private String name;
 

@@ -1,22 +1,17 @@
 import { Box, SimpleGrid } from '@mantine/core';
-import { AxiosInstance } from 'axios';
 import LoadingPage from '../../pages/LoadingPage';
 import GooglerCard from '../cards/GooglerCard';
-import useGetGooglers from '../../hooks/user/useGetGooglers';
+import { GooglerModel } from '../../types';
 
 interface GooglerGridProps {
-  axiosSecure: AxiosInstance
+  data: GooglerModel[];
+  isLoading: boolean;
 }
 
-const GooglerGrid = ({axiosSecure}: GooglerGridProps) => {
+const GooglerGrid = ({data, isLoading}: GooglerGridProps) => {
 
-	const {
-		data: allGooglers,
-		isLoading: isGooglersLoading,
-		// isError: isLeadsError,
-	} = useGetGooglers(axiosSecure);
 
-	if (isGooglersLoading || !allGooglers) {
+	if (isLoading || !data) {
 		return <LoadingPage />;
 	}
 
@@ -28,7 +23,7 @@ const GooglerGrid = ({axiosSecure}: GooglerGridProps) => {
           { maxWidth: 'sm', cols: 2, spacing: 'sm' },
           { maxWidth: 'xs', cols: 1, spacing: 'sm' },
         ]}>
-            {allGooglers?.data!.map((googler) => 
+            {data.map((googler) => 
                 <Box key={googler.googlerId}>
                     <GooglerCard key={googler.googlerId} googler={googler} padding='xl' />
                 </Box>

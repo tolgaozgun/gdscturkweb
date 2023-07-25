@@ -20,7 +20,6 @@ export type CreateAnnouncement = {
 }
 
 export type EditAnnouncement = {
-    announcementId: number;
     title?: string;
     description?: string;
     startDate?: Date;
@@ -29,6 +28,3 @@ export type EditAnnouncement = {
     permittedUserTypes?: Array<UserType>;
 }
 
-export type GetAnnouncement = {
-    announcementId: number;
-}

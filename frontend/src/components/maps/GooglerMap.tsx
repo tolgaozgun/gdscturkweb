@@ -1,25 +1,20 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import 'leaflet/dist/leaflet.css';
 import './Map.css'
-import { AxiosInstance } from "axios";
 import LoadingPage from "../../pages/LoadingPage";
-import useGetGooglers from "../../hooks/user/useGetGooglers";
 import GooglerCard from "../cards/GooglerCard";
+import { GooglerModel } from "../../types";
 
 
 interface GooglerMapProps {
-  axiosSecure: AxiosInstance
+  data: GooglerModel[];
+  isLoading: boolean;
 }
 
-const GooglerMap = ({axiosSecure}: GooglerMapProps) => {
+const GooglerMap = ({data, isLoading}: GooglerMapProps) => {
 
-	const {
-		data: allGooglers,
-		isLoading: isGooglersLoading,
-		// isError: isLeadsError,
-	} = useGetGooglers(axiosSecure);
 
-  if (isGooglersLoading || !allGooglers) {
+  if (isLoading || !data) {
     return <LoadingPage/>
   }
 
@@ -29,7 +24,7 @@ const GooglerMap = ({axiosSecure}: GooglerMapProps) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-        {allGooglers?.data?.map((googler) => {
+        {data.map((googler) => {
           return (
             <Marker key={googler.googlerId} position={[googler.city.latitude, googler.city.longitude]}>
               <Popup>
