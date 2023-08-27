@@ -4,6 +4,7 @@ import './Map.css'
 import LoadingPage from "../../pages/LoadingPage";
 import LeadCard from "../cards/LeadCard";
 import { LeadModel } from "../../types";
+import UserCard from "../cards/UserCard";
 
 
 interface LeadMapProps {
@@ -28,7 +29,8 @@ const LeadMap = ({data, isLoading}: LeadMapProps) => {
           return (
             <Marker key={lead.leadId} position={[lead.university.latitude, lead.university.longitude]}>
               <Popup>
-                <LeadCard key={lead.leadId} padding="none" lead={lead} />
+                <UserCard key={lead.leadId} lead={lead} />
+                {/* <LeadCard key={lead.leadId} padding="none" lead={lead} isUsedInMap={true} /> */}
               </Popup>
             </Marker>
           );

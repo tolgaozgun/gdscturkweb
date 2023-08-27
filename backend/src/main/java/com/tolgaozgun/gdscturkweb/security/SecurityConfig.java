@@ -29,7 +29,7 @@ public class SecurityConfig {
 			"/api/v1/auth/login",
 			"/api/v1/auth/register",
 			"/api/v1/auth/register/lead",
-			"/api/v1/auth/register/core_team",
+			"/api/v1/auth/register/core-team",
 			"/api/v1/auth/register/facilitator",
 			"/api/v1/auth/register/googler",
 			"/api/v1/auth/register/admin",

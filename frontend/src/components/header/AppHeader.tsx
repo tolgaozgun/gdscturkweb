@@ -110,6 +110,11 @@ export function AppHeader({ user, tabs }: SecondHeaderProps) {
     navigate(link);
   }
 
+  const handleHomePageRedirect = () => {
+    navigate("/");
+  }
+
+
   const isLoggedIn = true;
 
   const items = tabs.map((tab) => (
@@ -122,7 +127,8 @@ export function AppHeader({ user, tabs }: SecondHeaderProps) {
     <div className={classes.header}>
       <Container className={classes.mainSection}>
         <Group position="apart">
-          <Image src={GDSCLogo} height={28} width={60} />
+          
+          <Image src={GDSCLogo} onClick={handleHomePageRedirect} height={28} width={60} />
 
           { isLoggedIn && 
           <>

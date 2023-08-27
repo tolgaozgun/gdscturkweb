@@ -2,6 +2,7 @@ import { Navbar, Group, Code, ScrollArea, createStyles, rem, MediaQuery, Image }
 import { LinksGroup } from './NavbarLinksGroup';
 import Logo from '../../../assets/gdsc-logo.png';
 import UserMenuItem from '../../UserMenuItem';
+import { useNavigate } from 'react-router';
 
 
 
@@ -48,7 +49,12 @@ interface PanelNavbarProps {
 ;
 export function PanelNavbar({panelName, panelData}: PanelNavbarProps) {
   const { classes } = useStyles();
+  const navigate = useNavigate();
   const links = panelData.map((item) => <LinksGroup {...item} key={item.label} />);
+
+  const handleHomePageRedirect = () => {
+    navigate('/');
+  }
 
   return (
     <>
@@ -56,7 +62,7 @@ export function PanelNavbar({panelName, panelData}: PanelNavbarProps) {
             <Navbar width={{ sm: 300 }} p="md" className={classes.navbar}>
                 <Navbar.Section className={classes.header}>
                     <Group position="apart">
-                      <Image width={rem(80)} src={Logo} />
+                      <Image width={rem(80)} src={Logo} onClick={handleHomePageRedirect} />
                       <Code sx={{ fontWeight: 700 }}>{panelName}</Code>
                     </Group>
                 </Navbar.Section>

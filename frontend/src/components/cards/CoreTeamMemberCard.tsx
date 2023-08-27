@@ -15,6 +15,8 @@ const CoreTeamMemberCard = ({coreTeamMember, padding}: CoreTeamMemberCardProps) 
         // Navigate to Core Team Member profile
     }
 
+    console.log(coreTeamMember);
+
     return (
         <Card
           miw={300}

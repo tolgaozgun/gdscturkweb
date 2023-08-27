@@ -3,10 +3,18 @@ package com.tolgaozgun.gdscturkweb.service;
 
 import com.tolgaozgun.gdscturkweb.dto.BuddyTeamDTO;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
+import com.tolgaozgun.gdscturkweb.exception.BuddyTeamNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.FacilitatorNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.LeadNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.BuddyTeamMapper;
+import com.tolgaozgun.gdscturkweb.model.user.Lead;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
+import com.tolgaozgun.gdscturkweb.repository.user.FacilitatorRepository;
+import com.tolgaozgun.gdscturkweb.repository.user.LeadRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -23,6 +31,8 @@ public class BuddyTeamService {
     private final BuddyTeamRepository buddyTeamRepository;
     private final UserRepository userRepository;
     private final BuddyTeamMapper buddyTeamMapper;
+    private final FacilitatorRepository facilitatorRepository;
+    private final LeadRepository leadRepository;
 
     public List<BuddyTeamDTO> getAllBuddyTeams() {
         try {
@@ -48,8 +58,16 @@ public class BuddyTeamService {
 
             UserEntity userEntity = optionalUserEntity.get();
 
-            BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByLeadsContains(userEntity).orElseThrow(()
-                    -> new UserNotFoundException("Error while getting user details"));
+            Optional<LeadEntity> optionalLeadEntity = leadRepository.findByUser(userEntity);
+
+            if (optionalLeadEntity.isEmpty()) {
+                throw new LeadNotFoundException();
+            }
+
+            LeadEntity leadEntity = optionalLeadEntity.get();
+
+            BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByLeadsContains(leadEntity)
+                    .orElseThrow(BuddyTeamNotFoundException::new);
 
             return buddyTeamMapper.toDTO(buddyTeamEntity);
         } catch (Exception ex) {
@@ -68,8 +86,16 @@ public class BuddyTeamService {
 
             UserEntity userEntity = optionalUserEntity.get();
 
-            BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByFacilitator(userEntity).orElseThrow(()
-                    -> new UserNotFoundException("Error while getting user details"));
+            Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findByUser(userEntity);
+
+            if (optionalFacilitatorEntity.isEmpty()) {
+                throw new FacilitatorNotFoundException();
+            }
+
+            FacilitatorEntity facilitatorEntity = optionalFacilitatorEntity.get();
+
+            BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByFacilitator(facilitatorEntity)
+                    .orElseThrow(BuddyTeamNotFoundException::new);
 
             return buddyTeamMapper.toDTO(buddyTeamEntity);
         } catch (Exception ex) {

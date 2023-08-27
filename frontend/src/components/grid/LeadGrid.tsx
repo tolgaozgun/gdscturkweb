@@ -2,6 +2,7 @@ import { Box, SimpleGrid } from '@mantine/core';
 import LoadingPage from '../../pages/LoadingPage';
 import LeadCard from '../cards/LeadCard';
 import { LeadModel } from '../../types';
+import UserCard from '../cards/UserCard';
 
 interface LeadTableProps {
   data: LeadModel[];
@@ -25,7 +26,8 @@ const LeadGrid = ({data, isLoading}: LeadTableProps) => {
         ]}>
             {data.map((lead) => 
                 <Box key={lead.leadId}>
-                    <LeadCard key={lead.leadId} lead={lead} padding='xl' />
+                  <UserCard key={lead.leadId} lead={lead}/>
+                    {/* <LeadCard key={lead.leadId} lead={lead} padding='xl' /> */}
                 </Box>
             )}
         </SimpleGrid>

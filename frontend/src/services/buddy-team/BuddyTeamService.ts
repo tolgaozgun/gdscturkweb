@@ -7,3 +7,8 @@ export async function getAllBuddyTeams(axiosSecure: AxiosInstance) {
 	const res = await axiosSecure.get<Response<Array<BuddyTeam>>>(`${baseUrl}/buddy-teams`);
 	return res.data;
 }
+
+export async function getBuddyTeamByCurrentLead(axiosSecure: AxiosInstance) {
+	const res = await axiosSecure.get<Response<BuddyTeam>>(`${baseUrl}/buddy-teams/by-lead`);
+	return res.data;
+}

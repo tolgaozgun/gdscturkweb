@@ -14,7 +14,7 @@ const MainPage = () => {
         < >
             <HeroComponent 
                 bg={HeroBg}
-                title="Google Developer Students Club Türkiye"
+                title="Google Developer Student Clubs Türkiye"
                 description="Google Developer Student Clubs are university based community groups for students interested in Google developer technologies. Students from all undergraduate or graduate programs with an interest in growing as a developer are welcome. By joining a GDSC, students grow their knowledge in a peer-to-peer learning environment and build solutions for local businesses and their community."
                 buttons={["Sign In", "Learn More"]}
             />
@@ -26,7 +26,7 @@ const MainPage = () => {
                             Universities
                         </Title>
                         <Text size={20} mb={20}>
-                            Explore the universities that have Google Developer Student Clubs
+                            Explore the universities that have Google Developer Student Clubs in Türkiye.
                         </Text>
                     </Stack>
                 </Center>

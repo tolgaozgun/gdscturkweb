@@ -34,7 +34,7 @@ public class BuddyTeamController {
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "by-me")
+    @GetMapping(path = "by-lead")
     public ResponseEntity<Object> getBuddyTeamOfCurrentUser() {
         try {
             BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamByCurrentUser();

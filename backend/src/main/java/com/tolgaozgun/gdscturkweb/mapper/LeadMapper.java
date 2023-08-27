@@ -8,6 +8,7 @@ import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.model.BuddyTeam;
 import com.tolgaozgun.gdscturkweb.model.University;
 import com.tolgaozgun.gdscturkweb.model.user.Lead;
+import com.tolgaozgun.gdscturkweb.model.user.User;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,23 @@ public class LeadMapper {
         }
 
         return new LeadDTO(userDTO, university, buddyTeam, leadEntity.getLeadId());
+    }
+
+    public Lead toModel(LeadEntity leadEntity) {
+        User user = userMapper.toModel(leadEntity.getUser());
+        UniversityEntity universityEntity = leadEntity.getUniversity();
+        University university = universityMapper.toModel(universityEntity);
+        BuddyTeamEntity buddyTeamEntity = leadEntity.getBuddyTeam();
+        BuddyTeam buddyTeam = null;
+        if (buddyTeamEntity != null) {
+            buddyTeam = buddyTeamMapper.toModel(buddyTeamEntity);
+        }
+        Lead lead = new Lead();
+        lead.setLeadId(leadEntity.getLeadId());
+        lead.setUser(user);
+        lead.setUniversity(university);
+        lead.setBuddyTeam(buddyTeam);
+        return lead;
     }
 
     public List<LeadDTO> toDTO(List<LeadEntity> leadEntities) {
