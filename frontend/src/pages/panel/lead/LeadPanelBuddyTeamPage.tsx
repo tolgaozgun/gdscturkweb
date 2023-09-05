@@ -8,7 +8,7 @@ import LeadGrid from '../../../components/grid/LeadGrid';
 import FacilitatorGrid from '../../../components/grid/FacilitatorGrid';
 import { FacilitatorModel, LeadModel } from '../../../types';
 import { PageContainer } from '../../../components/PageContainer';
-import useGetBuddyTeamByCurrentUser from '../../../hooks/buddy-team/useGetBuddyTeamByCurrentUser';
+import useGetBuddyTeamByCurrentLead from '../../../hooks/buddy-team/useGetBuddyTeamByCurrentUser';
 import { BuddyTeam } from '../../../types/BuddyTeamTypes';
 
 
@@ -32,7 +32,7 @@ const LeadPanelBuddyTeamPage = () => {
 	let {
 		data: buddyTeamData,
 		isLoading: buddyTeamLoading,
-	} = useGetBuddyTeamByCurrentUser(axiosSecure);
+	} = useGetBuddyTeamByCurrentLead(axiosSecure);
 
 	let buddyTeam: BuddyTeam = {} as BuddyTeam;
 	if (buddyTeamData && buddyTeamData?.data){

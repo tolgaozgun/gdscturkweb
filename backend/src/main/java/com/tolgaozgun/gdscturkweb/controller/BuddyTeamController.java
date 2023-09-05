@@ -45,10 +45,10 @@ public class BuddyTeamController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "by-facilitator/{facilitatorId}")
-    public ResponseEntity<Object> getBuddyTeamOfFacilitator(@PathVariable Long facilitatorId) {
+    @GetMapping(path = "by-facilitator")
+    public ResponseEntity<Object> getBuddyTeamOfFacilitator() {
         try {
-            BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamByFacilitator(facilitatorId);
+            BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamByFacilitator();
             return Response.create("Gathered the buddy team", HttpStatus.OK, buddyTeam);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

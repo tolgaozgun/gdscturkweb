@@ -27,12 +27,12 @@ export type LeadAttendance = {
 export type CreateAttendance = {
     buddyTeamId: number;
     attendanceDate: Date;
-    attendanceStatusMap: Map<LeadModel, boolean>;
+    attendanceStatusMap: Map<number, boolean>;
 }
 
 export type EditAttendance = {
     buddyTeamId?: number;
     attendanceDate?: Date;
-    attendanceStatusMap?: Map<LeadModel, boolean>;
+    attendanceStatusMap?: Map<number, boolean>;
 }
 

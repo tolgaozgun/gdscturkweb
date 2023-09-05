@@ -12,3 +12,8 @@ export async function getBuddyTeamByCurrentLead(axiosSecure: AxiosInstance) {
 	const res = await axiosSecure.get<Response<BuddyTeam>>(`${baseUrl}/buddy-teams/by-lead`);
 	return res.data;
 }
+
+export async function getBuddyTeamByCurrentFacilitator(axiosSecure: AxiosInstance) {
+	const res = await axiosSecure.get<Response<BuddyTeam>>(`${baseUrl}/buddy-teams/by-facilitator`);
+	return res.data;
+}

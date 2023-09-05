@@ -76,9 +76,14 @@ public class BuddyTeamService {
         }
     }
 
-    public BuddyTeamDTO getBuddyTeamByFacilitator(Long facilitatorId) {
+    public BuddyTeamDTO getBuddyTeamByFacilitator() {
         try {
-            Optional<UserEntity> optionalUserEntity = userRepository.findById(facilitatorId);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            String userName = authentication.getName();
+
+            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
 
             if (optionalUserEntity.isEmpty()) {
                 throw new UserNotFoundException("Error while getting user details");

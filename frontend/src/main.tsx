@@ -31,7 +31,8 @@ import NotFoundPage from './pages/NotFoundPage.tsx';
 import LeadDashboardPage from './pages/panel/lead/LeadDashboardPage.tsx';
 import FacilitatorDashboardPage from './pages/panel/facilitator/FacilitatorDashboardPage.tsx';
 import LeadPanelAttendancePage from './pages/panel/lead/LeadPanelAttendancePage.tsx';
-import FacilitatorPanelAttendancePage from './pages/panel/facilitator/FacilitatorPanelAttendancePage.tsx';
+import FacilitatorPanelAttendancePage from './pages/panel/facilitator/buddy-team/FacilitatorPanelAttendancePage.tsx';
+import AddAttendancePage from './pages/panel/facilitator/buddy-team/AddAttendancePage.tsx';
 
 
 const router = createBrowserRouter([
@@ -168,6 +169,10 @@ const router = createBrowserRouter([
 					{
 						path: '/panel/facilitator/buddy-teams/attendance',
 						element: <FacilitatorPanelAttendancePage />
+					},
+					{
+						path: '/panel/facilitator/buddy-teams/attendance/add',
+						element: <AddAttendancePage />
 					},
 					{
 						path: '/panel/facilitator/buddy-teams/all',

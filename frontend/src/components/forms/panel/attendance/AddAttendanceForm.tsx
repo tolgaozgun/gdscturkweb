@@ -6,6 +6,7 @@ import {
 	NumberInput,
 	Select,
 	SelectItem,
+	Table,
 	Text,
 	TextInput,
 	Title,
@@ -15,7 +16,7 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconFlag } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { Country } from '../../../../types/CountryTypes';
 import { AddCity } from '../../../../types/CityTypes';
 import { createCity } from '../../../../services/city/CItyService';
@@ -24,96 +25,86 @@ import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import LoadingPage from '../../../../pages/LoadingPage';
 import { isErrorResponse } from '../../../../utils/utils';
 import CustomElevatedButton from '../../../buttons/CustomElevatedButton';
+import useGetBuddyTeamByCurrentLead from '../../../../hooks/buddy-team/useGetBuddyTeamByCurrentUser';
+import useGetBuddyTeamByCurrentFacilitator from '../../../../hooks/buddy-team/useGetBuddyTeamByCurrentFacilitator';
+import { BuddyTeam } from '../../../../types/BuddyTeamTypes';
+import { AttendanceStatus, CreateAttendance } from '../../../../types/AttendaceTypes';
+import { createAttendance } from '../../../../services/attendance/AttendanceService';
+import { DateInput, DatePickerInput } from '@mantine/dates';
+import { MRT_ColumnDef, MantineReactTable, useMantineReactTable } from 'mantine-react-table';
+import { LeadModel } from '../../../../types';
+import BaseTable from '../../../table/BaseTable';
+
+export type TableAttendance = {
+	lead: LeadModel;
+	attendanceStatus: boolean;
+};
 
 interface AddAttendanceFormProps {
 	padding?: number;
 	mt?: number;
 }
 
-interface CountrySelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
-	name: string;
-	countryId: number;
-	label: string;
-	flag: string;
-}
-
-const CustomCountrySelectItem = forwardRef<HTMLDivElement, CountrySelectItemProps>(
-	({ name, countryId, flag, ...others }: CountrySelectItemProps, ref) => (
-		<div ref={ref} {...others}>
-			<Group noWrap>
-				<IconFlag />
-				{/* {vehicleType === 'PLANE' ? <IconPlane /> : <IconBus />} */}
-				<div>
-					<Text size="sm">{name}</Text>
-				</div>
-			</Group>
-		</div>
-	),
-);
-
-const AddCityForm = ({padding, mt}: AddAttendanceFormProps) => {
+const AddAttendanceForm = ({padding, mt}: AddAttendanceFormProps) => {
 	const axiosSecure = useAxiosSecure();
 
 	const form = useForm({
 		initialValues: {
-			name: "",
-			countryId: 0,
-			latitude: 0,
-			longitude: 0,
+			buddyTeamId: 0,
+			attendanceDate: new Date(),
+			// attendanceStatusMap: {},
 		},
 		validate: {
-			name: (value) => (value.length > 0 ? null : 'Name is required'),
-			countryId: (value) => (value > 0 ? null : 'Country must be selected'),
-			latitude: (value) => (value > 0 ? null : 'Latitude must be greater than 0'),
-			longitude: (value) => (value > 0 ? null : 'Longitude must be greater than 0'),
+			buddyTeamId: (value) => (value > 0 ? null : 'Buddy team must be selected'),
+			attendanceDate: (value) => (value ? null : 'Attendance date is required'),
+			// attendanceStatusMap: (value) => (value ? null : 'Attendance status is required'),
 		},
 	});
 	const {
-		data: allCountries,
-		isLoading: isCountriesLoading,
-		isError: isCountriesError,
-	} = useGetCountries(axiosSecure);
+		data: buddyTeamData,
+		isLoading: isBuddyTeamLoading,
+		isError: isBuddyTeamError,
+	} = useGetBuddyTeamByCurrentFacilitator(axiosSecure);
 
-	const { mutateAsync: addCity } = useMutation({
-		mutationKey: ['addCity'],
-		mutationFn: (addCity: AddCity) => createCity(axiosSecure, addCity),
-		onError: (error: any) =>
-			notifications.show({
-				id: 'fare-create-fail',
-				title: 'Create Fare failed!',
-				message: error.response ? error.response.data.msg : 'Something went wrong',
-				autoClose: 5000,
-				withCloseButton: true,
-				style: { backgroundColor: 'red' },
-				styles: (theme) => ({
-					title: { color: theme.white },
-					description: { color: theme.white }
-				})
-			}),
+	// const { mutateAsync: addAttendance } = useMutation({
+	// 	mutationKey: ['addAttendance'],
+	// 	mutationFn: (addAttendance: CreateAttendance) => createAttendance(axiosSecure, addAttendance),
+	// 	onError: (error: any) =>
+	// 		notifications.show({
+	// 			id: 'attendance-create-fail',
+	// 			title: 'Create Attendance failed!',
+	// 			message: error.response ? error.response.data.msg : 'Something went wrong',
+	// 			autoClose: 5000,
+	// 			withCloseButton: true,
+	// 			style: { backgroundColor: 'red' },
+	// 			styles: (theme) => ({
+	// 				title: { color: theme.white },
+	// 				description: { color: theme.white }
+	// 			})
+	// 		}),
+	// });
+
+
+	const buddyTeam: BuddyTeam = buddyTeamData?.data!;
+	console.log(buddyTeam)
+	// const countryData: Array<SelectItem> = buddyTeam.leads
+	// 	.map((lead) => {
+	// 		console.log(lead);
+	// 		return {
+	// 			name: lead.user.name + ' ' + lead.user.surname,
+	// 			leadId: lead.leadId,
+	// 			imag3: lead.user.profileImage,
+	// 			value: String(lead.leadId),
+	// 			label: lead.user.name + ' ' + lead.user.surname,
+	// 		};
+	// 	});
+	// console.log(countryData);
+	const tableData: TableAttendance[] = buddyTeam?.leads?.map((lead) => {
+		return {
+			lead: lead,
+			attendanceStatus: false,
+		};
 	});
-
-	if (isCountriesLoading || !allCountries) {
-		return <LoadingPage />;
-	}
-	if (isCountriesError) {
-		return <div>Error</div>;
-	}
-
-
-	const countryList: Array<Country> = allCountries?.data!;
-	console.log(countryList)
-	const countryData: Array<SelectItem> = countryList!
-		.map((country) => {
-			console.log(country);
-			return {
-				name: country.name,
-				countryId: country.countryId,
-				flag: country.flagImage,
-				value: String(country.countryId),
-				label: country.name,
-			};
-		});
-	console.log(countryData);
 
 	const handleAddCity = async () => {
 		console.log(form.values);
@@ -122,66 +113,102 @@ const AddCityForm = ({padding, mt}: AddAttendanceFormProps) => {
 			return;
 		}
 
-		const cityDetails: AddCity = {
-			name: form.values.name,
-			countryId: form.values.countryId,
-			latitude: form.values.latitude,
-			longitude: form.values.longitude,
-		};
-		const res = await addCity(cityDetails);
-		if (isErrorResponse(res)) {
-			notifications.show({
-				message: res?.msg || "Something went wrong. Couldn't add the city",
-				color: 'red',
-			});
-		} else {
-			notifications.show({
-				message: 'City added successfully.',
-				color: 'green',
-			});
-		}
+		// const attendanceDetails: CreateAttendance = {
+		// 	buddyTeamId: buddyTeamData.data!.buddyTeamId,
+		// 	attendanceDate: form.values.attendanceDate,
+		// 	attendanceStatusMap: 
+		// 	// attendanceStatusMap: form.values.attendanceStatusMap,
+		// };
+		// const res = await addAttendance(attendanceDetails);
+		// if (isErrorResponse(res)) {
+		// 	notifications.show({
+		// 		message: res?.msg || "Something went wrong. Couldn't add the attendance",
+		// 		color: 'red',
+		// 	});
+		// } else {
+		// 	notifications.show({
+		// 		message: 'Attendance added successfully.',
+		// 		color: 'green',
+		// 	});
+		// }
 	};
+
+	const columns = useMemo<MRT_ColumnDef<TableAttendance>[]>(
+	  () => [
+		{
+		  accessorKey: 'lead.user.name', //access nested data with dot notation
+		  header: 'First Name',
+		  enableEditing: false,
+		},
+		{
+		  accessorKey: 'lead.user.surname',
+		  header: 'Last Name',
+		  enableEditing: false,
+		},
+		{
+		  accessorKey: 'attendanceStatus',
+		  header: 'Attendance Status',
+		  enableEditing: true,
+		},
+	  ],
+	  [],
+	);
+
+
+	if (isBuddyTeamLoading || !buddyTeamData) {
+		return <LoadingPage />;
+	}
+	if (isBuddyTeamError) {
+		return <div>Error</div>;
+	}
+
 
 	return (
 		<Flex direction={'column'} gap={'xl'} p={padding} mt={mt}>
 			<form>
 				<Flex direction={'column'} gap={'xl'}>
-					<TextInput
+					<DatePickerInput
 						withAsterisk
-						label="Name"
-						{...form.getInputProps('name')}
+						label="Attendance Date"
+						{...form.getInputProps('attendanceDate')}
 					/>
-					<Select
-						label="Country"
-						placeholder="Pick one"
-						itemComponent={CustomCountrySelectItem}
-						data={countryData}
-						searchable
-						withAsterisk
-						{...form.getInputProps('countryId')}
+					<BaseTable 
+					  data={tableData} 
+					  columns={columns}
+					  enableEditing={true}
 					/>
-					<NumberInput
-						withAsterisk
-						label="Latitude"
-						precision={6}
-						{...form.getInputProps('latitude')}
-					/>
-					<NumberInput
+					{/* <Table>
+						<tr>
+							<td align="center">Lead</td>
+							<td align="center">Attendance Status</td>
+						</tr>
+							{buddyTeam.leads.map((lead) => (
+								<tr>
+									<td align="center">
+										<img src={lead.user.profileImage} height="50" width="50" />
+									</td>
+									<td align="center">
+
+									</td>
+								</tr>
+								
+					</Table>
+					{/* <NumberInput
 						withAsterisk
 						label="Longitude"
 						precision={6}
 						{...form.getInputProps('longitude')}
-					/>
+					/> */}
 				</Flex>
 			</form>
 			<Affix position={{ bottom: rem(20), right: rem(20) }}>	
 				<Flex gap="md">
 					<CustomElevatedButton text={'Cancel'} color="red" />
-					<CustomElevatedButton text={'Add City'} onClick={handleAddCity} />
+					<CustomElevatedButton text={'Add Attendance'} onClick={handleAddCity} />
 				</Flex>		
 			</Affix>
 		</Flex>
 	);
 };
 
-export default AddCityForm;
+export default AddAttendanceForm;
