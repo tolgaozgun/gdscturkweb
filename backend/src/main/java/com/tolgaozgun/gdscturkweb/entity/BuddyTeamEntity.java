@@ -24,6 +24,7 @@ public class BuddyTeamEntity {
     @JoinColumn(name = "facilitator_id", nullable = false)
     private FacilitatorEntity facilitator;
 
-    @OneToMany(mappedBy = "buddyTeam", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "buddy_team_id", referencedColumnName = "buddy_team_id")
     private List<LeadEntity> leads;
 }

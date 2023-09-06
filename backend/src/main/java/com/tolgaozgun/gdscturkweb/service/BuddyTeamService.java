@@ -2,6 +2,7 @@ package com.tolgaozgun.gdscturkweb.service;
 
 
 import com.tolgaozgun.gdscturkweb.dto.BuddyTeamDTO;
+import com.tolgaozgun.gdscturkweb.dto.request.buddyTeam.UpdateBuddyTeamRequest;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
@@ -11,7 +12,6 @@ import com.tolgaozgun.gdscturkweb.exception.FacilitatorNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.LeadNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.BuddyTeamMapper;
-import com.tolgaozgun.gdscturkweb.model.user.Lead;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.FacilitatorRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.LeadRepository;
@@ -43,7 +43,79 @@ public class BuddyTeamService {
         }
     }
 
-    public BuddyTeamDTO getBuddyTeamByCurrentUser() {
+    public BuddyTeamDTO updateBuddyTeamByLead(UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+        try {
+            BuddyTeamEntity buddyTeamEntity = getBuddyTeamEntityByCurrentUser();
+            return updateBuddyTeamByEntity(buddyTeamEntity, updateBuddyTeamRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public BuddyTeamDTO updateBuddyTeamByFacilitator(UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+        try {
+            BuddyTeamEntity buddyTeamEntity = getBuddyTeamEntityByFacilitator();
+            return updateBuddyTeamByEntity(buddyTeamEntity, updateBuddyTeamRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    public BuddyTeamDTO updateBuddyTeamByEntity(BuddyTeamEntity buddyTeamEntity, UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+        try {
+
+            if (updateBuddyTeamRequest.getFacilitatorId() != null) {
+                System.out.println("Facilitator id is not null");
+                Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findById(updateBuddyTeamRequest.getFacilitatorId());
+
+                if (optionalFacilitatorEntity.isEmpty()) {
+                    throw new FacilitatorNotFoundException();
+                }
+
+                FacilitatorEntity facilitatorEntity = optionalFacilitatorEntity.get();
+
+                buddyTeamEntity.setFacilitator(facilitatorEntity);
+            }
+
+            if (updateBuddyTeamRequest.getLeadIds() != null && !updateBuddyTeamRequest.getLeadIds().isEmpty()) {
+                System.out.println("Lead ids are not null");
+                List<LeadEntity> leadEntities = leadRepository.findAllById(updateBuddyTeamRequest.getLeadIds());
+
+                if (leadEntities.size() != updateBuddyTeamRequest.getLeadIds().size()) {
+                    throw new LeadNotFoundException();
+                }
+
+
+                buddyTeamEntity.setLeads(leadEntities);
+            }
+
+            buddyTeamRepository.save(buddyTeamEntity);
+
+            return buddyTeamMapper.toDTO(buddyTeamEntity);
+        } catch (Exception e) {
+            e.printStackTrace();;
+            throw e;
+        }
+    }
+
+    public BuddyTeamDTO updateBuddyTeamById(Long buddyTeamId, UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+        try {
+            Optional<BuddyTeamEntity> optionalBuddyTeamEntity = buddyTeamRepository.findById(buddyTeamId);
+
+            if (optionalBuddyTeamEntity.isEmpty()) {
+                throw new BuddyTeamNotFoundException();
+            }
+
+            BuddyTeamEntity buddyTeamEntity = optionalBuddyTeamEntity.get();
+            return updateBuddyTeamByEntity(buddyTeamEntity, updateBuddyTeamRequest);
+        } catch (Exception e) {
+            e.printStackTrace();;
+            throw e;
+        }
+    }
+
+    public BuddyTeamEntity getBuddyTeamEntityByCurrentUser() {
         try {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -66,8 +138,17 @@ public class BuddyTeamService {
 
             LeadEntity leadEntity = optionalLeadEntity.get();
 
-            BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByLeadsContains(leadEntity)
+            return buddyTeamRepository.findByLeadsContains(leadEntity)
                     .orElseThrow(BuddyTeamNotFoundException::new);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public BuddyTeamDTO getBuddyTeamDTOByCurrentUser() {
+        try {
+            BuddyTeamEntity buddyTeamEntity = getBuddyTeamEntityByCurrentUser();
 
             return buddyTeamMapper.toDTO(buddyTeamEntity);
         } catch (Exception ex) {
@@ -76,7 +157,8 @@ public class BuddyTeamService {
         }
     }
 
-    public BuddyTeamDTO getBuddyTeamByFacilitator() {
+
+    public BuddyTeamEntity getBuddyTeamEntityByFacilitator() {
         try {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -99,8 +181,18 @@ public class BuddyTeamService {
 
             FacilitatorEntity facilitatorEntity = optionalFacilitatorEntity.get();
 
-            BuddyTeamEntity buddyTeamEntity = buddyTeamRepository.findByFacilitator(facilitatorEntity)
+            return buddyTeamRepository.findByFacilitator(facilitatorEntity)
                     .orElseThrow(BuddyTeamNotFoundException::new);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+
+    }
+
+    public BuddyTeamDTO getBuddyTeamDTOByFacilitator() {
+        try {
+            BuddyTeamEntity buddyTeamEntity = getBuddyTeamEntityByFacilitator();
 
             return buddyTeamMapper.toDTO(buddyTeamEntity);
         } catch (Exception ex) {

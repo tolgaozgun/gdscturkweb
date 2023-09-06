@@ -1,5 +1,6 @@
 package com.tolgaozgun.gdscturkweb.repository.user;
 
+import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import lombok.NonNull;
@@ -15,6 +16,8 @@ public interface LeadRepository extends JpaRepository<LeadEntity, Long> {
     Optional<LeadEntity> findById(@NonNull Long leadId);
 
     boolean existsById(@NonNull Long leadId);
+
+    boolean existsLeadEntityByUniversity(@NonNull UniversityEntity universityEntity);
 
     Optional<LeadEntity> findByUser(@NonNull UserEntity user);
 

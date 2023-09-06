@@ -1,9 +1,7 @@
 import {
 	Affix,
-	Card,
 	Flex,
 	TextInput,
-	Title,
 	rem,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';

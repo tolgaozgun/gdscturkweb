@@ -1,44 +1,17 @@
 version: "3.9"
 services:
-  db:
-    image: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - /var/lib/postgresql/data
+  mysql:
+    image: mysql
+    container_name: mysql_db
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    networks:
-      - container_network
-    env_file:
-      - .env
-  backend:
-    image: erasmust_backend
-    build: ./backend
-    volumes:
-      - /backend
-      - /uploads
+      MYSQL_ROOT_PASSWORD: gdscturk
+      MYSQL_DATABASE: gdscturk
+      MYSQL_USER: gdscturk
+      MYSQL_PASSWORD: gdscturk
     ports:
-      - "8080:8080"
-    environment:
-      - POSTGRES_NAME: ${POSTGRES_DB}
-      - POSTGRES_USER: ${POSTGRES_USER}
-      - POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    depends_on:
-      - db
-  frontend:
-    image: erasmust_frontend
-    build: ./frontend
+      - "3306:3306"
     volumes:
-      - /frontend
-    ports:
-      - "5173:5173"
-    environment:
-      - BACKEND_URL: ${BACKEND_URL}
-    depends_on:
-      - db
+      - /var/lib/mysql
 networks:
   container_network:
     driver: bridge

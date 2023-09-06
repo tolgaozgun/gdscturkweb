@@ -6,3 +6,8 @@ export type BuddyTeam = {
 	facilitator: FacilitatorModel;
 	leads: Array<LeadModel>;
 }
+
+export type EditBuddyTeam = {
+	facilitator?: number;
+	leads?: Array<number>;
+}

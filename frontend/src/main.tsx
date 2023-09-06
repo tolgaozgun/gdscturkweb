@@ -33,6 +33,7 @@ import FacilitatorDashboardPage from './pages/panel/facilitator/FacilitatorDashb
 import LeadPanelAttendancePage from './pages/panel/lead/LeadPanelAttendancePage.tsx';
 import FacilitatorPanelAttendancePage from './pages/panel/facilitator/buddy-team/FacilitatorPanelAttendancePage.tsx';
 import AddAttendancePage from './pages/panel/facilitator/buddy-team/AddAttendancePage.tsx';
+import EditBuddyTeamForm from './components/forms/panel/buddy-team/EditBuddyTeamForm.tsx';
 
 
 const router = createBrowserRouter([
@@ -165,6 +166,10 @@ const router = createBrowserRouter([
 					{
 						path: '/panel/facilitator/buddy-teams/my',
 						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/facilitator/buddy-teams/my/edit',
+						element: <EditBuddyTeamForm />
 					},
 					{
 						path: '/panel/facilitator/buddy-teams/attendance',

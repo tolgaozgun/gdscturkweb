@@ -19,7 +19,7 @@ public class Lead {
     @NotNull
     private University university;
 
-    private BuddyTeam buddyTeam;
+//    private BuddyTeam buddyTeam;
 
     @NotNull
     private User user;

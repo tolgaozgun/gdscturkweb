@@ -126,7 +126,7 @@ public class AuthService {
         }
     }
 
-    private UserEntity checkAndRegisterUser(UserRegister userRegister, UserType userType) throws Exception {
+    protected UserEntity checkAndRegisterUser(UserRegister userRegister, UserType userType) throws Exception {
         boolean userExist = userRepository.existsByUsername(userRegister.getUsername());
 
         if (userExist) {
@@ -147,27 +147,6 @@ public class AuthService {
     }
 
 
-    public LeadDTO registerLead(LeadRegisterRequest leadRegisterRequest) throws Exception {
-        try {
-
-            UserRegister userRegister = leadRegisterRequest.getUserRegister();
-            LeadRegister leadRegister = leadRegisterRequest.getLeadRegister();
-
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.LEAD);
-
-            UniversityEntity universityEntity = universityRepository.findById(leadRegister.getUniversityId())
-                    .orElseThrow(() -> new Exception("University not found"));
-
-            LeadEntity leadEntity = new LeadEntity(universityEntity, savedEntity);
-
-            LeadEntity savedLeadEntity = leadRepository.save(leadEntity);
-
-            return leadMapper.toDTO(savedLeadEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
     public CoreTeamMemberDTO registerCoreTeam(CoreTeamRegisterRequest coreTeamRegisterRequest) throws Exception {
         try {

@@ -12,6 +12,7 @@ import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
 import com.tolgaozgun.gdscturkweb.service.AuthService;
+import com.tolgaozgun.gdscturkweb.service.LeadService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,8 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final AuthService authService;
+
+    private final LeadService leadService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "login")
@@ -49,7 +52,7 @@ public class AuthController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/lead")
     public ResponseEntity<Object> registerLead(@Valid @RequestBody LeadRegisterRequest leadRegisterRequest) {
         try {
-            LeadDTO leadDTO = authService.registerLead(leadRegisterRequest);
+            LeadDTO leadDTO = leadService.registerLead(leadRegisterRequest);
             return Response.create("Register is successful", HttpStatus.OK, leadDTO);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

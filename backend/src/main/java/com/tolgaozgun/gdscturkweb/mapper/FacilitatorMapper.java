@@ -23,7 +23,6 @@ public class FacilitatorMapper {
 
     private final ModelMapper modelMapper;
     private final UserMapper userMapper;
-    private final BuddyTeamMapper buddyTeamMapper;
     private final UniversityMapper universityMapper;
 
     public FacilitatorEntity toEntity(Facilitator facilitator) {

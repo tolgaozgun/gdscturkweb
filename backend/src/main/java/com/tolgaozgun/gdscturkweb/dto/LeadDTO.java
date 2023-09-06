@@ -19,17 +19,17 @@ public class LeadDTO {
     @NotNull
     private University university;
 
-    @NotNull
-    private BuddyTeam buddyTeam;
+//    @NotNull
+//    private BuddyTeam buddyTeam;
 
     @NotNull
     @JsonProperty("user")
     private UserDTO userDTO;
 
-    public LeadDTO(UserDTO userDTO, University university, BuddyTeam buddyTeam, Long leadId) {
+    public LeadDTO(UserDTO userDTO, University university, Long leadId) {
         this.userDTO = userDTO;
         this.university = university;
-        this.buddyTeam = buddyTeam;
+//        this.buddyTeam = buddyTeam;
         this.leadId = leadId;
     }
 
