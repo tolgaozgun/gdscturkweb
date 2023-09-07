@@ -1,11 +1,12 @@
-import Cookies from 'js-cookie';
-import { User } from '../../types/UserTypes';
+import { AxiosInstance } from 'axios';
+import { getCurrentUser } from '../../services/auth';
+import { useQuery } from '@tanstack/react-query';
 
-export const useUser = () => {
-	const currentUser = Cookies.get('currentUser');
-	if (currentUser) {
-		return JSON.parse(currentUser) as User;
-	}
-
-	return null;
+const useUser = (axiosSecure: AxiosInstance) => {
+	return useQuery({
+		queryKey: ['getCurrentUser'],
+		queryFn: () => getCurrentUser(axiosSecure),
+	});
 };
+
+export default useUser;

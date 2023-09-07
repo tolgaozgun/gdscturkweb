@@ -27,6 +27,7 @@ import {
 } from '@tabler/icons-react';
 import GDSCLogo from '../../assets/gdsc-logo.png';
 import { useNavigate } from 'react-router';
+import { User } from '../../types';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -96,7 +97,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface SecondHeaderProps {
-  user: { name: string; image: string };
+  user: User;
   tabs: { name: string; link: string }[];
 }
 
@@ -147,7 +148,7 @@ export function AppHeader({ user, tabs }: SecondHeaderProps) {
                 className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
               >
                 <Group spacing={7}>
-                  <Avatar src={user.image} alt={user.name} radius="xl" size={20} />
+                  <Avatar src={user.profileImage} alt={user.name + " " + user.surname} radius="xl" size={20} />
                   <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
                     {user.name}
                   </Text>

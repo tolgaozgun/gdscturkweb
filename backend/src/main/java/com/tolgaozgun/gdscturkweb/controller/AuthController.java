@@ -8,6 +8,7 @@ import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterReques
 import com.tolgaozgun.gdscturkweb.dto.request.register.GooglerRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.LoginResponse;
+import com.tolgaozgun.gdscturkweb.dto.response.UserWithRoleResponse;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
@@ -118,6 +119,28 @@ public class AuthController {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "current-user")
+    public ResponseEntity<Object> getCurrentUser() {
+        try {
+            UserDTO currentUser = authService.getCurrentUser();
+            return Response.create("Gathered the current user", HttpStatus.OK, currentUser);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "current-user-with-role")
+    public ResponseEntity<Object> getCurrentUserWithRole() {
+        try {
+            UserWithRoleResponse userWithRoleResponse = authService.getCurrentUserWithRole();
+            return Response.create("Gathered the current user with role", HttpStatus.OK, userWithRoleResponse);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
 
 }

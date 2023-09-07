@@ -10,7 +10,7 @@ export async function getUniversities() {
 }
 
 export async function getUniversitiesAuthed(axiosSecure: AxiosInstance) {
-	const res = await axios.get<Response<Array<University>>>(`${baseUrl}/universities`);
+	const res = await axiosSecure.get<Response<Array<University>>>(`${baseUrl}/universities`);
 	return res.data;
 }
 

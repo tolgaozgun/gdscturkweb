@@ -5,15 +5,39 @@ import { AppHeader } from './components/header/AppHeader';
 import { AdminPanelData } from './components/menus/navbar/AdminPanelData';
 import { LeadPanelData } from './components/menus/navbar/LeadPanelData';
 import { FacilitatorPanelData } from './components/menus/navbar/FacilitatorPanelData';
+import useUserWithRole from './hooks/auth/useUserWithRole';
+import useAxiosSecure from './hooks/auth/useAxiosSecure';
+import { User, UserModel, UserType } from './types';
 
 
 
 const Layout = () => {
 	const { pathname } = useLocation();
+	const axiosSecure = useAxiosSecure();
 
-	const user = {
-		name: "Tolga Ozgun",
-		image: "https://picsum.photos/200"
+	const {
+		data: currentUser,
+		isLoading: isUserLoading,
+		isError: isUserError,
+	} = useUserWithRole(axiosSecure);
+	
+	let user: User = {
+		id: 0,
+		name: "Loading..",
+		surname: "",
+		email: "",
+		username: "Loading..",
+		userType: UserType.Lead,
+		profileImage: "https://picsum.photos/200",
+		phoneNumber: "",
+		biography: "",
+		interests: [],
+		accessToken: "",
+		refreshToken: "",
+	}
+
+	if (currentUser && currentUser.data) {
+		user = currentUser.data.user;
 	}
 	
 	const tabs = [

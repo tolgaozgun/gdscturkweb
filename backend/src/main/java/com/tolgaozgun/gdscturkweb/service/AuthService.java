@@ -8,6 +8,7 @@ import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterReques
 import com.tolgaozgun.gdscturkweb.dto.request.register.GooglerRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.LoginResponse;
+import com.tolgaozgun.gdscturkweb.dto.response.UserWithRoleResponse;
 import com.tolgaozgun.gdscturkweb.dto.user.register.*;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.*;
@@ -20,6 +21,7 @@ import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyUnverifiedEx
 import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyVerifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.mapper.*;
+import com.tolgaozgun.gdscturkweb.model.Topic;
 import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
@@ -55,6 +57,7 @@ public class AuthService {
     private final GooglerMapper googlerMapper;
     private final CoreTeamMapper coreTeamMapper;
     private final FacilitatorMapper facilitatorMapper;
+    private final TopicMapper topicMapper;
 
     // JWT
 
@@ -98,11 +101,66 @@ public class AuthService {
         }
     }
 
+    public UserWithRoleResponse getCurrentUserWithRole() {
+        try {
+            UserEntity userEntity = getCurrentUserEntity();
+            UserWithRoleResponse userWithRoleResponse = new UserWithRoleResponse();
+            userWithRoleResponse.setUserDTO(userMapper.toDTO(userEntity));
+
+            switch(userEntity.getUserType()) {
+                case LEAD -> {
+                    Optional<LeadEntity> optionalLeadEntity = leadRepository.findByUser(userEntity);
+                    if (optionalLeadEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(leadMapper.toDTO(optionalLeadEntity.get()));
+                }
+
+                case FACILITATOR -> {
+                    Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findByUser(userEntity);
+                    if (optionalFacilitatorEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(facilitatorMapper.toDTO(optionalFacilitatorEntity.get()));
+                }
+
+                case GOOGLER ->  {
+                    Optional<GooglerEntity> optionalGooglerEntity = googlerRepository.findByUser(userEntity);
+                    if (optionalGooglerEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(googlerMapper.toDTO(optionalGooglerEntity.get()));
+                }
+
+                case CORE_TEAM_MEMBER -> {
+                    Optional<CoreTeamMemberEntity> optionalCoreTeamMemberEntity = coreTeamMemberRepository.findByUser(userEntity);
+                    if (optionalCoreTeamMemberEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(coreTeamMapper.toDTO(optionalCoreTeamMemberEntity.get()));
+                }
+            }
+            return userWithRoleResponse;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserDTO getCurrentUser() {
+        try {
+            return userMapper.toDTO(getCurrentUserEntity());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public LoginResponse login(LoginRequest user) throws Exception {
         try {
 //            Optional<UserEntity> usernameEntity = userRepository.findByUsername(user.getUsername());
             Optional<UserEntity> emailEntity = userRepository.findByEmail(user.getEmail());
-
 
             if (emailEntity.isEmpty()) {
                 throw new UserNotFoundException("User is not found");
@@ -134,10 +192,12 @@ public class AuthService {
 
             System.out.println("passwords are matched");
 
+            List<Topic> interests = topicMapper.toModel(dbUser.getInterests());
+
             final UserDetails userDetails = jwtUserService.loadUserByEmail(user.getEmail());
             final String accessToken = jwtUtils.createAccessToken(userDetails);
             final String refreshToken = jwtUtils.createRefreshToken(userDetails);
-            return new LoginResponse(dbUser, accessToken, refreshToken);
+            return new LoginResponse(dbUser, interests, accessToken, refreshToken);
         } catch (Exception e) {
             System.out.println("login exception");
             e.printStackTrace();

@@ -12,6 +12,11 @@ export enum UserType {
 	Googler = 'GOOGLER'
 }
 
+export type Token = {
+	accessToken: string;
+	refreshToken: string;
+}
+
 export type User = {
 	id: number;
 	name: string;
@@ -19,9 +24,18 @@ export type User = {
 	email: string;
 	username: string;
 	userType: UserType;
+	profileImage: string;
+	phoneNumber: string;
+	biography: string;
+	interests: Array<Topic>;
 	accessToken: string;
 	refreshToken: string;
 };
+
+export type UserWithRole = {
+	user: User;
+	role: Object;
+}
 
 export type UserModel = {
 	userId: number;

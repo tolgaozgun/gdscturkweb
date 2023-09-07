@@ -2,31 +2,31 @@ import Cookies from 'js-cookie';
 import { refresh as refreshFn } from '../../services/auth';
 import { isErrorResponse } from '../../utils/utils';
 import useAxiosSecure from './useAxiosSecure';
-import { useUser } from './useUser';
 import { axiosSecure } from '../../services/axios';
+import { useToken } from './useToken';
 
 export const useRefresh = () => {
-	const user = useUser();
+	const token = useToken();
 
 	const refresh = async () => {
-		if (!user) {
+		if (!token) {
 			return null;
 		}
 
-		if(!user.refreshToken) {
+		if(!token.refreshToken) {
 			return null;
 		}
 
-		const res = await refreshFn(user.refreshToken, axiosSecure);
+		const res = await refreshFn(token.refreshToken, axiosSecure);
 
 		if (isErrorResponse(res)) {
 			return res;
 		}
 
 		Cookies.set(
-			'currentUser',
+			'token',
 			JSON.stringify({
-				...user,
+				...token,
 				refreshToken: res.data.refreshToken,
 			}),
 		);

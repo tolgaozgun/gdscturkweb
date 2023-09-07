@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { RegisterAdmin, RegisterCoreTeam, RegisterFacilitator, RegisterGoogler, RegisterLead } from './../../types/AuthTypes';
 
 import { baseUrl } from '../../constants/api';
-import { Tokens, User } from '../../types';
+import { Tokens, User, UserWithRole } from '../../types';
 import { Response } from '../../types/ResponseTypes';
 import { axiosSecure as axios } from '../axios';
 
@@ -79,5 +79,15 @@ export async function refresh(
 			Authorization: `Bearer ${refreshToken}`,
 		},
 	});
+	return res.data;
+}
+
+export async function getCurrentUser(axiosSecure: AxiosInstance): Promise<Response<User>> {
+	const res = await axiosSecure.get<Response<User>>(`${baseUrl}/auth/current-user`);
+	return res.data;
+}
+
+export async function getCurrentUserWithRole(axiosSecure: AxiosInstance): Promise<Response<UserWithRole>> {
+	const res = await axiosSecure.get<Response<UserWithRole>>(`${baseUrl}/auth/current-user-with-role`);
 	return res.data;
 }
