@@ -13,6 +13,7 @@ import com.tolgaozgun.gdscturkweb.exception.*;
 import com.tolgaozgun.gdscturkweb.mapper.AttendanceMapper;
 import com.tolgaozgun.gdscturkweb.mapper.BuddyTeamMapper;
 import com.tolgaozgun.gdscturkweb.model.LeadAttendance;
+import com.tolgaozgun.gdscturkweb.model.user.User;
 import com.tolgaozgun.gdscturkweb.repository.AttendanceRepository;
 import com.tolgaozgun.gdscturkweb.repository.AttendanceStatusRepository;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
@@ -30,30 +31,20 @@ import java.util.*;
 @Service
 public class AttendanceService {
 
-    private final UserRepository userRepository;
     private final LeadRepository leadRepository;
     private final FacilitatorRepository facilitatorRepository;
     private final BuddyTeamRepository buddyTeamRepository;
     private final AttendanceStatusRepository attendanceStatusRepository;
     private final AttendanceRepository attendanceRepository;
+
     private final AttendanceMapper attendanceMapper;
 
-    private final BuddyTeamMapper buddyTeamMapper;
+    private final AuthService authService;
 
     public List<LeadAttendance> getAllAttendancesOfCurrentUser(){
         try {
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            String userName = authentication.getName();
-
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
 
             Optional<LeadEntity> optionalLeadEntity = leadRepository.findByUser(userEntity);
 

@@ -66,16 +66,4 @@ public class LeadService {
         }
     }
 
-    public LeadDTO createLead() {
-        try {
-
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
-
-    }
-
-
 }

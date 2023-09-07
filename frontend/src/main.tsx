@@ -34,6 +34,9 @@ import LeadPanelAttendancePage from './pages/panel/lead/LeadPanelAttendancePage.
 import FacilitatorPanelAttendancePage from './pages/panel/facilitator/buddy-team/FacilitatorPanelAttendancePage.tsx';
 import AddAttendancePage from './pages/panel/facilitator/buddy-team/AddAttendancePage.tsx';
 import EditBuddyTeamForm from './components/forms/panel/buddy-team/EditBuddyTeamForm.tsx';
+import CreateFacilitatorPage from './pages/panel/admin/facilitator/CreateFacilitatorPage.tsx';
+import CreateCoreTeamPage from './pages/panel/admin/core-team/CreateCoreTeamPage.tsx';
+import CreateLeadPage from './pages/panel/admin/lead/CreateLeadPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -88,8 +91,16 @@ const router = createBrowserRouter([
 						element: <PanelUserListPage />
 					},
 					{
-						path: '/panel/admin/users/add',
-						element: <AdminDashboardPage />
+						path: '/panel/admin/users/create-lead',
+						element: <CreateLeadPage />
+					},
+					{
+						path: '/panel/admin/users/create-core-team-member',
+						element: <CreateCoreTeamPage />
+					},
+					{
+						path: '/panel/admin/users/create-facilitator',
+						element: <CreateFacilitatorPage />
 					},
 					{
 						path: '/panel/admin/users/verification',
@@ -286,7 +297,9 @@ const router = createBrowserRouter([
 ]);
 const queryClient = new QueryClient();
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<ContextMenuProvider>

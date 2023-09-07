@@ -28,6 +28,8 @@ import com.tolgaozgun.gdscturkweb.security.JWTUserService;
 import com.tolgaozgun.gdscturkweb.security.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -68,7 +70,6 @@ public class AuthService {
     private final FacilitatorRepository facilitatorRepository;
     private final GooglerRepository googlerRepository;
 
-
     @Autowired
     private final JWTUtils jwtUtils;
 
@@ -78,6 +79,24 @@ public class AuthService {
         return userMapper.toDTO(userEntity);
     }
 
+    protected UserEntity getCurrentUserEntity() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            String userName = authentication.getName();
+
+            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
+
+            if (optionalUserEntity.isEmpty()) {
+                throw new UserNotFoundException("Error while getting user details");
+            }
+
+            return optionalUserEntity.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public LoginResponse login(LoginRequest user) throws Exception {
         try {
@@ -146,83 +165,6 @@ public class AuthService {
 
     }
 
-
-
-    public CoreTeamMemberDTO registerCoreTeam(CoreTeamRegisterRequest coreTeamRegisterRequest) throws Exception {
-        try {
-
-            UserRegister userRegister = coreTeamRegisterRequest.getUserRegister();
-            CoreTeamRegister coreTeamRegister = coreTeamRegisterRequest.getCoreTeamRegister();
-
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.CORE_TEAM_MEMBER);
-
-            UniversityEntity universityEntity = universityRepository.findById(coreTeamRegister.getUniversityId())
-                    .orElseThrow(() -> new Exception("University not found"));
-
-            CoreTeamMemberEntity coreTeamMemberEntity = new CoreTeamMemberEntity(universityEntity, savedEntity);
-
-
-            CoreTeamMemberEntity savedCoreTeamMemberEntity = coreTeamMemberRepository.save(coreTeamMemberEntity);
-
-            return coreTeamMapper.toDTO(savedCoreTeamMemberEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-
-    public GooglerDTO registerGoogler(GooglerRegisterRequest googlerRegisterRequest) throws Exception {
-        try {
-
-            UserRegister userRegister = googlerRegisterRequest.getUserRegister();
-            GooglerRegister googlerRegister = googlerRegisterRequest.getGooglerRegister();
-
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.CORE_TEAM_MEMBER);
-
-            GooglerEntity googlerEntity = new GooglerEntity();
-
-            googlerEntity.setUser(savedEntity);
-
-            googlerEntity = googlerRepository.save(googlerEntity);
-
-            return googlerMapper.toDTO(googlerEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    public FacilitatorDTO registerFacilitator(FacilitatorRegisterRequest facilitatorRegisterRequest) throws Exception {
-        try {
-
-            UserRegister userRegister = facilitatorRegisterRequest.getUserRegister();
-            FacilitatorRegister facilitatorRegister = facilitatorRegisterRequest.getFacilitatorRegister();
-
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.FACILITATOR);
-
-
-            UniversityEntity universityEntity = universityRepository.findById(facilitatorRegister.getUniversityId())
-                    .orElseThrow(() -> new Exception("University not found"));
-
-            FacilitatorEntity facilitatorEntity = new FacilitatorEntity();
-            facilitatorEntity.setUniversity(universityEntity);
-            facilitatorEntity.setUser(savedEntity);
-            facilitatorEntity = facilitatorRepository.save(facilitatorEntity);
-
-            BuddyTeamEntity buddyTeamEntity = new BuddyTeamEntity();
-            buddyTeamEntity.setFacilitator(facilitatorEntity);
-            buddyTeamEntity.setLeads(List.of());
-
-            buddyTeamRepository.save(buddyTeamEntity);
-
-            return facilitatorMapper.toDTO(facilitatorEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
     public UserDTO verifyUser(VerifyUserRequest verifyUserRequest) {
         try {
 
@@ -270,7 +212,6 @@ public class AuthService {
         }
     }
 
-
     private String encodePassword(String plainPassword) {
         try {
             return bCryptPasswordEncoder.encode(plainPassword);
@@ -279,5 +220,4 @@ public class AuthService {
         }
     }
 
-    // Other service methods
 }

@@ -16,12 +16,14 @@ import GooglerGrid from '../../../components/grid/GooglerGrid';
 import { CoreTeamMemberModel, FacilitatorModel, GooglerModel, LeadModel } from '../../../types';
 import useGetCoreTeamMembers from '../../../hooks/user/useGetCoreTeamMembers';
 import { PageContainer } from '../../../components/PageContainer';
+import { useNavigate } from 'react-router';
 
 
 
 const PanelUserListPage = () => {
 
 	const axiosSecure = useAxiosSecure();
+	const navigate = useNavigate();
 
 	const [useGrid, setUseGrid] = useState<boolean>(true);
 	
@@ -123,17 +125,31 @@ const PanelUserListPage = () => {
 	// 	onChange(index);
 	// }
 
+
+	const handleLeadCreate = () => {
+		navigate("/panel/admin/users/create-lead");
+	}
+	const handleCoreTeamCreate = () => {
+		navigate("/panel/admin/users/create-core-team-member");
+	}
+	const handleFacilitatorCreate = () => {
+		navigate("/panel/admin/users/create-facilitator");
+	}
+
 	let panels = <></>;
 
 	if (useGrid) {
 		panels = <>
 			<Tabs.Panel value="lead" pt="xs">
+				<Button onClick={handleLeadCreate}>Create Lead</Button>
 				<LeadGrid data={leads} isLoading={leadsLoading} />
 			</Tabs.Panel>
 			<Tabs.Panel value="core-team" pt="xs">
+				<Button onClick={handleCoreTeamCreate}>Create Core Team Member</Button>
 				<CoreTeamMemberGrid data={coreTeamMembers} isLoading={coreTeamLoading} />
 			</Tabs.Panel>
 			<Tabs.Panel value="facilitator" pt="xs">
+				<Button onClick={handleFacilitatorCreate}>Create Facilitator</Button>
 				<FacilitatorGrid data={facilitators} isLoading={facilitatorLoading} />
 			</Tabs.Panel>
 			<Tabs.Panel value="googler" pt="xs">
@@ -147,12 +163,15 @@ const PanelUserListPage = () => {
 		panels = (
 			<>
 				<Tabs.Panel value="lead" pt="xs">
+					<Button onClick={handleLeadCreate}>Create Lead</Button>
 					<LeadTable data={leads} isLoading={leadsLoading} />
 				</Tabs.Panel>
 				<Tabs.Panel value="core-team" pt="xs">
+					<Button onClick={handleCoreTeamCreate}>Create Core Team Member</Button>
 					<CoreTeamMemberTable data={coreTeamMembers} isLoading={coreTeamLoading} />
 				</Tabs.Panel>
 				<Tabs.Panel value="facilitator" pt="xs">
+				<Button onClick={handleFacilitatorCreate}>Create Facilitator</Button>
 					<FacilitatorTable data={facilitators} isLoading={facilitatorLoading} />
 				</Tabs.Panel>
 				<Tabs.Panel value="googler" pt="xs">

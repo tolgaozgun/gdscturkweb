@@ -30,9 +30,12 @@ public class BuddyTeamService {
 
     private final BuddyTeamRepository buddyTeamRepository;
     private final UserRepository userRepository;
-    private final BuddyTeamMapper buddyTeamMapper;
     private final FacilitatorRepository facilitatorRepository;
     private final LeadRepository leadRepository;
+
+    private final BuddyTeamMapper buddyTeamMapper;
+
+    private final AuthService authService;
 
     public List<BuddyTeamDTO> getAllBuddyTeams() {
         try {
@@ -43,7 +46,7 @@ public class BuddyTeamService {
         }
     }
 
-    public BuddyTeamDTO updateBuddyTeamByLead(UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+    public BuddyTeamDTO updateBuddyTeamByLead(UpdateBuddyTeamRequest updateBuddyTeamRequest) throws Exception {
         try {
             BuddyTeamEntity buddyTeamEntity = getBuddyTeamEntityByCurrentUser();
             return updateBuddyTeamByEntity(buddyTeamEntity, updateBuddyTeamRequest);
@@ -53,7 +56,7 @@ public class BuddyTeamService {
         }
     }
 
-    public BuddyTeamDTO updateBuddyTeamByFacilitator(UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+    public BuddyTeamDTO updateBuddyTeamByFacilitator(UpdateBuddyTeamRequest updateBuddyTeamRequest) throws Exception {
         try {
             BuddyTeamEntity buddyTeamEntity = getBuddyTeamEntityByFacilitator();
             return updateBuddyTeamByEntity(buddyTeamEntity, updateBuddyTeamRequest);
@@ -62,7 +65,7 @@ public class BuddyTeamService {
             throw e;
         }
     }
-    public BuddyTeamDTO updateBuddyTeamByEntity(BuddyTeamEntity buddyTeamEntity, UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+    public BuddyTeamDTO updateBuddyTeamByEntity(BuddyTeamEntity buddyTeamEntity, UpdateBuddyTeamRequest updateBuddyTeamRequest) throws Exception {
         try {
 
             if (updateBuddyTeamRequest.getFacilitatorId() != null) {
@@ -90,16 +93,23 @@ public class BuddyTeamService {
                 buddyTeamEntity.setLeads(leadEntities);
             }
 
+            if (updateBuddyTeamRequest.getName() != null) {
+                if (updateBuddyTeamRequest.getName().isEmpty()) {
+                    throw new Exception("Buddy team name cannot be empty");
+                }
+                buddyTeamEntity.setName(updateBuddyTeamRequest.getName());
+
+            }
             buddyTeamRepository.save(buddyTeamEntity);
 
             return buddyTeamMapper.toDTO(buddyTeamEntity);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
             throw e;
         }
     }
 
-    public BuddyTeamDTO updateBuddyTeamById(Long buddyTeamId, UpdateBuddyTeamRequest updateBuddyTeamRequest) {
+    public BuddyTeamDTO updateBuddyTeamById(Long buddyTeamId, UpdateBuddyTeamRequest updateBuddyTeamRequest) throws Exception {
         try {
             Optional<BuddyTeamEntity> optionalBuddyTeamEntity = buddyTeamRepository.findById(buddyTeamId);
 
@@ -118,17 +128,7 @@ public class BuddyTeamService {
     public BuddyTeamEntity getBuddyTeamEntityByCurrentUser() {
         try {
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            String userName = authentication.getName();
-
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
 
             Optional<LeadEntity> optionalLeadEntity = leadRepository.findByUser(userEntity);
 
@@ -160,18 +160,7 @@ public class BuddyTeamService {
 
     public BuddyTeamEntity getBuddyTeamEntityByFacilitator() {
         try {
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            String userName = authentication.getName();
-
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
 
             Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findByUser(userEntity);
 

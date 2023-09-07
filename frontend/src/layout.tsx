@@ -30,8 +30,8 @@ const Layout = () => {
 			link: "user-list",
 		},
 		{
-			name: "Loading",
-			link: "loading",
+			name: "FAQ",
+			link: "faq",
 		}
 	] 
 	

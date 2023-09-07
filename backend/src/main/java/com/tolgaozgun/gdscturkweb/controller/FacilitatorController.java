@@ -1,18 +1,19 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
+import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
 import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
+import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.service.FacilitatorService;
 import com.tolgaozgun.gdscturkweb.service.LeadService;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +30,17 @@ public class FacilitatorController {
         try {
             List<FacilitatorDTO> facilitatorList = facilitatorService.getAllFacilitators();
             return Response.create("Gathered all facilitators", HttpStatus.OK, facilitatorList);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping( path = "create")
+    public ResponseEntity<Object> createFacilitator(@NotNull @RequestBody FacilitatorRegisterRequest facilitatorRegisterRequest) {
+        try {
+            FacilitatorDTO facilitatorDTO = facilitatorService.registerFacilitator(facilitatorRegisterRequest);
+            return Response.create("Created facilitator", HttpStatus.OK, facilitatorDTO);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

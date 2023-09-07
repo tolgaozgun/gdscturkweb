@@ -22,7 +22,6 @@ export const AdminPanelData: PanelItem[] = [
       links: [
         { label: 'List Users', link: '/panel/admin/users/list' },
         { label: 'Verification List', link: '/panel/admin/users/verification' },
-        { label: 'Add a User', link: '/panel/admin/users/add' },
       ],
     },
     {

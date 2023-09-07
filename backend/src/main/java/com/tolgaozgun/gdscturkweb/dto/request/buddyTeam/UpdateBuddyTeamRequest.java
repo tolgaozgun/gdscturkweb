@@ -15,6 +15,9 @@ import java.util.List;
 public class UpdateBuddyTeamRequest {
 
     @Nullable
+    private String name;
+
+    @Nullable
     @JsonProperty("facilitator")
     private Long facilitatorId;
 

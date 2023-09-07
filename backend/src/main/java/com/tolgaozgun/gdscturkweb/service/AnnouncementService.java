@@ -29,19 +29,11 @@ public class AnnouncementService {
     private final AnnouncementRepository announcementRepository;
     private final AnnouncementMapper announcementMapper;
 
+    private final AuthService authService;
+
     public List<AnnouncementDTO> getAllAnnouncementsByUserType(){
-        try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            String userName = authentication.getName();
-
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+        try {
+            UserEntity userEntity = authService.getCurrentUserEntity();
 
             UserType userType = userEntity.getUserType();
 
@@ -112,15 +104,7 @@ public class AnnouncementService {
             announcementEntity.setStartDate(startDate);
             announcementEntity.setEndDate(endDate);
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
             announcementEntity.setSentBy(userEntity);
             announcementEntity = announcementRepository.save(announcementEntity);
 

@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { getBuddyTeamByCurrentFacilitator, updateBuddyTeamByFacilitator } from '../../services/buddy-team/BuddyTeamService';
-import { EditAnnouncement } from '../../types/AnnouncementTypes';
+import { updateBuddyTeamByFacilitator } from '../../services/buddy-team/BuddyTeamService';
 import { EditBuddyTeam } from '../../types/BuddyTeamTypes';
 
 const useUpdateBuddyTeamByCurrentFacilitator = (axiosSecure: AxiosInstance, editBuddyTeam: EditBuddyTeam) => {

@@ -34,6 +34,8 @@ public class QuestionService {
     private final QuestionMapper questionMapper;
     private final QuestionCategoryMapper questionCategoryMapper;
 
+    private final AuthService authService;
+
     public List<QuestionDTO> getAllQuestions() {
         try {
             List<QuestionEntity> questionEntities = questionRepository.findAll();
@@ -122,15 +124,7 @@ public class QuestionService {
 
     public List<QuestionDTO> getQuestionsAskedByCurrentUser() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
 
             List<QuestionEntity> questionEntities = questionRepository.findAllByAskedBy(userEntity);
             return questionMapper.toDTO(questionEntities);
@@ -143,16 +137,7 @@ public class QuestionService {
 
     public List<QuestionDTO> getQuestionsAskedOrAnsweredByCurrentUser() {
         try {
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
 
             List<QuestionEntity> questionEntities = questionRepository.findAllByAskedByOrAnsweredBy(userEntity, userEntity);
             return questionMapper.toDTO(questionEntities);
@@ -164,15 +149,7 @@ public class QuestionService {
 
     public List<QuestionDTO> getAnsweredQuestionsByCurrentUser() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
 
             List<QuestionEntity> questionEntities = questionRepository.findAllByAnsweredBy(userEntity);
             return questionMapper.toDTO(questionEntities);
@@ -220,15 +197,7 @@ public class QuestionService {
         try {
             QuestionEntity questionEntity = questionMapper.toEntity(askQuestionRequest);
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
             questionEntity.setAskedBy(userEntity);
             questionEntity.setAskedDate(new Date());
 
@@ -243,15 +212,7 @@ public class QuestionService {
         try {
             QuestionEntity questionEntity = questionMapper.toEntity(answerQuestionRequest);
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
             questionEntity.setAnsweredBy(userEntity);
             questionEntity.setAnsweredDate(new Date());
 

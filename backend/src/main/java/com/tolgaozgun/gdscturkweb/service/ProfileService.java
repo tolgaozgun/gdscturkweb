@@ -31,20 +31,19 @@ public class ProfileService {
     private final LeadRepository leadRepository;
     private final FacilitatorRepository facilitatorRepository;
     private final GooglerRepository googlerRepository;
-    private final AdminRepository adminRepository;
     private final CoreTeamMemberRepository coreTeamMemberRepository;
     private final UniversityRepository universityRepository;
     private final BuddyTeamRepository buddyTeamRepository;
     private final CityRepository cityRepository;
     private final CountryRepository countryRepository;
-    private final UserTypeRepository userTypeRepository;
 
     private final TopicMapper topicMapper;
     private final FacilitatorMapper facilitatorMapper;
     private final LeadMapper leadMapper;
     private final CoreTeamMapper coreTeamMapper;
     private final GooglerMapper googlerMapper;
-    private final PermissionMapper permissionMapper;
+
+    private final AuthService authService;
 
 
     private UserEntity checkAndUpdateUserProfileByStaff(UpdateUserProfileByStaff updateUserProfileByStaff) {
@@ -92,17 +91,7 @@ public class ProfileService {
     }
 
     private UserEntity checkAndUpdateUserProfile(UpdateUserProfileByUser updateUserProfile) {
-
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-        if (optionalUserEntity.isEmpty()) {
-            throw new UserNotFoundException("Error while getting user details");
-        }
-
-        UserEntity userEntity = optionalUserEntity.get();
+        UserEntity userEntity = authService.getCurrentUserEntity();
         if (updateUserProfile.getProfileImage() != null) {
             userEntity.setProfileImage(updateUserProfile.getProfileImage());
         }

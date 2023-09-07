@@ -11,8 +11,7 @@ import com.tolgaozgun.gdscturkweb.dto.response.LoginResponse;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
-import com.tolgaozgun.gdscturkweb.service.AuthService;
-import com.tolgaozgun.gdscturkweb.service.LeadService;
+import com.tolgaozgun.gdscturkweb.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,11 @@ public class AuthController {
 
     private final AuthService authService;
 
+    private final CoreTeamMemberService coreTeamService;
     private final LeadService leadService;
+    private final GooglerService googlerService;
+    private final FacilitatorService facilitatorService;
+
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "login")
@@ -63,7 +66,7 @@ public class AuthController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/core-team")
     public ResponseEntity<Object> registerCoreTeam(@Valid @RequestBody CoreTeamRegisterRequest coreTeamRegisterRequest) {
         try {
-            CoreTeamMemberDTO coreTeamMember = authService.registerCoreTeam(coreTeamRegisterRequest);
+            CoreTeamMemberDTO coreTeamMember = coreTeamService.registerCoreTeam(coreTeamRegisterRequest);
             return Response.create("Register is successful", HttpStatus.OK, coreTeamMember);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -75,7 +78,7 @@ public class AuthController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/googler")
     public ResponseEntity<Object> registerGoogler(@Valid @RequestBody GooglerRegisterRequest googlerRegisterRequest) {
         try {
-            GooglerDTO googlerDTO = authService.registerGoogler(googlerRegisterRequest);
+            GooglerDTO googlerDTO = googlerService.registerGoogler(googlerRegisterRequest);
             return Response.create("Register is successful", HttpStatus.OK, googlerDTO);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -85,9 +88,9 @@ public class AuthController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/facilitator")
-    public ResponseEntity<Object> registerGoogler(@Valid @RequestBody FacilitatorRegisterRequest facilitatorRegisterRequest) {
+    public ResponseEntity<Object> registerFacilitator(@Valid @RequestBody FacilitatorRegisterRequest facilitatorRegisterRequest) {
         try {
-            FacilitatorDTO facilitatorDTO = authService.registerFacilitator(facilitatorRegisterRequest);
+            FacilitatorDTO facilitatorDTO = facilitatorService.registerFacilitator(facilitatorRegisterRequest);
             return Response.create("Register is successful", HttpStatus.OK, facilitatorDTO);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
