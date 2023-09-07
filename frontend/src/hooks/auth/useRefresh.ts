@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import { refresh as refreshFn } from '../../services/auth';
 import { isErrorResponse } from '../../utils/utils';
-import useAxiosSecure from './useAxiosSecure';
 import { axiosSecure } from '../../services/axios';
 import { useToken } from './useToken';
 

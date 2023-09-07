@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { axiosSecure } from '../../services/axios';
 import { User } from '../../types/UserTypes';
 import { useRefresh } from './useRefresh';
-import { useUser } from './useUser';
 import { NavigateFunction, useNavigate } from 'react-router';
 import { notifications } from '@mantine/notifications';
+import { useToken } from './useToken';
 
 const loginAgain = (navigate: NavigateFunction) => {
 	
@@ -25,7 +25,7 @@ const loginAgain = (navigate: NavigateFunction) => {
 
 
 const useAxiosSecure = () => {
-	const user = useUser();
+	const token = useToken();
 	const refresh = useRefresh();
 	const navigate = useNavigate();
 
@@ -33,16 +33,16 @@ const useAxiosSecure = () => {
 		const requestIntercept = axiosSecure.interceptors.request.use(
 			(config) => {
 				if (!config?.headers!['Authorization']) {
-					if (user == null) {
+					if (token == null) {
 						loginAgain(navigate);
 					}
 					
-					if (user?.accessToken == null){
+					if (token?.accessToken == null){
 						loginAgain(navigate);
 					}
 
 					config.headers!['Authorization'] = `Bearer ${
-						(user as User).accessToken
+						(token as User).accessToken
 					}`;
 				}
 
@@ -75,7 +75,7 @@ const useAxiosSecure = () => {
 			axiosSecure.interceptors.request.eject(requestIntercept);
 			axiosSecure.interceptors.response.eject(responseIntercept);
 		};
-	}, [user, refresh]);
+	}, [token, refresh]);
 
 	return axiosSecure;
 };
