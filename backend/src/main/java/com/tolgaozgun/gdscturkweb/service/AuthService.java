@@ -36,6 +36,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -197,6 +198,9 @@ public class AuthService {
             final UserDetails userDetails = jwtUserService.loadUserByEmail(user.getEmail());
             final String accessToken = jwtUtils.createAccessToken(userDetails);
             final String refreshToken = jwtUtils.createRefreshToken(userDetails);
+
+            dbUser.setLastLoginDate(new Date());
+            dbUser = userRepository.save(dbUser);
             return new LoginResponse(dbUser, interests, accessToken, refreshToken);
         } catch (Exception e) {
             System.out.println("login exception");
@@ -207,22 +211,44 @@ public class AuthService {
 
     protected UserEntity checkAndRegisterUser(UserRegister userRegister, UserType userType) throws Exception {
         boolean userExist = userRepository.existsByUsername(userRegister.getUsername());
-
+        System.out.println("CheckandRegister1");
         if (userExist) {
             throw new UserAlreadyExistsException("This username already exists");
         }
+        System.out.println("CheckandRegister2");
 
         boolean emailExist = userRepository.existsByEmail(userRegister.getEmail());
+        System.out.println("CheckandRegister3");
 
         if (emailExist) {
             throw new UserAlreadyExistsException("This email already exists");
         }
+        System.out.println("CheckandRegister4");
+
         userRegister.setPassword(encodePassword(userRegister.getPassword()));
+        System.out.println("CheckandRegister5");
 
         UserEntity userEntity = new UserEntity(userRegister, userType);
+        System.out.println("CheckandRegister6");
+
+        userEntity.setCreatedAt(new Date());
+        userEntity.setLastEditedAt(new Date());
+        userEntity.setLastLoginDate(null);
+        System.out.println("CheckandRegister7");
 
         return userRepository.save(userEntity);
 
+    }
+
+
+    public List<UserDTO> getVerifyList() {
+        try {
+            List<UserEntity> userEntities = userRepository.findAllByIsVerified(false);
+            return userMapper.toDTO(userEntities);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public UserDTO verifyUser(VerifyUserRequest verifyUserRequest) {

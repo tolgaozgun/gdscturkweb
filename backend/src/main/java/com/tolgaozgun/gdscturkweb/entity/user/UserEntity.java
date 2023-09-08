@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -70,6 +71,18 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private List<PermissionEntity> additionalPermissions;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = true)
+    private Date lastLoginDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
+    private Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date lastEditedAt;
 
     public UserEntity(UserRegister userRegister, UserType userType){
         this.username = userRegister.getUsername();

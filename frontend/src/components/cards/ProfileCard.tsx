@@ -14,6 +14,8 @@ import {
     Container,
 } from '@mantine/core';
 import { IconDots, IconEye, IconFileZip, IconTrash } from '@tabler/icons-react';
+import { UserModel } from '../../types';
+import { University } from '../../types/UniversityTypes';
 
 const useStyle = createStyles(theme => ({
 	section: {
@@ -25,10 +27,12 @@ const useStyle = createStyles(theme => ({
 }));
 
 interface ProfileCardProps {
+    user: UserModel;
+    university: University;
     withBorder?: boolean;
 }
 
-export function ProfileCard({withBorder}: ProfileCardProps) {
+export function ProfileCard({user, university, withBorder}: ProfileCardProps) {
 	const { classes } = useStyle();
 
 	return (
@@ -43,22 +47,22 @@ export function ProfileCard({withBorder}: ProfileCardProps) {
                     width={100}
                     height={100}
                     radius="xl"
-                    src="https://this-person-does-not-exist.com/img/avatar-gen67f6d5b071218ba2c137e335799a7320.jpg" />
+                    src={user.profileImage} />
 
 				<Space h="md" />
 
 				<Flex direction="column">
-					<Title order={5}>Tolga Ozgun</Title>
+					<Title order={5}>{user.name} {user.surname}</Title>
                     <Text fz="sm" fw="300">
-                         Lead
+                         {user.userType}
                     </Text>
 					<Space h="xs" />
 					<Text fz="sm" c="dimmed" fw="500">
-						tolgaozgunn@gmail.com
+						{user.email}
 					</Text>
 					<Space h="4" />
 					<Text fz="sm" c="dimmed" fw="500">
-                        Bilkent University
+                        {university.name}
 					</Text>
 				</Flex>
 			</Card.Section>
@@ -70,7 +74,7 @@ export function ProfileCard({withBorder}: ProfileCardProps) {
                         Last Login
                     </Text>
                     <Text fw={700} fz="xl">
-                        Aug 21, 2023 21:12:30 TRT
+                        {user.lastLoginDate ? user.lastLoginDate.toString() : 'Never'}
                     </Text>
                 </Container>
                 <Container mt={30}>
@@ -78,7 +82,7 @@ export function ProfileCard({withBorder}: ProfileCardProps) {
                         City
                     </Text>
                     <Text fw={700} fz="xl">
-                        Ankara
+                        {university.city.name}
                     </Text>
                 </Container>
                 <Container mt={30}>
@@ -86,7 +90,7 @@ export function ProfileCard({withBorder}: ProfileCardProps) {
                         Country
                     </Text>
                     <Text fw={700} fz="xl">
-                        Turkiye
+                        {university.country.name}
                     </Text>
                 </Container>
             </Flex>

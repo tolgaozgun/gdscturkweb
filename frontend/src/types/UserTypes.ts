@@ -48,6 +48,9 @@ export type UserModel = {
 	phoneNumber: string;
 	biography: string;
 	interests: Array<Topic>;
+	lastLoginDate: Date;
+	createdAt: Date;
+	lastEditedAt: Date;
 };
 
 
@@ -77,5 +80,11 @@ export type FacilitatorModel = {
 	user: UserModel;
 }
 
-// String models
+export type LeadDashboardResponse = {
+	lead: LeadModel;
+	buddyTeamSize: number;
+	coreTeamSize: number;
+	eventDates: Array<Date>;
+	buddyMeetings: Map<Date, boolean>;
+}
 

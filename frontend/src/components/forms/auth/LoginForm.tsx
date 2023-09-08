@@ -51,8 +51,13 @@ const LoginForm = () => {
 					description: { color: theme.white },
 				}),
 			});
+			
+			let token = {
+				accessToken: data.data.accessToken,
+				refreshToken: data.data.refreshToken,
+			}
 
-			Cookies.set('currentUser', JSON.stringify(data.data));
+			Cookies.set('token', JSON.stringify(token));
 			if (data?.data.userType === 'LEAD') {
 				navigate('/add-fare');
 			} else if (data.data.userType === 'CORE_TEAM_MEMBER') {

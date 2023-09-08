@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 
 @Data
 @NoArgsConstructor
@@ -23,6 +25,9 @@ public class User {
     private String profileImage;
     private String phoneNumber;
     private String biography;
+    private Date lastLoginDate;
+    private Date createdAt;
+    private Date lastEditedAt;
 
     public User(User user) {
         this.id = user.getId();

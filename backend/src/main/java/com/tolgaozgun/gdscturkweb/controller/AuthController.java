@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/auth")
@@ -93,6 +95,16 @@ public class AuthController {
         try {
             FacilitatorDTO facilitatorDTO = facilitatorService.registerFacilitator(facilitatorRegisterRequest);
             return Response.create("Register is successful", HttpStatus.OK, facilitatorDTO);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "verify-list")
+    public ResponseEntity<Object> getVerifyList() {
+        try {
+            List<UserDTO> verifyList = authService.getVerifyList();
+            return Response.create("Gathered verification list", HttpStatus.OK, verifyList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

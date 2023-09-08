@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,8 +22,10 @@ public class Lead {
     private University university;
 
 //    private BuddyTeam buddyTeam;
-
     @NotNull
     private User user;
+
+    @NotNull
+    private Date promotedAt;
 
 }

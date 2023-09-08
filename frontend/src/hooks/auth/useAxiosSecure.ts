@@ -37,15 +37,15 @@ const useAxiosSecure = (shouldRedirect: boolean = true) => {
 					if (token == null) {
 						if (location.pathname !== "/login" && shouldRedirect) {
 							loginAgain(navigate);
-							return config;
 						}
+						return config;
 					}
 					
 					if (token?.accessToken == null){
 						if (location.pathname !== "/login" && shouldRedirect) {
 							loginAgain(navigate);
-							return config;
 						}
+						return config;
 					}
 
 					config.headers!['Authorization'] = `Bearer ${

@@ -11,8 +11,13 @@ export const useLogin = () => {
 			return res;
 		}
 
+		let token = {
+			accessToken: res.data.accessToken,
+			refreshToken: res.data.refreshToken,
+		}
+
 		// Set the cookies and return the user
-		Cookies.set('currentUser', JSON.stringify(res.data));
+		Cookies.set('token', JSON.stringify(token));
 		return res;
 	};
 

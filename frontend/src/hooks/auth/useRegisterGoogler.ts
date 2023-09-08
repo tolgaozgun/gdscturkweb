@@ -10,9 +10,13 @@ export const useRegisterGoogler = (shouldSetCookie: boolean = true) => {
 		if (isErrorResponse(res)) {
 			return res;
 		}
+		let token = {
+			accessToken: res.data.accessToken,
+			refreshToken: res.data.refreshToken,
+		}
 		// Set the cookies and return the user
 		if (shouldSetCookie) {
-			Cookies.set('currentUser', JSON.stringify(res.data));
+			Cookies.set('token', JSON.stringify(token));
 		}
 		return res;
 	};

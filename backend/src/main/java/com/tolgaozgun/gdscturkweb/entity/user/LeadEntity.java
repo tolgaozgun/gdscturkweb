@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "leads")
 @Data
@@ -30,6 +32,9 @@ public class LeadEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    @Column(name = "promoted_at", nullable = false)
+    private Date promotedAt;
 
     public LeadEntity(UniversityEntity universityEntity, UserEntity user){
         this.university = universityEntity;

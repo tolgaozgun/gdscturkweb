@@ -2,6 +2,7 @@ package com.tolgaozgun.gdscturkweb.controller;
 
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
+import com.tolgaozgun.gdscturkweb.dto.response.LeadDashboardResponse;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.model.University;
@@ -41,6 +42,18 @@ public class LeadController {
         try {
             LeadDTO lead = leadService.registerLead(leadRegisterRequest);
             return Response.create("Created lead", HttpStatus.OK, lead);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping( path = "dashboard")
+    public ResponseEntity<Object> getCurrentLeadDashboard() {
+        try {
+            LeadDashboardResponse leadDashboardResponse = leadService.getCurrentLeadDashboard();
+            return Response.create("Gathered current lead dashboard", HttpStatus.OK, leadDashboardResponse);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -11,18 +11,13 @@ import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.exception.*;
 import com.tolgaozgun.gdscturkweb.mapper.AttendanceMapper;
-import com.tolgaozgun.gdscturkweb.mapper.BuddyTeamMapper;
 import com.tolgaozgun.gdscturkweb.model.LeadAttendance;
-import com.tolgaozgun.gdscturkweb.model.user.User;
 import com.tolgaozgun.gdscturkweb.repository.AttendanceRepository;
 import com.tolgaozgun.gdscturkweb.repository.AttendanceStatusRepository;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.FacilitatorRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.LeadRepository;
-import com.tolgaozgun.gdscturkweb.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -103,6 +98,15 @@ public class AttendanceService {
 
             LeadEntity leadEntity = optionalLeadEntity.get();
 
+            return getAttendancesByLeadEntity(leadEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public List<LeadAttendance> getAttendancesByLeadEntity(LeadEntity leadEntity) {
+        try {
             List<AttendanceStatusEntity> attendanceStatusEntities = attendanceStatusRepository.findAllByLead(leadEntity);
 
             List<AttendanceEntity> attendanceEntities = attendanceRepository.findAllByAttendanceStatusIn(attendanceStatusEntities);
