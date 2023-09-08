@@ -7,13 +7,14 @@ import { LeadPanelData } from './components/menus/navbar/LeadPanelData';
 import { FacilitatorPanelData } from './components/menus/navbar/FacilitatorPanelData';
 import useUserWithRole from './hooks/auth/useUserWithRole';
 import useAxiosSecure from './hooks/auth/useAxiosSecure';
-import { User, UserModel, UserType } from './types';
+import { User, UserType } from './types';
 
 
 
 const Layout = () => {
 	const { pathname } = useLocation();
-	const axiosSecure = useAxiosSecure();
+	const axiosSecure = useAxiosSecure(false);
+	let isLoggedIn = false;
 
 	const {
 		data: currentUser,
@@ -23,7 +24,7 @@ const Layout = () => {
 	
 	let user: User = {
 		id: 0,
-		name: "Loading..",
+		name: "Not logged in!",
 		surname: "",
 		email: "",
 		username: "Loading..",
@@ -38,6 +39,7 @@ const Layout = () => {
 
 	if (currentUser && currentUser.data) {
 		user = currentUser.data.user;
+		isLoggedIn = true;
 	}
 	
 	const tabs = [
@@ -73,7 +75,7 @@ const Layout = () => {
 	} else if (checkLink("/panel/facilitator")) {
 		navbar = <PanelNavbar panelName='Facilitator Panel' panelData={FacilitatorPanelData}/>;
 	} else {
-		header = <AppHeader user={user} tabs={tabs} />;
+		header = <AppHeader user={user} tabs={tabs} isLoggedIn={isLoggedIn} />;
 	}
 
 	

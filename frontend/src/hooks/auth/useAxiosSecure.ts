@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { axiosSecure } from '../../services/axios';
 import { User } from '../../types/UserTypes';
 import { useRefresh } from './useRefresh';
-import { NavigateFunction, useNavigate } from 'react-router';
+import { NavigateFunction, useLocation, useNavigate } from 'react-router';
 import { notifications } from '@mantine/notifications';
 import { useToken } from './useToken';
 
@@ -24,21 +24,28 @@ const loginAgain = (navigate: NavigateFunction) => {
 }
 
 
-const useAxiosSecure = () => {
+const useAxiosSecure = (shouldRedirect: boolean = true) => {
 	const token = useToken();
 	const refresh = useRefresh();
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	useEffect(() => {
 		const requestIntercept = axiosSecure.interceptors.request.use(
 			(config) => {
 				if (!config?.headers!['Authorization']) {
 					if (token == null) {
-						loginAgain(navigate);
+						if (location.pathname !== "/login" && shouldRedirect) {
+							loginAgain(navigate);
+							return config;
+						}
 					}
 					
 					if (token?.accessToken == null){
-						loginAgain(navigate);
+						if (location.pathname !== "/login" && shouldRedirect) {
+							loginAgain(navigate);
+							return config;
+						}
 					}
 
 					config.headers!['Authorization'] = `Bearer ${

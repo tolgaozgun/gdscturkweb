@@ -99,9 +99,10 @@ const useStyles = createStyles((theme) => ({
 interface SecondHeaderProps {
   user: User;
   tabs: { name: string; link: string }[];
+  isLoggedIn?: boolean;
 }
 
-export function AppHeader({ user, tabs }: SecondHeaderProps) {
+export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) {
   const { classes, theme, cx } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -114,9 +115,6 @@ export function AppHeader({ user, tabs }: SecondHeaderProps) {
   const handleHomePageRedirect = () => {
     navigate("/");
   }
-
-
-  const isLoggedIn = true;
 
   const items = tabs.map((tab) => (
     <Tabs.Tab value={tab.name} key={tab.name} onClick={() => {handleTabClick(tab.link)}}>
