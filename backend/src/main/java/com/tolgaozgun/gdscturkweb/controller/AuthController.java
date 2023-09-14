@@ -46,13 +46,13 @@ public class AuthController {
         }
     }
 
-
-    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(path = "refresh")
-    public void refreshPost() {}
-    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "refresh")
-    public void refreshGet() {}
+//
+//    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+//    @PostMapping(path = "refresh")
+//    public void refreshPost() {}
+//    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+//    @GetMapping(path = "refresh")
+//    public void refreshGet() {}
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/lead")

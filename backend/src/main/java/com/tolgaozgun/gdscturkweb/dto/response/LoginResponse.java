@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -25,6 +26,9 @@ public class LoginResponse {
         private String biography;
         private List<Topic> interests;
         private UserType userType;
+        private Date lastLoginDate;
+        private Date createdAt;
+        private Date lastEditedAt;
         private String accessToken;
         private String refreshToken;
 
@@ -39,6 +43,9 @@ public class LoginResponse {
                 this.profileImage = user.getProfileImage();
                 this.phoneNumber = user.getPhoneNumber();
                 this.biography = user.getBiography();
+                this.lastLoginDate = user.getLastLoginDate();
+                this.createdAt = user.getCreatedAt();
+                this.lastEditedAt = user.getLastEditedAt();
                 this.interests = interests;
                 this.accessToken = accessToken;
                 this.refreshToken = refreshToken;

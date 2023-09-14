@@ -8,6 +8,11 @@ export async function getAllCampaigns(axiosSecure: AxiosInstance) {
 	return res.data;
 }
 
+export async function getCurrentCampaigns(axiosSecure: AxiosInstance) {
+	const res = await axiosSecure.get<Response<Array<Campaign>>>(`${baseUrl}/campaigns/current`);
+	return res.data;
+}
+
 export async function getCampaignById(axiosSecure: AxiosInstance, campaignId: number) {
 	const res = await axiosSecure.get<Response<Campaign>>(`${baseUrl}/campaigns/${campaignId}`);
 	return res.data;

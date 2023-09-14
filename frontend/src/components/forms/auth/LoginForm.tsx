@@ -9,15 +9,17 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../../constants/colors';
 import { login } from '../../../services/auth';
 import { useMutation } from '@tanstack/react-query';
 import SubtleLinkButton from '../../buttons/SubtleLinkButton';
+import { useUser } from '../../../contexts/UserContext';
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
 	const navigate = useNavigate();
+	const { user, dispatch } = useUser();
 	const form = useForm({
 		initialValues: {
 			email: '',
@@ -51,13 +53,16 @@ const LoginForm = () => {
 					description: { color: theme.white },
 				}),
 			});
-			
-			let token = {
-				accessToken: data.data.accessToken,
-				refreshToken: data.data.refreshToken,
-			}
 
-			Cookies.set('token', JSON.stringify(token));
+			dispatch({type: "LOGIN", payload: data.data});
+			
+			// let token = {
+			// 	accessToken: data.data.accessToken,
+			// 	refreshToken: data.data.refreshToken,
+			// }
+
+			Cookies.set('accessToken', data.data.accessToken);
+			Cookies.set('refreshToken', data.data.refreshToken);
 			if (data?.data.userType === 'LEAD') {
 				navigate('/add-fare');
 			} else if (data.data.userType === 'CORE_TEAM_MEMBER') {

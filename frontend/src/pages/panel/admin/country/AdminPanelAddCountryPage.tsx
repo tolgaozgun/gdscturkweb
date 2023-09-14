@@ -1,9 +1,8 @@
 
-import { Center } from '@mantine/core';
 import AddCountryForm from '../../../../components/forms/panel/country/AddCountryForm';
 import { PageContainer } from '../../../../components/PageContainer';
 
-const AddCountryPage = () => {
+const AdminPanelAddCountryPage = () => {
 	return (
 
 		<PageContainer title="Add Country">
@@ -12,4 +11,4 @@ const AddCountryPage = () => {
 	);
 };
 
-export default AddCountryPage;
+export default AdminPanelAddCountryPage;

@@ -1,4 +1,4 @@
-import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
+import { Box, Text, Title, Button, Menu } from '@mantine/core';
 import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
@@ -11,7 +11,7 @@ import { PageContainer } from '../../../../components/PageContainer';
 
 type PageType = University
 
-const PanelUniversityListPage = () => {
+const AdminPanelUniversityListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
@@ -161,4 +161,4 @@ const PanelUniversityListPage = () => {
 	);
 };
 
-export default PanelUniversityListPage;
+export default AdminPanelUniversityListPage;

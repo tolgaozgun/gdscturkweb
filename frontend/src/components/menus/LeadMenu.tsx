@@ -9,15 +9,16 @@ import {
 	IconTicket,
 	IconUserCircle,
 } from '@tabler/icons-react';
-import { useLogout, useUser } from '../../hooks/auth';
+import { useLogout } from '../../hooks/auth';
 import SubtleLinkButton from '../buttons/SubtleLinkButton';
 import UserButton from '../buttons/UserButton';
+import { useUser } from '../../contexts/UserContext';
 
 const LeadMenu = () => {
-	const user = useUser();
+	const {user} = useUser();
 
 	if (!user) {
-		return null;
+		return <></>;
 	}
 
 	const { logout } = useLogout();
@@ -29,7 +30,7 @@ const LeadMenu = () => {
 		<Group position="center">
 			<Menu withArrow>
 				<Menu.Target>
-					<UserButton email={user.email} name={user.name} />
+					<UserButton email={user.email} name={user.name} image={user.profileImage} />
 				</Menu.Target>
 				<Menu.Dropdown>
 					<Menu.Item>

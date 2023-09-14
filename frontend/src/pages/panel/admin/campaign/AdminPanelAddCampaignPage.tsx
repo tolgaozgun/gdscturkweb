@@ -1,7 +1,8 @@
 
 import { PageContainer } from '../../../../components/PageContainer';
+import AddCampaignForm from '../../../../components/forms/panel/campaign/AddCampaignForm';
 
-const AddCityPage = () => {
+const AdminPanelAddCampaignPage = () => {
 	return (
 		<PageContainer title="Add City">
 			<AddCampaignForm padding={10} />
@@ -9,4 +10,4 @@ const AddCityPage = () => {
 	);
 };
 
-export default AddCityPage;
+export default AdminPanelAddCampaignPage;

@@ -34,6 +34,19 @@ public class CampaignController {
         }
     }
 
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping( path = "current")
+    public ResponseEntity<Object> getCurrentCampaigns() {
+        try {
+            List<Campaign> campaignList = campaignService.getCurrentCampaigns();
+            return Response.create("Gathered current campaigns", HttpStatus.OK, campaignList);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "{campaignId}")
     public ResponseEntity<Object> getCampaignById(@PathVariable Long campaignId) {

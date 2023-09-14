@@ -1,6 +1,6 @@
 export type Tokens = {
-	accessToken: string;
-	refreshToken: string;
+	accessToken: string | null;
+	refreshToken: string | null;
 };
 
 export type UserRegisterModel = {

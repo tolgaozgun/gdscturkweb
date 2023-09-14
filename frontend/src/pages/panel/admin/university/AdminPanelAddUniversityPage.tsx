@@ -1,9 +1,8 @@
 
-import { Center } from '@mantine/core';
 import AddUniversityForm from '../../../../components/forms/panel/university/AddUniversityForm';
 import { PageContainer } from '../../../../components/PageContainer';
 
-const AddUniversityPage = () => {
+const AdminPanelAddUniversityPage = () => {
 	return (
 		<PageContainer title="Add University">
 			<AddUniversityForm padding={10} />
@@ -11,4 +10,4 @@ const AddUniversityPage = () => {
 	);
 };
 
-export default AddUniversityPage;
+export default AdminPanelAddUniversityPage;

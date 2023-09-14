@@ -2,6 +2,7 @@ package com.tolgaozgun.gdscturkweb.controller;
 
 import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.request.coreTeam.InviteCoreTeamRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
@@ -56,6 +57,17 @@ public class CoreTeamMemberController {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+//    @PostMapping( path = "invite")
+//    public ResponseEntity<Object> inviteCoreTeamMember(@NotNull @RequestBody InviteCoreTeamRequest inviteCoreTeamRequest) {
+//        try {
+//            CoreTeamMemberDTO coreTeamMemberDTO = coreTeamMemberService.registerCoreTeam(inviteCoreTeamRequest);
+//            return Response.create("Invited core team member", HttpStatus.OK, coreTeamMemberDTO);
+//        } catch (Exception e) {
+//            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 
 }

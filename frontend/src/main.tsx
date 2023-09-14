@@ -17,14 +17,14 @@ import { FaqPage } from './pages/faq/FaqPage.tsx';
 import PanelQuestionsListPage from './pages/panel/admin/question/PanelQuestionsListPage.tsx';
 import CampaignPage from './pages/CampaignDisplayPage.tsx';
 import PanelBuddyTeamListPage from './pages/panel/admin/PanelBuddyTeamListPage.tsx';
-import PanelUniversityListPage from './pages/panel/admin/university/PanelUniversityListPage.tsx';
-import PanelCityListPage from './pages/panel/admin/city/PanelCityListPage.tsx';
-import PanelCountryListPage from './pages/panel/admin/country/PanelCountryListPage.tsx';
-import PanelCampaignListPage from './pages/panel/admin/campaign/PanelCampaignListPage.tsx';
+import AdminPanelUniversityListPage from './pages/panel/admin/university/AdminPanelUniversityListPage.tsx';
+import AdminPanelCityListPage from './pages/panel/admin/city/AdminPanelCityListPage.tsx';
+import AdminPanelCountryListPage from './pages/panel/admin/country/AdminPanelCountryListPage.tsx';
+import AdminPanelCampaignListPage from './pages/panel/admin/campaign/AdminPanelCampaignListPage.tsx';
 import PanelQuestionCategoriesListPage from './pages/panel/admin/question/PanelQuestionCategoriesListPage.tsx';
-import AddCityPage from './pages/panel/admin/city/AddCityPage.tsx';
-import AddCountryPage from './pages/panel/admin/country/AddCountryPage.tsx';
-import AddUniversityPage from './pages/panel/admin/university/AddUniversityPage.tsx';
+import AddCityPage from './pages/panel/admin/city/AdminPanelAddCityPage.tsx';
+import AdminPanelAddCountryPage from './pages/panel/admin/country/AdminPanelAddCountryPage.tsx';
+import AdminPanelAddUniversityPage from './pages/panel/admin/university/AdminPanelAddUniversityPage.tsx';
 import PanelAddQuestionPage from './pages/panel/admin/question/PanelAddQuestionPage.tsx';
 import MainPage from './pages/MainPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
@@ -32,11 +32,22 @@ import LeadDashboardPage from './pages/panel/lead/LeadDashboardPage.tsx';
 import FacilitatorDashboardPage from './pages/panel/facilitator/FacilitatorDashboardPage.tsx';
 import LeadPanelAttendancePage from './pages/panel/lead/LeadPanelAttendancePage.tsx';
 import FacilitatorPanelAttendancePage from './pages/panel/facilitator/buddy-team/FacilitatorPanelAttendancePage.tsx';
-import AddAttendancePage from './pages/panel/facilitator/buddy-team/AddAttendancePage.tsx';
+import FacilitatorPanelAddAttendancePage from './pages/panel/facilitator/buddy-team/FacilitatorPanelAddAttendancePage.tsx';
 import EditBuddyTeamForm from './components/forms/panel/buddy-team/EditBuddyTeamForm.tsx';
 import CreateFacilitatorPage from './pages/panel/admin/facilitator/CreateFacilitatorPage.tsx';
 import CreateCoreTeamPage from './pages/panel/admin/core-team/CreateCoreTeamPage.tsx';
 import CreateLeadPage from './pages/panel/admin/lead/CreateLeadPage.tsx';
+import { UserProvider } from './contexts/UserContext.tsx';
+import LeadPanelCampaignListPage from './pages/panel/lead/campaign/LeadPanelCampaignListPage.tsx';
+import LeadPanelUniversityListPage from './pages/panel/lead/university/LeadPanelUniversityListPage.tsx';
+import LeadPanelCityListPage from './pages/panel/lead/city/LeadPanelCityListPage.tsx';
+import LeadPanelCountryListPage from './pages/panel/lead/country/LeadPanelCountryListPage.tsx';
+import LeadPanelCurrentCampaignListPage from './pages/panel/lead/campaign/LeadPanelCurrentCampaignListPage.tsx';
+import FacilitatorPanelUniversityListPage from './pages/panel/facilitator/university/FacilitatorPanelUniversityListPage.tsx';
+import FacilitatorPanelCityListPage from './pages/panel/facilitator/city/FacilitatorPanelCityListPage.tsx';
+import FacilitatorPanelCountryListPage from './pages/panel/facilitator/country/FacilitatorPanelCountryListPage.tsx';
+import FacilitatorPanelCampaignListPage from './pages/panel/facilitator/campaign/FacilitatorPanelCampaignListPage.tsx';
+import FacilitatorPanelCurrentCampaignListPage from './pages/panel/facilitator/campaign/FacilitatorPanelCurrentCampaignListPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -116,7 +127,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/admin/campaigns/list',
-						element: <PanelCampaignListPage />
+						element: <AdminPanelCampaignListPage />
 					},
 					{
 						path: '/panel/admin/campaigns/add',
@@ -124,15 +135,15 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/admin/universities/list',
-						element: <PanelUniversityListPage />
+						element: <AdminPanelUniversityListPage />
 					},
 					{
 						path: '/panel/admin/universities/add',
-						element: <AddUniversityPage />
+						element: <AdminPanelAddUniversityPage />
 					},
 					{
 						path: '/panel/admin/cities/list',
-						element: <PanelCityListPage />
+						element: <AdminPanelCityListPage />
 					},
 					{
 						path: '/panel/admin/cities/add',
@@ -140,11 +151,11 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/admin/countries/list',
-						element: <PanelCountryListPage />
+						element: <AdminPanelCountryListPage />
 					},
 					{
 						path: '/panel/admin/countries/add',
-						element: <AddCountryPage />
+						element: <AdminPanelAddCountryPage />
 					},
 					{
 						path: '/panel/admin/questions/list',
@@ -188,7 +199,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/facilitator/buddy-teams/attendance/add',
-						element: <AddAttendancePage />
+						element: <FacilitatorPanelAddAttendancePage />
 					},
 					{
 						path: '/panel/facilitator/buddy-teams/all',
@@ -196,23 +207,23 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/facilitator/campaigns/current',
-						element: <NotFoundPage />
+						element: <FacilitatorPanelCurrentCampaignListPage />
 					},
 					{
 						path: '/panel/facilitator/campaigns/all',
-						element: <NotFoundPage />
+						element: <FacilitatorPanelCampaignListPage />
 					},
 					{
 						path: '/panel/facilitator/universities/list',
-						element: <NotFoundPage />
+						element: <FacilitatorPanelUniversityListPage />
 					},
 					{
 						path: '/panel/facilitator/cities/list',
-						element: <NotFoundPage />
+						element: <FacilitatorPanelCityListPage />
 					},
 					{
 						path: '/panel/facilitator/countries/list',
-						element: <NotFoundPage />
+						element: <FacilitatorPanelCountryListPage />
 					},
 					{
 						path: '/panel/facilitator/questions/list',
@@ -256,23 +267,23 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/lead/campaigns/current',
-						element: <NotFoundPage />
+						element: <LeadPanelCurrentCampaignListPage />
 					},
 					{
 						path: '/panel/lead/campaigns/all',
-						element: <NotFoundPage />
+						element: <LeadPanelCampaignListPage />
 					},
 					{
 						path: '/panel/lead/universities/list',
-						element: <NotFoundPage />
+						element: <LeadPanelUniversityListPage />
 					},
 					{
 						path: '/panel/lead/cities/list',
-						element: <NotFoundPage />
+						element: <LeadPanelCityListPage />
 					},
 					{
 						path: '/panel/lead/countries/list',
-						element: <NotFoundPage />
+						element: <LeadPanelCountryListPage />
 					},
 					{
 						path: '/panel/lead/questions/list',
@@ -304,7 +315,9 @@ root.render(
 		<QueryClientProvider client={queryClient}>
 			<ContextMenuProvider>
 				<ProviderWrapper>
-					<RouterProvider router={router} />
+				    <UserProvider>
+						<RouterProvider router={router} />
+					</UserProvider>
 				</ProviderWrapper>
 			</ContextMenuProvider>
 		</QueryClientProvider>

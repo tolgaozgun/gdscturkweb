@@ -27,7 +27,8 @@ import {
 } from '@tabler/icons-react';
 import GDSCLogo from '../../assets/gdsc-logo.png';
 import { useNavigate } from 'react-router';
-import { User } from '../../types';
+import { User, UserType } from '../../types';
+import { useUser } from '../../contexts/UserContext';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -122,15 +123,8 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
     </Tabs.Tab>
   ));
 
-  return (
-    <div className={classes.header}>
-      <Container className={classes.mainSection}>
-        <Group position="apart">
-          
-          <Image src={GDSCLogo} onClick={handleHomePageRedirect} height={28} width={60} />
-
-          { isLoggedIn && 
-          <>
+  let userBar = (
+    <>
           <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
 
           <Menu
@@ -155,7 +149,7 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item
+              {/* <Menu.Item
                 icon={<IconHeart size="0.9rem" color={theme.colors.red[6]} stroke={1.5} />}
               >
                 Liked posts
@@ -188,11 +182,48 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
               </Menu.Item>
               <Menu.Item color="red" icon={<IconTrash size="0.9rem" stroke={1.5} />}>
                 Delete account
-              </Menu.Item>
+              </Menu.Item> */}
+
+              <Menu.Label>Settings</Menu.Label>
+                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
+                    Account settings
+                </Menu.Item>
+                <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>Logout</Menu.Item>
             </Menu.Dropdown>
           </Menu>
           </>
-          }
+  )
+
+  if (!isLoggedIn) {
+    userBar = (
+      <>
+      <Group 
+        spacing={1.0}>
+        <UnstyledButton
+            className={cx(classes.user)}
+            onClick={() => {navigate("/login")}}
+          >
+            Sign In
+        </UnstyledButton>
+        <UnstyledButton
+            className={cx(classes.user)}
+            onClick={() => {navigate("/register")}}
+          >
+            Register
+        </UnstyledButton>
+        </Group>
+      </>
+    )
+  }
+
+  return (
+    <div className={classes.header}>
+      <Container className={classes.mainSection}>
+        <Group position="apart">
+          
+          <Image src={GDSCLogo} onClick={handleHomePageRedirect} height={28} width={60} />
+
+          { userBar }
         </Group>
       </Container>
       <Container>
@@ -212,15 +243,21 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
               ml="auto"
               justify="flex-end"
             >
+              {user.userType == UserType.Lead &&
               <Tabs.Tab value="Lead Panel" key="Lead Panel" onClick={() => {handleTabClick("/panel/lead")}}>
                 Lead Panel
               </Tabs.Tab>
+              }
+              {user.userType == UserType.Facilitator &&
               <Tabs.Tab value="Facilitator Panel" key="Facilitator Panel" onClick={() => {handleTabClick("/panel/facilitator")}}>
                 Facilitator Panel
               </Tabs.Tab>
+              }
+              {user.userType == UserType.Admin &&
               <Tabs.Tab value="Admin Panel" key="Admin Panel" onClick={() => {handleTabClick("/panel/admin")}}>
                 Admin Panel
               </Tabs.Tab>
+              }
             </Flex>
           </Tabs.List>
         </Tabs>

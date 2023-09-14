@@ -21,6 +21,7 @@ import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyUnverifiedEx
 import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyVerifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.mapper.*;
+import com.tolgaozgun.gdscturkweb.model.EmailDetails;
 import com.tolgaozgun.gdscturkweb.model.Topic;
 import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
@@ -63,6 +64,7 @@ public class AuthService {
     // JWT
 
     private final JWTUserService jwtUserService;
+    private final EmailService emailService;
 
     // Repositories
 
@@ -211,30 +213,31 @@ public class AuthService {
 
     protected UserEntity checkAndRegisterUser(UserRegister userRegister, UserType userType) throws Exception {
         boolean userExist = userRepository.existsByUsername(userRegister.getUsername());
-        System.out.println("CheckandRegister1");
         if (userExist) {
             throw new UserAlreadyExistsException("This username already exists");
         }
-        System.out.println("CheckandRegister2");
 
         boolean emailExist = userRepository.existsByEmail(userRegister.getEmail());
-        System.out.println("CheckandRegister3");
 
         if (emailExist) {
             throw new UserAlreadyExistsException("This email already exists");
         }
-        System.out.println("CheckandRegister4");
 
         userRegister.setPassword(encodePassword(userRegister.getPassword()));
-        System.out.println("CheckandRegister5");
 
         UserEntity userEntity = new UserEntity(userRegister, userType);
-        System.out.println("CheckandRegister6");
 
         userEntity.setCreatedAt(new Date());
         userEntity.setLastEditedAt(new Date());
         userEntity.setLastLoginDate(null);
-        System.out.println("CheckandRegister7");
+
+        EmailDetails emailDetails = new EmailDetails();
+        emailDetails.setRecipient(userRegister.getEmail());
+        emailDetails.setSubject("GDSC Turkiye Email Verification");
+        emailDetails.setMsgBody("Your verification code is: " + userEntity.getVerificationCode());
+        
+
+
 
         return userRepository.save(userEntity);
 
@@ -265,6 +268,7 @@ public class AuthService {
             }
 
             userEntity.setIsVerified(true);
+
 
             return userMapper.toDTO(userRepository.save(userEntity));
 

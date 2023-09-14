@@ -1,4 +1,4 @@
-import { Box, Text, Center, Title, Button, Menu } from '@mantine/core';
+import { Box, Text, Title, Button, Menu } from '@mantine/core';
 import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
 import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
 import { useMemo } from 'react';
@@ -6,18 +6,18 @@ import LoadingPage from '../../../LoadingPage';
 import BaseTable from '../../../../components/table/BaseTable';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
 import { Campaign } from '../../../../types/CampaignTypes';
-import useGetAllCampaigns from '../../../../hooks/campaign/useGetAllCampaigns';
 import { PageContainer } from '../../../../components/PageContainer';
+import useGetCurrentCampaigns from '../../../../hooks/campaign/useGetCurrentCampaigns';
 
 type PageType = Campaign
 
-const PanelCampaignListPage = () => {
+const LeadPanelCurrentCampaignListPage = () => {
 	const axiosSecure = useAxiosSecure();
 
 	const {
 		data: allCampaigns,
 		isLoading: isCampaignsLoading,
-	} = useGetAllCampaigns(axiosSecure);
+	} = useGetCurrentCampaigns(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [
@@ -173,4 +173,4 @@ const PanelCampaignListPage = () => {
 	);
 };
 
-export default PanelCampaignListPage;
+export default LeadPanelCurrentCampaignListPage;

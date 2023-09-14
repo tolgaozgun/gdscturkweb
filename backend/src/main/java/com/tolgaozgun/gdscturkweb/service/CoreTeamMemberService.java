@@ -2,11 +2,13 @@ package com.tolgaozgun.gdscturkweb.service;
 
 
 import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
+import com.tolgaozgun.gdscturkweb.dto.request.coreTeam.InviteCoreTeamRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.user.register.CoreTeamRegister;
 import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.CoreTeamMemberEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.UniversityNotFoundException;
@@ -26,12 +28,43 @@ public class CoreTeamMemberService {
     private final CoreTeamMemberRepository coreTeamMemberRepository;
     private final UniversityRepository universityRepository;
     private final CoreTeamMapper coreTeamMapper;
+
     private final AuthService authService;
+    private final LeadService leadService;
+
 
     public List<CoreTeamMemberDTO> getAllCoreTeamMembers() {
         try {
             List<CoreTeamMemberEntity> coreTeamMemberEntities = coreTeamMemberRepository.findAll();
             return coreTeamMapper.toDTO(coreTeamMemberEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public void inviteCoreTeamMember(InviteCoreTeamRequest inviteCoreTeamRequest) throws Exception {
+        try {
+
+            UserEntity userEntity = authService.getCurrentUserEntity();
+
+            if (userEntity.getUserType() != UserType.LEAD) {
+                throw new Exception("Only lead can invite core team member");
+            }
+
+            LeadEntity leadEntity = leadService.getLeadEntityFromUserEntity(userEntity);
+
+            UniversityEntity universityEntity = leadEntity.getUniversity();
+
+            if (universityEntity == null) {
+                throw new Exception("Lead has no university");
+            }
+
+
+            String email = inviteCoreTeamRequest.getEmail();
+
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

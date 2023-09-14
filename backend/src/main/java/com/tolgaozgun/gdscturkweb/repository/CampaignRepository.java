@@ -6,6 +6,7 @@ import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,8 @@ import java.util.Optional;
 public interface CampaignRepository extends JpaRepository<CampaignEntity, Long> {
 
     Optional<CampaignEntity> findById(@NonNull Long id);
+
+    List<CampaignEntity> findAllByStartDateAfterAndEndDateBefore(Date startDate, Date endDate);
 
     List<CampaignEntity> findAll();
 

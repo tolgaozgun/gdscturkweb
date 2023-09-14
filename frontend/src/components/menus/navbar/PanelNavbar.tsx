@@ -3,6 +3,7 @@ import { LinksGroup } from './NavbarLinksGroup';
 import Logo from '../../../assets/gdsc-logo.png';
 import UserMenuItem from '../../UserMenuItem';
 import { useNavigate } from 'react-router';
+import { useUser } from '../../../contexts/UserContext';
 
 
 
@@ -49,6 +50,7 @@ interface PanelNavbarProps {
 ;
 export function PanelNavbar({panelName, panelData}: PanelNavbarProps) {
   const { classes } = useStyles();
+  const {user} = useUser();
   const navigate = useNavigate();
   const links = panelData.map((item) => <LinksGroup {...item} key={item.label} />);
 
@@ -72,7 +74,7 @@ export function PanelNavbar({panelName, panelData}: PanelNavbarProps) {
                 </Navbar.Section>
 
                 <Navbar.Section className={classes.footer}>
-                  <UserMenuItem />
+                  <UserMenuItem user={user!}/>
                 </Navbar.Section>
             </Navbar>
             

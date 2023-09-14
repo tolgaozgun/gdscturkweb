@@ -2,8 +2,13 @@ import { Menu } from "@mantine/core";
 import { IconHeart, IconLogout, IconMessage, IconPlayerPause, IconSettings, IconStar, IconSwitchHorizontal, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { UserButton } from "./UserButton";
+import { User } from "../types";
 
-const UserMenuItem = () => {
+interface UserMenuItemProps {
+    user: User;
+}
+
+const UserMenuItem = ({user}: UserMenuItemProps) => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -14,14 +19,14 @@ const UserMenuItem = () => {
     return (
         <>
         <UserButton
-        image="https://picsum.photos/200"
-        name="Tolga Ozgun"
-        email="tolgaozgunn@gmail.com"
+        image={user.profileImage}
+        name={user.name + " " + user.surname}
+        email={user.email}
         onClick={handleProfileClick}
         />
         {isMenuOpen && 
             <Menu>
-                <Menu.Item
+                {/* <Menu.Item
                     icon={<IconHeart size="0.9rem" stroke={1.5} />}
                 >
                     Liked posts
@@ -54,7 +59,13 @@ const UserMenuItem = () => {
                 </Menu.Item>
                 <Menu.Item color="red" icon={<IconTrash size="0.9rem" stroke={1.5} />}>
                     Delete account
+                </Menu.Item> */}
+                <Menu.Label>Settings</Menu.Label>
+                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
+                    Account settings
                 </Menu.Item>
+                <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>Logout</Menu.Item>
+
             </Menu>
         }
     </>

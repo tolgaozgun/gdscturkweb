@@ -2,7 +2,7 @@
 import { PageContainer } from '../../../../components/PageContainer';
 import AddAttendanceForm from '../../../../components/forms/panel/attendance/AddAttendanceForm';
 
-const AddAttendancePage = () => {
+const FacilitatorPanelAddAttendancePage = () => {
 	return (
 
 		<PageContainer title="Add Country">
@@ -11,4 +11,4 @@ const AddAttendancePage = () => {
 	);
 };
 
-export default AddAttendancePage;
+export default FacilitatorPanelAddAttendancePage;

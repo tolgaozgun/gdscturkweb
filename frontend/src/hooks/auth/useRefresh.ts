@@ -1,11 +1,15 @@
-import Cookies from 'js-cookie';
 import { refresh as refreshFn } from '../../services/auth';
 import { isErrorResponse } from '../../utils/utils';
 import { axiosSecure } from '../../services/axios';
-import { useToken } from './useToken';
+import { useUser } from '../../contexts/UserContext';
 
 export const useRefresh = () => {
-	const token = useToken();
+	const {user, dispatch} = useUser();
+
+	const token = {
+		accessToken: user?.accessToken,
+		refreshToken: user?.refreshToken,
+	}
 
 	const refresh = async () => {
 		if (!token) {
@@ -21,14 +25,39 @@ export const useRefresh = () => {
 		if (isErrorResponse(res)) {
 			return res;
 		}
+		
+		dispatch({type: "UPDATE_USER", payload: {
+			accessToken: res.data.accessToken ? res.data.accessToken : "",
+		}})
 
-		Cookies.set(
-			'token',
-			JSON.stringify({
-				...token,
-				refreshToken: res.data.refreshToken,
-			}),
-		);
+		return res;
+	};
+
+	return refresh;
+};
+
+
+export const useRefreshWithToken = (accessToken: string, refreshToken: string) => {
+
+	const token = {
+		accessToken: accessToken,
+		refreshToken: refreshToken,
+	}
+
+	const refresh = async () => {
+		if (!token) {
+			return null;
+		}
+
+		if(!token.refreshToken) {
+			return null;
+		}
+
+		const res = await refreshFn(token.refreshToken, axiosSecure);
+
+		if (isErrorResponse(res)) {
+			return res;
+		}
 
 		return res;
 	};

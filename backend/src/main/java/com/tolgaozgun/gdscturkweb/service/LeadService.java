@@ -48,6 +48,19 @@ public class LeadService {
         }
     }
 
+    protected LeadEntity getLeadEntityFromUserEntity(UserEntity userEntity) {
+        try {
+            Optional<LeadEntity> optionalLeadEntity = leadRepository.findByUser(userEntity);
+            if (optionalLeadEntity.isEmpty()) {
+                throw new LeadNotFoundException();
+            }
+            return optionalLeadEntity.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 
     public LeadDTO registerLead(LeadRegisterRequest leadRegisterRequest) throws Exception {
         try {

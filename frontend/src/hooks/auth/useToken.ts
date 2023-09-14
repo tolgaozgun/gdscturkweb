@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
-import { Token } from '../../types';
 
 export const useToken = () => {
-	const token = Cookies.get('token');
-	if (token) {
-		return JSON.parse(token) as Token;
-	}
+	const accessToken = Cookies.get('accessToken');
+	const refreshToken = Cookies.get('refreshToken');
 
-	return null;
+	return {
+		accessToken: accessToken ? accessToken : null,
+		refreshToken: refreshToken ? refreshToken : null,
+	};
 };
