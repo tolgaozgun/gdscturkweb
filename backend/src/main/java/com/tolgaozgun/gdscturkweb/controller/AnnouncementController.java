@@ -6,6 +6,7 @@ import com.tolgaozgun.gdscturkweb.dto.request.announcement.EditAnnouncementReque
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.service.AnnouncementService;
+import com.tolgaozgun.gdscturkweb.service.DashboardScrapeService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.List;
 public class AnnouncementController {
 
     private final AnnouncementService announcementService;
+    private final DashboardScrapeService dashboardScrapeService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "")
@@ -72,6 +74,17 @@ public class AnnouncementController {
         try {
             AnnouncementDTO announcement = announcementService.editAnnouncement(id, editAnnouncementRequest);
             return Response.create("Announcement edited successfully", HttpStatus.OK, announcement);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "scrape/{chapterName}")
+    public ResponseEntity<Object> scrapeChapterEvents(@PathVariable String chapterName) {
+        try {
+            dashboardScrapeService.scrapeEvents(chapterName);
+            return Response.create("Scraped chapter events", HttpStatus.OK);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

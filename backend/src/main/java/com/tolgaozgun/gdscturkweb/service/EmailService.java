@@ -1,5 +1,7 @@
 package com.tolgaozgun.gdscturkweb.service;
 
+import com.tolgaozgun.gdscturkweb.entity.EmailVerificationEntity;
+import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.model.EmailDetails;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -26,7 +28,7 @@ public class EmailService {
 
     // Method 1
     // To send a simple email
-    public boolean sendSimpleMail(EmailDetails details) {
+    protected boolean sendSimpleMail(EmailDetails details) {
 
         // Try block to check for exceptions
         try {
@@ -54,7 +56,7 @@ public class EmailService {
 
     // Method 2
     // To send an email with attachment
-    public boolean sendMailWithAttachment(EmailDetails details) throws MessagingException {
+    protected boolean sendMailWithAttachment(EmailDetails details) throws MessagingException {
         // Creating a mime message
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
@@ -86,6 +88,23 @@ public class EmailService {
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
+        }
+    }
+
+    protected boolean sendEmailVerification(UserEntity userEntity, EmailVerificationEntity emailVerificationEntity) {
+        try {
+
+
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(userEntity.getEmail());
+            emailDetails.setSubject("GDSCTurk Email Verification");
+            emailDetails.setMsgBody("Your verification code is: " + emailVerificationEntity.getVerificationCode());
+
+
+            return sendSimpleMail(emailDetails);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
     }
 }

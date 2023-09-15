@@ -27,6 +27,8 @@ public class SecurityConfig {
 			"/v3/api-docs/**",
 			"/swagger-ui/**",
 			"/api/v1/auth/login",
+			"/api/v1/email-verification/verify",
+			"/api/v1/email-verification/resend",
 			"/api/v1/auth/register",
 			"/api/v1/auth/register/lead",
 			"/api/v1/auth/register/core-team",

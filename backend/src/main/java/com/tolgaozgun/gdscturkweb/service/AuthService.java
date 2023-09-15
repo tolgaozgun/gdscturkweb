@@ -3,27 +3,23 @@ package com.tolgaozgun.gdscturkweb.service;
 import com.tolgaozgun.gdscturkweb.dto.*;
 import com.tolgaozgun.gdscturkweb.dto.request.LoginRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.VerifyUserRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.GooglerRegisterRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.LoginResponse;
 import com.tolgaozgun.gdscturkweb.dto.response.UserWithRoleResponse;
 import com.tolgaozgun.gdscturkweb.dto.user.register.*;
-import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
+import com.tolgaozgun.gdscturkweb.entity.UserInviteEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.*;
-import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.PasswordNotMatchException;
 import com.tolgaozgun.gdscturkweb.exception.UserAlreadyExistsException;
 import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.invitation.InvitationNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.verification.EmailNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyUnverifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyVerifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.mapper.*;
 import com.tolgaozgun.gdscturkweb.model.EmailDetails;
 import com.tolgaozgun.gdscturkweb.model.Topic;
-import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.*;
@@ -64,12 +60,11 @@ public class AuthService {
     // JWT
 
     private final JWTUserService jwtUserService;
-    private final EmailService emailService;
+    private final EmailVerificationService emailVerificationService;
+    private final UserInvitationService userInvitationService;
 
     // Repositories
 
-    private final BuddyTeamRepository buddyTeamRepository;
-    private final UniversityRepository universityRepository;
     private final CoreTeamMemberRepository coreTeamMemberRepository;
     private final UserRepository userRepository;
     private final LeadRepository leadRepository;
@@ -83,6 +78,10 @@ public class AuthService {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return userMapper.toDTO(userEntity);
+    }
+
+    public boolean userExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     protected UserEntity getCurrentUserEntity() {
@@ -170,30 +169,20 @@ public class AuthService {
             }
             UserEntity dbUser = emailEntity.get();
 
-            if (!dbUser.getIsVerified()) {
-                throw new UserNotVerifiedException();
-            }
-
-//            System.out.println(user.getUsername());
-//
-//            if (usernameEntity.isEmpty()) {
-//                if (emailEntity.isEmpty()) {
-//                    throw new UserNotFoundException("user is not found");
-//                } else {
-//                    dbUser = emailEntity.get();
-//                }
-//            } else {
-//                dbUser = usernameEntity.get();
-//            }
-
             String hashedPassword = dbUser.getPassword();
             boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword); /// change
 
             if (!passwordMatch) {
-                throw new PasswordNotMatchException("passwords do not match");
+                throw new PasswordNotMatchException("Invalid password");
             }
 
-            System.out.println("passwords are matched");
+            if(!dbUser.getIsEmailVerified()) {
+                throw new EmailNotVerifiedException();
+            }
+
+            if (!dbUser.getIsVerified()) {
+                throw new UserNotVerifiedException();
+            }
 
             List<Topic> interests = topicMapper.toModel(dbUser.getInterests());
 
@@ -205,7 +194,6 @@ public class AuthService {
             dbUser = userRepository.save(dbUser);
             return new LoginResponse(dbUser, interests, accessToken, refreshToken);
         } catch (Exception e) {
-            System.out.println("login exception");
             e.printStackTrace();
             throw e;
         }
@@ -223,6 +211,19 @@ public class AuthService {
             throw new UserAlreadyExistsException("This email already exists");
         }
 
+        String invitationCode = userRegister.getInvitationCode();
+
+        if (invitationCode != null) {
+            UserInviteEntity userInviteEntity =
+                    userInvitationService.getInvitation(userRegister.getEmail(), userType, invitationCode);
+
+            if (userInviteEntity == null) {
+                throw new InvitationNotFoundException();
+            }
+            userInviteEntity.setIsValid(false);
+            userInvitationService.save(userInviteEntity);
+        }
+
         userRegister.setPassword(encodePassword(userRegister.getPassword()));
 
         UserEntity userEntity = new UserEntity(userRegister, userType);
@@ -231,16 +232,11 @@ public class AuthService {
         userEntity.setLastEditedAt(new Date());
         userEntity.setLastLoginDate(null);
 
-        EmailDetails emailDetails = new EmailDetails();
-        emailDetails.setRecipient(userRegister.getEmail());
-        emailDetails.setSubject("GDSC Turkiye Email Verification");
-        emailDetails.setMsgBody("Your verification code is: " + userEntity.getVerificationCode());
-        
+        userEntity = userRepository.save(userEntity);
 
+        emailVerificationService.sendVerificationCodeWithEntity(userEntity);
 
-
-        return userRepository.save(userEntity);
-
+        return userEntity;
     }
 
 

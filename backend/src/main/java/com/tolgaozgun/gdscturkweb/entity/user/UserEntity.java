@@ -52,6 +52,9 @@ public class UserEntity {
     @Column(nullable = false)
     private Boolean isVerified;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean isEmailVerified;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserType userType;

@@ -48,6 +48,9 @@ import FacilitatorPanelCityListPage from './pages/panel/facilitator/city/Facilit
 import FacilitatorPanelCountryListPage from './pages/panel/facilitator/country/FacilitatorPanelCountryListPage.tsx';
 import FacilitatorPanelCampaignListPage from './pages/panel/facilitator/campaign/FacilitatorPanelCampaignListPage.tsx';
 import FacilitatorPanelCurrentCampaignListPage from './pages/panel/facilitator/campaign/FacilitatorPanelCurrentCampaignListPage.tsx';
+import SendEmailVerificationPage from './pages/auth/SendEmailVerificationPage.tsx';
+import EmailVerifyPage from './pages/auth/EmailVerifyPage.tsx';
+import LeadPanelBuddyTeamPage from './pages/panel/lead/LeadPanelBuddyTeamPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -68,6 +71,26 @@ const router = createBrowserRouter([
 					{
 						path: '/register',
 						element: <RegisterPage />,
+					},
+					{
+						path: '/verify-email',
+						element: <SendEmailVerificationPage />,
+					},
+					{
+						path: '/verify-email/:email',
+						element: <SendEmailVerificationPage />,
+					},
+					{
+						path: '/verify-email/step-2/',
+						element: <EmailVerifyPage />
+					},
+					{
+						path: '/verify-email/step-2/:email',
+						element: <EmailVerifyPage />
+					},
+					{
+						path: '/verify-email/step-2/:email/:token',
+						element: <EmailVerifyPage />
 					},
 					{
 						path: '/map',
@@ -255,7 +278,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/lead/buddy-teams/my',
-						element: <NotFoundPage />
+						element: <LeadPanelBuddyTeamPage />
 					},
 					{
 						path: '/panel/lead/buddy-teams/attendance',
