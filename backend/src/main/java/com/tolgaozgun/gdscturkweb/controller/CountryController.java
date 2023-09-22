@@ -29,7 +29,8 @@ public class CountryController {
             List<Country> countryList = countryService.getAllCountries();
             return Response.create("Gathered all countries", HttpStatus.OK, countryList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+            // HTTP.500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);
         }
     }
 
@@ -41,8 +42,8 @@ public class CountryController {
             Country country = countryService.getCountry(countryId);
             return Response.create("Found the countru", HttpStatus.OK, country);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -52,8 +53,8 @@ public class CountryController {
             Country country = countryService.createCountry(createCountryRequest);
             return Response.create("Country created successfully", HttpStatus.OK, country);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -64,8 +65,8 @@ public class CountryController {
             Country country = countryService.editCountry(countryId, editCountryRequest);
             return Response.create("Country edited successfully", HttpStatus.OK, country);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

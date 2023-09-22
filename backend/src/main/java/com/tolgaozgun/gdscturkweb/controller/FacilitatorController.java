@@ -31,8 +31,8 @@ public class FacilitatorController {
             List<FacilitatorDTO> facilitatorList = facilitatorService.getAllFacilitators();
             return Response.create("Gathered all facilitators", HttpStatus.OK, facilitatorList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -42,8 +42,8 @@ public class FacilitatorController {
             FacilitatorDTO facilitatorDTO = facilitatorService.registerFacilitator(facilitatorRegisterRequest);
             return Response.create("Created facilitator", HttpStatus.OK, facilitatorDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

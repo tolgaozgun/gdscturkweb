@@ -20,7 +20,7 @@ import { forwardRef } from 'react';
 import { IconFlag } from '@tabler/icons-react';
 import { FacilitatorModel, LeadModel } from '../../../../types';
 import { EditBuddyTeam } from '../../../../types/BuddyTeamTypes';
-import { updateBuddyTeamById } from '../../../../services/buddy-team/BuddyTeamService';
+import { updateBuddyTeamById } from '../../../../services/teams/BuddyTeamService';
 import { useMutation } from '@tanstack/react-query';
 import { notifications } from '@mantine/notifications';
 import { isErrorResponse } from '../../../../utils/utils';
@@ -28,7 +28,7 @@ import { isErrorResponse } from '../../../../utils/utils';
 
 interface UserSelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
 	name: string;
-    userId: number;
+  userId: number;
 	picture: string;
 	label: string;
 }
@@ -113,7 +113,6 @@ const EditBuddyTeamForm = () => {
     if (validation.hasErrors) {
       return;
     }
-    console.log(form.values)
     // Prepare the updated buddy team data from the form values
     const updatedBuddyTeam: EditBuddyTeam = {
         // Parse form.values.facilitator to number if needed
@@ -149,7 +148,6 @@ const EditBuddyTeamForm = () => {
 
 
 	const leadList: Array<LeadModel> = allLeads?.data || [];
-	console.log(leadList)
 	const leadData: Array<SelectItem> = leadList!
 		.map((lead) => {
 			return {
@@ -160,10 +158,8 @@ const EditBuddyTeamForm = () => {
 				label: lead.user.name + " " + lead.user.surname,
 			};
 		});
-	console.log(leadData);
 
 	const facilitatorList: Array<FacilitatorModel> = allFacilitators?.data || [];
-	console.log(leadList)
 	const facilitatorData: Array<SelectItem> = facilitatorList!
 		.map((facilitator) => {
 			return {

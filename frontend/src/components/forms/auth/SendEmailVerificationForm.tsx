@@ -50,7 +50,6 @@ import { useNavigate } from 'react-router';
     const { resendVerification } = useResendEmailVerification();
     const navigate = useNavigate();
 
-    console.log("email is: " + email);
 	  const form = useForm({
 		initialValues: {
 			email: email ? email : '',

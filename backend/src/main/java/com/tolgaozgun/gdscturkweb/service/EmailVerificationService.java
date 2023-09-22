@@ -121,7 +121,7 @@ public class EmailVerificationService {
             EmailVerificationEntity emailVerificationEntity = optEmailVerificationEntity.get();
 
             if (emailVerificationEntity.getValidUntil() == null ||
-                    emailVerificationEntity.getValidUntil().after(new Date())) {
+                    emailVerificationEntity.getValidUntil().before(new Date())) {
                 Date expiredDate = emailVerificationEntity.getValidUntil();
                 if (expiredDate == null)
                     throw new EmailVerificationExpiredException();

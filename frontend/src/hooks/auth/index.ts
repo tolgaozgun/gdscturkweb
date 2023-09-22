@@ -4,4 +4,3 @@ export * from './useLogout';
 export * from './useRefresh';
 export * from './useRegisterLead';
 export * from './useRegisterCoreTeam';
-export * from './useUser';

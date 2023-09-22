@@ -9,9 +9,7 @@ import com.tolgaozgun.gdscturkweb.dto.user.register.*;
 import com.tolgaozgun.gdscturkweb.entity.UserInviteEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.*;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
-import com.tolgaozgun.gdscturkweb.exception.PasswordNotMatchException;
-import com.tolgaozgun.gdscturkweb.exception.UserAlreadyExistsException;
-import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.*;
 import com.tolgaozgun.gdscturkweb.exception.invitation.InvitationNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.verification.EmailNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyUnverifiedException;
@@ -53,7 +51,7 @@ public class AuthService {
     private final LeadMapper leadMapper;
     private final UniversityMapper universityMapper;
     private final GooglerMapper googlerMapper;
-    private final CoreTeamMapper coreTeamMapper;
+    private final CoreTeamMemberMapper coreTeamMemberMapper;
     private final FacilitatorMapper facilitatorMapper;
     private final TopicMapper topicMapper;
 
@@ -78,6 +76,12 @@ public class AuthService {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return userMapper.toDTO(userEntity);
+    }
+
+
+    protected UserEntity getUserEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     public boolean userExists(String email) {
@@ -139,7 +143,7 @@ public class AuthService {
                     if (optionalCoreTeamMemberEntity.isEmpty()) {
                         throw new UserNotFoundException("Error while getting user details");
                     }
-                    userWithRoleResponse.setExtra(coreTeamMapper.toDTO(optionalCoreTeamMemberEntity.get()));
+                    userWithRoleResponse.setExtra(coreTeamMemberMapper.toDTO(optionalCoreTeamMemberEntity.get()));
                 }
             }
             return userWithRoleResponse;
@@ -158,6 +162,32 @@ public class AuthService {
             throw e;
         }
     }
+
+//    public boolean logout() {
+//        try {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//
+//            String userName = authentication.getName();
+//
+//            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
+//
+//            if (optionalUserEntity.isEmpty()) {
+//                throw new UserNotFoundException("Error while getting user details");
+//            }
+//
+//            UserEntity userEntity = optionalUserEntity.get();
+//
+//            userEntity.setLastLoginDate(null);
+//
+//            userRepository.save(userEntity);
+//
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
 
     public LoginResponse login(LoginRequest user) throws Exception {
         try {
@@ -226,11 +256,16 @@ public class AuthService {
 
         userRegister.setPassword(encodePassword(userRegister.getPassword()));
 
+
         UserEntity userEntity = new UserEntity(userRegister, userType);
 
+        userEntity.setProfileImage("https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2,f_auto,g_center,q_auto:good/v1/gcs/platform-data-dsc/contentbuilder/GDG-Bevy-ChapterThumbnail.png");
         userEntity.setCreatedAt(new Date());
         userEntity.setLastEditedAt(new Date());
         userEntity.setLastLoginDate(null);
+        userEntity.setIsEmailVerified(false);
+        userEntity.setIsBlackListed(false);
+        userEntity.setIsVerified(false);
 
         userEntity = userRepository.save(userEntity);
 
@@ -242,7 +277,7 @@ public class AuthService {
 
     public List<UserDTO> getVerifyList() {
         try {
-            List<UserEntity> userEntities = userRepository.findAllByIsVerified(false);
+            List<UserEntity> userEntities = userRepository.findAllByIsVerifiedAndIsBlackListed(false, false);
             return userMapper.toDTO(userEntities);
         } catch (Exception e) {
             e.printStackTrace();
@@ -250,11 +285,42 @@ public class AuthService {
         }
     }
 
-    public UserDTO verifyUser(VerifyUserRequest verifyUserRequest) {
+    public UserDTO blackListUser(Long userId) {
+        try {
+            UserEntity userEntity = getUserEntityById(userId);
+
+            if (userEntity.getIsBlackListed()) {
+                throw new UserAlreadyBlackListedException();
+            }
+
+            userEntity.setIsBlackListed(true);
+            return userMapper.toDTO(userRepository.save(userEntity));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserDTO unBlackListUser(Long userId) {
+        try {
+            UserEntity userEntity = getUserEntityById(userId);
+
+            if (!userEntity.getIsBlackListed()) {
+                throw new UserNotBlackListedException();
+            }
+
+            userEntity.setIsBlackListed(false);
+            return userMapper.toDTO(userRepository.save(userEntity));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserDTO verifyUser(Long userId) {
         try {
 
             // TODO: Add permissions
-            Long userId = verifyUserRequest.getUserId();
 
             UserEntity userEntity = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -274,12 +340,10 @@ public class AuthService {
         }
     }
 
-    public UserDTO unverifyUser(VerifyUserRequest verifyUserRequest) {
+    public UserDTO unverifyUser(Long userId) {
         try {
 
             // TODO: Add permissions
-
-            Long userId = verifyUserRequest.getUserId();
 
             UserEntity userEntity = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));

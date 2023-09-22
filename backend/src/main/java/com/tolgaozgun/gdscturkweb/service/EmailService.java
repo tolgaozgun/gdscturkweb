@@ -1,6 +1,7 @@
 package com.tolgaozgun.gdscturkweb.service;
 
 import com.tolgaozgun.gdscturkweb.entity.EmailVerificationEntity;
+import com.tolgaozgun.gdscturkweb.entity.UserInviteEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.model.EmailDetails;
 import jakarta.mail.MessagingException;
@@ -102,6 +103,24 @@ public class EmailService {
 
 
             return sendSimpleMail(emailDetails);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    protected boolean sendUserInvitation(String email, UserInviteEntity userInviteEntity) {
+        try {
+            EmailDetails emailDetails = new EmailDetails();
+            emailDetails.setRecipient(email);
+            emailDetails.setSubject("GDSCTurk Invitation");
+            emailDetails.setMsgBody("Your invitation code is: " + userInviteEntity.getInviteCode() +
+                    "\nYou are invited to join GDSCTurk as " + userInviteEntity.getRole().name()
+                    + "\nYou are invited by " + userInviteEntity.getInvitedBy().getName() + " " + userInviteEntity.getInvitedBy().getSurname()
+                    + "\nPlease click the link below to register: ");
+
+            return sendSimpleMail(emailDetails);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

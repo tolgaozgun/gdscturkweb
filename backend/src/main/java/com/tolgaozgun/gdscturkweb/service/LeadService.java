@@ -1,12 +1,15 @@
 package com.tolgaozgun.gdscturkweb.service;
 
 
+import com.tolgaozgun.gdscturkweb.dto.CoreTeamDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.request.coreTeam.InviteCoreTeamRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.LeadDashboardResponse;
 import com.tolgaozgun.gdscturkweb.dto.user.register.LeadRegister;
 import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
 import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
+import com.tolgaozgun.gdscturkweb.entity.CoreTeamEntity;
 import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.CoreTeamMemberEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.LeadEntity;
@@ -37,6 +40,7 @@ public class LeadService {
 
     private final AuthService authService;
     private final AttendanceService attendanceService;
+    private final CoreTeamService coreTeamService;
 
     public List<LeadDTO> getAllLeads() {
         try {
@@ -47,6 +51,19 @@ public class LeadService {
             throw ex;
         }
     }
+
+    public CoreTeamDTO getCoreTeamByCurrentLead() {
+        try {
+
+            UserEntity userEntity = authService.getCurrentUserEntity();
+            LeadEntity leadEntity = getLeadEntityFromUserEntity(userEntity);
+            return coreTeamService.getCoreTeamByCurrentLead(leadEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
 
     protected LeadEntity getLeadEntityFromUserEntity(UserEntity userEntity) {
         try {
@@ -62,6 +79,34 @@ public class LeadService {
     }
 
 
+    public void inviteCoreTeamMember(InviteCoreTeamRequest inviteCoreTeamRequest) throws Exception {
+        try {
+
+            UserEntity userEntity = authService.getCurrentUserEntity();
+
+            if (userEntity.getUserType() != UserType.LEAD) {
+                throw new Exception("Only lead can invite core team member");
+            }
+
+            LeadEntity leadEntity = getLeadEntityFromUserEntity(userEntity);
+
+            UniversityEntity universityEntity = leadEntity.getUniversity();
+
+            if (universityEntity == null) {
+                throw new Exception("Lead has no university");
+            }
+
+
+            String email = inviteCoreTeamRequest.getEmail();
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+
     public LeadDTO registerLead(LeadRegisterRequest leadRegisterRequest) throws Exception {
         try {
 
@@ -69,9 +114,6 @@ public class LeadService {
             LeadRegister leadRegister = leadRegisterRequest.getLeadRegister();
 
             UserEntity savedEntity = authService.checkAndRegisterUser(userRegister, UserType.LEAD);
-
-            System.out.println("Saved entity is " + savedEntity);
-            System.out.println("Saved entity is null? " + (savedEntity == null));
 
 
             UniversityEntity universityEntity = universityRepository.findById(leadRegister.getUniversityId())
@@ -85,6 +127,9 @@ public class LeadService {
             leadEntity.setPromotedAt(new Date());
 
             LeadEntity savedLeadEntity = leadRepository.save(leadEntity);
+
+            coreTeamService.createCoreTeam(savedLeadEntity);
+
 
             return leadMapper.toDTO(savedLeadEntity);
         } catch (Exception e) {

@@ -1,6 +1,5 @@
 import { Box, SimpleGrid } from '@mantine/core';
 import LoadingPage from '../../pages/LoadingPage';
-import LeadCard from '../cards/LeadCard';
 import { LeadModel } from '../../types';
 import UserCard from '../cards/UserCard';
 
@@ -10,11 +9,11 @@ interface LeadTableProps {
 }
 
 const LeadGrid = ({data, isLoading}: LeadTableProps) => {
-
-
+  
 	if (isLoading || !data) {
 		return <LoadingPage />;
 	}
+  console.log(data)
 
     return (
         <SimpleGrid cols={4} pt="xl" 

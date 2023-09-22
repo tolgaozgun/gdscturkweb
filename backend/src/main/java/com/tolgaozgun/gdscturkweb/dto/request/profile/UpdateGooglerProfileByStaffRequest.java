@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateGooglerProfileByStaffRequest {
 
-    @NotNull
-    @JsonProperty("user")
-    private UpdateUserProfileByStaff updateUserProfile;
 
     @NotNull
     @JsonProperty("googler")

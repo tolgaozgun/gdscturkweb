@@ -14,12 +14,11 @@ import { primaryButtonColor } from '../../../constants/colors';
 import { login } from '../../../services/auth';
 import { useMutation } from '@tanstack/react-query';
 import SubtleLinkButton from '../../buttons/SubtleLinkButton';
-import { useUser } from '../../../contexts/UserContext';
 import Cookies from 'js-cookie';
 
 const LoginForm = () => {
 	const navigate = useNavigate();
-	const { user, dispatch } = useUser();
+	// const { user, isUserLoading, isUserError } = useUser();
 	const form = useForm({
 		initialValues: {
 			email: '',
@@ -54,7 +53,7 @@ const LoginForm = () => {
 				}),
 			});
 
-			dispatch({type: "LOGIN", payload: data.data});
+			// dispatch({type: "LOGIN", payload: data.data});
 			
 			// let token = {
 			// 	accessToken: data.data.accessToken,
@@ -64,16 +63,17 @@ const LoginForm = () => {
 			Cookies.set('accessToken', data.data.accessToken);
 			Cookies.set('refreshToken', data.data.refreshToken);
 			if (data?.data.userType === 'LEAD') {
-				navigate('/add-fare');
+				navigate('/panel/lead');
 			} else if (data.data.userType === 'CORE_TEAM_MEMBER') {
-				navigate('/search-fare');
+				navigate('/panel/core-team');
 			} else if (data.data.userType === 'FACILITATOR') {
-				navigate('/system-reports');
+				navigate('/panel/facilitator');
 			} else if (data.data.userType === 'GOOGLER') {
-				navigate('/system-reports');
+				navigate('/panel/googler');
 			} else if (data.data.userType === 'ADMIN') {
-				navigate('/system-reports');
+				navigate('/panel/admin');
 			}
+			navigate(0)
 		},
 		onError: (error) => {
 			notifications.show({

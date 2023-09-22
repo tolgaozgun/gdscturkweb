@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateGooglerProfileByStaff {
 
-    @NotNull
-    private Long googlerId;
-
     @Nullable
     private Long cityId;
 

@@ -4,7 +4,7 @@ import { RegisterAdmin, RegisterCoreTeam, RegisterFacilitator, RegisterGoogler, 
 import { baseUrl } from '../../constants/api';
 import { Tokens, User, UserWithRole } from '../../types';
 import { Response } from '../../types/ResponseTypes';
-import { axiosSecure as axios } from '../axios';
+import axios from 'axios';
 
 export async function login(email: string, password: string): Promise<Response<User>> {
 	const res = await axios.post<Response<User>>(`${baseUrl}/auth/login`, {

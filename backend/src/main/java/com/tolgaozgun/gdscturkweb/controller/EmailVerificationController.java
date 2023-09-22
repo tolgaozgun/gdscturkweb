@@ -30,8 +30,8 @@ public class EmailVerificationController {
             return Response.create("Verified email for "  + email,
                     HttpStatus.OK, email);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -42,8 +42,8 @@ public class EmailVerificationController {
             return Response.create("Resent verification code for "  + email,
                     HttpStatus.OK, email);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

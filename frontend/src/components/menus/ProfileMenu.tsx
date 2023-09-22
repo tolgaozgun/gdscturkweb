@@ -1,4 +1,4 @@
-import { useUser } from '../../hooks/auth';
+import { useUser } from '../../contexts/UserContext';
 import { UserType } from '../../types/UserTypes';
 import AdminMenu from './AdminMenu';
 import CoreTeamMemberMenu from './CoreTeamMemberMenu';
@@ -7,8 +7,7 @@ import GooglerMenu from './GooglerMenu';
 import LeadMenu from './LeadMenu';
 
 const ProfileMenu = () => {
-	const user = useUser();
-	console.log(user?.userType);
+	const {user} = useUser();
 	if (!user) {
 		return null;
 	}

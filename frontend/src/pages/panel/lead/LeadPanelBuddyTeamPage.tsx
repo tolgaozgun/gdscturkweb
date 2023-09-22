@@ -1,5 +1,5 @@
-import { Button, Center } from '@mantine/core';
-import { IconGridDots, IconList } from '@tabler/icons-react';
+import { Alert, Button, Center } from '@mantine/core';
+import { IconExclamationMark, IconGridDots, IconList } from '@tabler/icons-react';
 import LeadTable from '../../../components/table/LeadTable';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import FacilitatorTable from '../../../components/table/FacilitatorTable';
@@ -28,6 +28,7 @@ const LeadPanelBuddyTeamPage = () => {
 		setUseGrid(false);
 	}
 
+	let buddyTeamExists = false;
 
 	let {
 		data: buddyTeamData,
@@ -37,30 +38,35 @@ const LeadPanelBuddyTeamPage = () => {
 	let buddyTeam: BuddyTeam = {} as BuddyTeam;
 	if (buddyTeamData && buddyTeamData?.data){
 		buddyTeam = buddyTeamData?.data!
+		buddyTeamExists = true;
 	}
 
 	let leads: LeadModel[] = buddyTeam.leads;
 
 	let facilitator: FacilitatorModel[] = [buddyTeam.facilitator];
 
-	let content = <></>;
+	let content = <Alert variant='outline' color="red" title="Error" icon={<IconExclamationMark/>}>You are not in a buddy team.</Alert>;
 
-	if (useGrid) {
-		<>
-			<FacilitatorGrid data={facilitator} isLoading={buddyTeamLoading} />
-			<LeadGrid data={leads} isLoading={buddyTeamLoading} />
-		</>;
-	} else {
-		content = (
-			<>
-				<FacilitatorTable data={facilitator} isLoading={buddyTeamLoading} />
-				<LeadTable data={leads} isLoading={buddyTeamLoading} />
-			</>
-		);
+	if (buddyTeamExists) {
+		if (useGrid) {
+			<Center mt="md">
+				<FacilitatorGrid data={facilitator} isLoading={buddyTeamLoading} />
+				<LeadGrid data={leads} isLoading={buddyTeamLoading} />
+			</Center>;
+		} else {
+			content = (
+				<Center mt="md">
+					<FacilitatorTable data={facilitator} isLoading={buddyTeamLoading} />
+					<LeadTable data={leads} isLoading={buddyTeamLoading} />
+				</Center>
+			);
+		}
 	}
+
 
 	return (
 		<PageContainer title="Buddy Team">
+			{ buddyTeamExists &&
 			<Button.Group defaultValue="grid">
 				<Button disabled={useGrid} leftIcon={<IconGridDots size="1rem" />} value="grid" onClick={handleSelectGrid} variant="default">
 					Grid
@@ -69,9 +75,8 @@ const LeadPanelBuddyTeamPage = () => {
 					List
 				</Button>
 			</Button.Group>
-			<Center mt="md">
-				{content}
-			</Center>
+			}
+			{content}
 		</PageContainer>
 	);
 };

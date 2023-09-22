@@ -6,3 +6,5 @@ export type EmailVerificationRequest = {
 export type EmailResendRequest = {
     email: string;
 }
+
+

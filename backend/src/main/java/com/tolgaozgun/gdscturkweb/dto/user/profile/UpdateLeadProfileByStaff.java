@@ -14,16 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateLeadProfileByStaff {
 
-    @Id
-    private Long leadId;
-
     @Nullable
     private Long universityId;
 
     @Nullable
     private Long buddyTeamId;
-
-    @NotNull
-    private Long userId;
 
 }

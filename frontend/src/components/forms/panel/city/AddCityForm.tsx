@@ -101,10 +101,8 @@ const AddCityForm = ({padding, mt}: AddCityFormProps) => {
 
 
 	const countryList: Array<Country> = allCountries?.data!;
-	console.log(countryList)
 	const countryData: Array<SelectItem> = countryList!
 		.map((country) => {
-			console.log(country);
 			return {
 				name: country.name,
 				countryId: country.countryId,
@@ -113,10 +111,8 @@ const AddCityForm = ({padding, mt}: AddCityFormProps) => {
 				label: country.name,
 			};
 		});
-	console.log(countryData);
 
 	const handleAddCity = async () => {
-		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;

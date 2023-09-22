@@ -19,7 +19,7 @@ const useStyles = createStyles((theme) => ({
 
 
 
-const AdminDashboardPage = () => {
+const LeadDashboardPage = () => {
   const axiosSecure = useAxiosSecure();
   const { classes } = useStyles();
 
@@ -249,4 +249,4 @@ const AdminDashboardPage = () => {
     );
 }
 
-export default AdminDashboardPage;
+export default LeadDashboardPage;

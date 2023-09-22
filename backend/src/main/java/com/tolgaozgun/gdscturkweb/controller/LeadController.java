@@ -31,8 +31,8 @@ public class LeadController {
             List<LeadDTO> leadList = leadService.getAllLeads();
             return Response.create("Gathered all leads", HttpStatus.OK, leadList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -43,8 +43,8 @@ public class LeadController {
             LeadDTO lead = leadService.registerLead(leadRegisterRequest);
             return Response.create("Created lead", HttpStatus.OK, lead);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -55,8 +55,8 @@ public class LeadController {
             LeadDashboardResponse leadDashboardResponse = leadService.getCurrentLeadDashboard();
             return Response.create("Gathered current lead dashboard", HttpStatus.OK, leadDashboardResponse);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

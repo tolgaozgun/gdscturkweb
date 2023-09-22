@@ -1,5 +1,5 @@
 import { Button, Center, Tabs } from '@mantine/core';
-import { IconFriends, IconGridDots, IconList } from '@tabler/icons-react';
+import { IconFriends, IconGridDots, IconList, IconMap } from '@tabler/icons-react';
 import LeadTable from '../components/table/LeadTable';
 import useAxiosSecure from '../hooks/auth/useAxiosSecure';
 import FacilitatorTable from '../components/table/FacilitatorTable';
@@ -17,6 +17,7 @@ import FacilitatorGrid from '../components/grid/FacilitatorGrid';
 import GooglerGrid from '../components/grid/GooglerGrid';
 
 
+type DisplayType = 'grid' | 'list' | 'map';
 
 const UserListPage = () => {
 
@@ -36,15 +37,19 @@ const UserListPage = () => {
 
 	const axiosSecure = useAxiosSecure();
 
-	const [useGrid, setUseGrid] = useState<boolean>(true);
+	const [currentDisplayType, setDisplayType] = useState<DisplayType>('grid');
 	
 
 	const handleSelectGrid = () => {
-		setUseGrid(true);
+		setDisplayType('grid');
 	}
 
 	const handleSelectList = () => {
-		setUseGrid(false);
+		setDisplayType('list');
+	}
+
+	const handleSelectMap = () => {
+		setDisplayType('map');
 	}
 
 
@@ -138,7 +143,7 @@ const UserListPage = () => {
 
 	let panels = <></>;
 
-	if (useGrid) {
+	if (currentDisplayType) {
 		panels = <>
 			<Tabs.Panel value="lead" pt="xs">
 				<LeadGrid data={leads} isLoading={leadsLoading} />
@@ -181,11 +186,14 @@ const UserListPage = () => {
 	return (
 		<>
 			<Button.Group defaultValue="grid">
-				<Button disabled={useGrid} leftIcon={<IconGridDots size="1rem" />} value="grid" onClick={handleSelectGrid} variant="default">
+				<Button disabled={currentDisplayType == 'grid'} leftIcon={<IconGridDots size="1rem" />} value="grid" onClick={handleSelectGrid} variant="default">
 					Grid
 				</Button>
-				<Button disabled={!useGrid} leftIcon={<IconList size="1rem" />} value="list" onClick={handleSelectList} variant="default">
+				<Button disabled={currentDisplayType == 'list'} leftIcon={<IconList size="1rem" />} value="list" onClick={handleSelectList} variant="default">
 					List
+				</Button>
+				<Button disabled={currentDisplayType == 'map'} leftIcon={<IconMap size="1rem" />} value="list" onClick={handleSelectMap} variant="default">
+					Map
 				</Button>
 			</Button.Group>
 			<Center mt="md">

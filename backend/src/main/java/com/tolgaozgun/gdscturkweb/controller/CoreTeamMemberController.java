@@ -5,6 +5,8 @@ import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.coreTeam.InviteCoreTeamRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
+import com.tolgaozgun.gdscturkweb.dto.response.CoreTeamMemberDashboardResponse;
+import com.tolgaozgun.gdscturkweb.dto.response.LeadDashboardResponse;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.service.CoreTeamMemberService;
@@ -31,8 +33,8 @@ public class CoreTeamMemberController {
             List<CoreTeamMemberDTO> coreTeamMembers = coreTeamMemberService.getAllCoreTeamMembers();
             return Response.create("Gathered all core team members", HttpStatus.OK, coreTeamMembers);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -43,8 +45,8 @@ public class CoreTeamMemberController {
             List<CoreTeamMemberDTO> coreTeamMembers = coreTeamMemberService.getAllCoreTeamMembersByUniversity(universityId);
             return Response.create("Gathered all core team members", HttpStatus.OK, coreTeamMembers);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -54,8 +56,20 @@ public class CoreTeamMemberController {
             CoreTeamMemberDTO coreTeamMemberDTO = coreTeamMemberService.registerCoreTeam(coreTeamRegisterRequest);
             return Response.create("Created core team member", HttpStatus.OK, coreTeamMemberDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping( path = "dashboard")
+    public ResponseEntity<Object> getCurrentLeadDashboard() {
+        try {
+            CoreTeamMemberDashboardResponse coreTeamMemberDashboardResponse = coreTeamMemberService.getCurrentDashboard();
+            return Response.create("Gathered current core team member dashboard", HttpStatus.OK, coreTeamMemberDashboardResponse);
+        } catch (Exception e) {
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 //    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -65,8 +79,8 @@ public class CoreTeamMemberController {
 //            CoreTeamMemberDTO coreTeamMemberDTO = coreTeamMemberService.registerCoreTeam(inviteCoreTeamRequest);
 //            return Response.create("Invited core team member", HttpStatus.OK, coreTeamMemberDTO);
 //        } catch (Exception e) {
-//            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+//            // HTTP 500
+//            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);//        }
 //    }
 
 

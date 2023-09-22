@@ -30,8 +30,8 @@ public class CampaignController {
             List<Campaign> campaignList = campaignService.getAllCampaigns();
             return Response.create("Gathered all campaigns", HttpStatus.OK, campaignList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -42,8 +42,8 @@ public class CampaignController {
             List<Campaign> campaignList = campaignService.getCurrentCampaigns();
             return Response.create("Gathered current campaigns", HttpStatus.OK, campaignList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -54,8 +54,8 @@ public class CampaignController {
             Campaign campaign = campaignService.getCampaign(campaignId);
             return Response.create("Found the campaign", HttpStatus.OK, campaign);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -65,8 +65,8 @@ public class CampaignController {
             List<CampaignPage> campaignPages = campaignService.getCampaignPagesByCampaign(campaignId);
             return Response.create("Found the campaign pages", HttpStatus.OK, campaignPages);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -76,8 +76,8 @@ public class CampaignController {
             CampaignPage campaignPage = campaignService.getCampaignPageById(campaignPageId);
             return Response.create("Found the campaign page", HttpStatus.OK, campaignPage);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -87,8 +87,8 @@ public class CampaignController {
             Campaign campaign = campaignService.createCampaign(createCampaignRequest);
             return Response.create("Campaign created successfully", HttpStatus.OK, campaign);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -99,8 +99,8 @@ public class CampaignController {
             Campaign campaign = campaignService.editCampaign(campaignId, editCampaignRequest);
             return Response.create("Campaign edited successfully", HttpStatus.OK, campaign);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

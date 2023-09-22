@@ -17,7 +17,7 @@ export const AdminPanelData: PanelItem[] = [
     { label: 'Dashboard', icon: IconGauge, link: '/panel/admin/dashboard' },
     {
       label: 'Users',
-      initiallyOpened: true,
+      link: '/panel/admin/users',
       icon: IconUsersGroup,
       links: [
         { label: 'List Users', link: '/panel/admin/users/list' },
@@ -26,7 +26,7 @@ export const AdminPanelData: PanelItem[] = [
     },
     {
       label: 'Buddy Teams',
-      initiallyOpened: true,
+      link: '/panel/admin/buddy-teams',
       icon: IconChalkboard,
       links: [
         { label: 'List Buddy Teams', link: '/panel/admin/buddy-teams/list' },
@@ -36,6 +36,7 @@ export const AdminPanelData: PanelItem[] = [
     },
     {
       label: 'Campaigns',
+      link: '/panel/admin/campaigns',
       icon: IconBrandCampaignmonitor,
       links: [
         { label: 'List Campaigns', link: '/panel/admin/campaigns/list' },
@@ -44,6 +45,7 @@ export const AdminPanelData: PanelItem[] = [
     },
     {
       label: 'Universities',
+      link: '/panel/admin/universities',
       icon: IconSchool,
       links: [
         { label: 'List Universities', link: '/panel/admin/universities/list' },
@@ -52,6 +54,7 @@ export const AdminPanelData: PanelItem[] = [
     },
     {
       label: 'Cities',
+      link: '/panel/admin/cities',
       icon: IconTree,
       links: [
         { label: 'List Cities', link: '/panel/admin/cities/list' },
@@ -60,6 +63,7 @@ export const AdminPanelData: PanelItem[] = [
     },
     {
       label: 'Countries',
+      link: '/panel/admin/countries',
       icon: IconFlag,
       links: [
         { label: 'List Countries', link: '/panel/admin/countries/list' },
@@ -68,6 +72,7 @@ export const AdminPanelData: PanelItem[] = [
     },
     {
       label: 'Questions',
+      link: '/panel/admin/questions',
       icon: IconQuestionMark,
       links: [
         { label: 'List Questions', link: '/panel/admin/questions/list' },

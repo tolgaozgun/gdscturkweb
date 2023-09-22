@@ -66,10 +66,8 @@ const AddAttendanceForm = ({padding, mt}: AddAttendanceFormProps) => {
 
 
 	const buddyTeam: BuddyTeam = buddyTeamData?.data!;
-	console.log(buddyTeam)
 	// const countryData: Array<SelectItem> = buddyTeam.leads
 	// 	.map((lead) => {
-	// 		console.log(lead);
 	// 		return {
 	// 			name: lead.user.name + ' ' + lead.user.surname,
 	// 			leadId: lead.leadId,
@@ -78,7 +76,6 @@ const AddAttendanceForm = ({padding, mt}: AddAttendanceFormProps) => {
 	// 			label: lead.user.name + ' ' + lead.user.surname,
 	// 		};
 	// 	});
-	// console.log(countryData);
 	const tableData: TableAttendance[] = buddyTeam?.leads?.map((lead) => {
 		return {
 			lead: lead,
@@ -87,7 +84,6 @@ const AddAttendanceForm = ({padding, mt}: AddAttendanceFormProps) => {
 	});
 
 	const handleAddCity = async () => {
-		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;

@@ -1,25 +1,17 @@
 package com.tolgaozgun.gdscturkweb.service;
 
-import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
-import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
-import com.tolgaozgun.gdscturkweb.dto.GooglerDTO;
-import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.*;
 import com.tolgaozgun.gdscturkweb.dto.request.profile.*;
 import com.tolgaozgun.gdscturkweb.dto.user.profile.*;
 import com.tolgaozgun.gdscturkweb.entity.*;
 import com.tolgaozgun.gdscturkweb.entity.user.*;
-import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.*;
 import com.tolgaozgun.gdscturkweb.mapper.*;
-import com.tolgaozgun.gdscturkweb.model.Permission;
 import com.tolgaozgun.gdscturkweb.repository.*;
 import com.tolgaozgun.gdscturkweb.repository.user.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -40,15 +32,14 @@ public class ProfileService {
     private final TopicMapper topicMapper;
     private final FacilitatorMapper facilitatorMapper;
     private final LeadMapper leadMapper;
-    private final CoreTeamMapper coreTeamMapper;
+    private final CoreTeamMemberMapper coreTeamMemberMapper;
     private final GooglerMapper googlerMapper;
+    private final UserMapper userMapper;
 
     private final AuthService authService;
 
 
-    private UserEntity checkAndUpdateUserProfileByStaff(UpdateUserProfileByStaff updateUserProfileByStaff) {
-
-        Long userId = updateUserProfileByStaff.getUserId();
+    private UserEntity checkAndUpdateUserProfileByStaff(Long userId, UpdateUserProfileByStaff updateUserProfileByStaff) {
 
         Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
 
@@ -108,8 +99,8 @@ public class ProfileService {
             userEntity.setSurname(updateUserProfile.getSurname());
         }
 
-        if (updateUserProfile.getBiograpghy() != null) {
-            userEntity.setBiography(updateUserProfile.getBiograpghy());
+        if (updateUserProfile.getBiography() != null) {
+            userEntity.setBiography(updateUserProfile.getBiography());
         }
 
         if (updateUserProfile.getInterests() != null) {
@@ -119,17 +110,37 @@ public class ProfileService {
         return userRepository.save(userEntity);
     }
 
-    public FacilitatorDTO updateFacilitatorProfileByStaff(UpdateFacilitatorProfileByStaffRequest
+    public UserDTO updateUserProfileByUser(UpdateUserProfileByUserRequest updateUserProfileByUserRequest) {
+        try{
+            UpdateUserProfileByUser updateUserProfile = updateUserProfileByUserRequest.getUpdateUserProfile();
+            UserEntity userEntity = checkAndUpdateUserProfile(updateUserProfile);
+            return userMapper.toDTO(userEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserDTO updateUserProfileByStaff(Long userId,
+                                            UpdateUserProfileByStaffRequest updateUserProfileByStaffRequest) {
+        try {
+            UpdateUserProfileByStaff updateUserProfileByStaff = updateUserProfileByStaffRequest.getUpdateUserProfile();
+            UserEntity userEntity = checkAndUpdateUserProfileByStaff(userId, updateUserProfileByStaff);
+            return userMapper.toDTO(userEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public FacilitatorDTO updateFacilitatorProfileByStaff(Long facilitatorId, UpdateFacilitatorProfileByStaffRequest
                                                                   updateFacilitatorProfileByStaffRequest)
             throws Exception {
         try {
 
-            UpdateUserProfileByStaff updateUserProfileByStaff = updateFacilitatorProfileByStaffRequest.getUpdateUserProfile();
             UpdateFacilitatorProfileByStaff updateFacilitatorProfileByStaff = updateFacilitatorProfileByStaffRequest.getUpdateFacilitatorProfile();
 
-            UserEntity savedEntity = checkAndUpdateUserProfileByStaff(updateUserProfileByStaff);
-
-            Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findByUser(savedEntity);
+            Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findById(facilitatorId);
 
             if (optionalFacilitatorEntity.isEmpty()) {
                 throw new FacilitatorNotFoundException();
@@ -158,10 +169,9 @@ public class ProfileService {
             throws Exception {
         try {
 
-            UpdateUserProfileByUser userRegister = updateFacilitatorProfileRequest.getUpdateUserProfile();
             UpdateFacilitatorProfileByFacilitator updateFacilitatorProfile = updateFacilitatorProfileRequest.getUpdateFacilitatorProfile();
 
-            UserEntity savedEntity = checkAndUpdateUserProfile(userRegister);
+            UserEntity savedEntity = authService.getCurrentUserEntity();
 
             Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findByUser(savedEntity);
 
@@ -177,14 +187,12 @@ public class ProfileService {
             throw e;
         }
     }
-    public GooglerDTO updateGooglerProfileByStaff(UpdateGooglerProfileByStaffRequest updateGooglerProfileByStaffRequest) {
+    public GooglerDTO updateGooglerProfileByStaff(Long googlerId,
+                                                  UpdateGooglerProfileByStaffRequest updateGooglerProfileByStaffRequest) {
 
-        UpdateUserProfileByStaff updateUserProfileByStaff = updateGooglerProfileByStaffRequest.getUpdateUserProfile();
         UpdateGooglerProfileByStaff updateGooglerProfileByStaff = updateGooglerProfileByStaffRequest.getUpdateGooglerProfile();
 
-        UserEntity savedEntity = checkAndUpdateUserProfileByStaff(updateUserProfileByStaff);
-
-        Optional<GooglerEntity> optionalGooglerEntity = googlerRepository.findById(updateGooglerProfileByStaff.getGooglerId());
+        Optional<GooglerEntity> optionalGooglerEntity = googlerRepository.findById(googlerId);
 
         if (optionalGooglerEntity.isEmpty()) {
             throw new GooglerNotFoundException();
@@ -222,10 +230,9 @@ public class ProfileService {
 
     public GooglerDTO updateGooglerProfile(UpdateGooglerProfileByGooglerRequest updateGooglerProfileByGooglerRequest) {
 
-        UpdateUserProfileByUser userRegister = updateGooglerProfileByGooglerRequest.getUpdateUserProfile();
         UpdateGooglerProfileByGoogler updateGooglerProfile = updateGooglerProfileByGooglerRequest.getUpdateGooglerProfile();
 
-        UserEntity savedEntity = checkAndUpdateUserProfile(userRegister);
+        UserEntity savedEntity = authService.getCurrentUserEntity();
 
         Optional<GooglerEntity> optionalGooglerEntity = googlerRepository.findByUser(savedEntity);
 
@@ -264,14 +271,11 @@ public class ProfileService {
 
     }
 
-    public LeadDTO updateLeadProfileByStaff(UpdateLeadProfileByStaffRequest updateLeadProfileByStaffRequest) {
+    public LeadDTO updateLeadProfileByStaff(Long leadId, UpdateLeadProfileByStaffRequest updateLeadProfileByStaffRequest) {
 
-        UpdateUserProfileByStaff updateUserProfileByStaff = updateLeadProfileByStaffRequest.getUpdateUserProfile();
         UpdateLeadProfileByStaff updateLeadProfileByStaff = updateLeadProfileByStaffRequest.getUpdateLeadProfile();
 
-        UserEntity savedEntity = checkAndUpdateUserProfileByStaff(updateUserProfileByStaff);
-
-        Optional<LeadEntity> optionalLeadEntity = leadRepository.findById(updateLeadProfileByStaff.getLeadId());
+        Optional<LeadEntity> optionalLeadEntity = leadRepository.findById(leadId);
 
         if (optionalLeadEntity.isEmpty()) {
             throw new LeadNotFoundException();
@@ -309,10 +313,9 @@ public class ProfileService {
 
     public LeadDTO updateLeadProfile(UpdateLeadProfileByLeadRequest updateLeadProfileRequest) {
 
-        UpdateUserProfileByUser userRegister = updateLeadProfileRequest.getUpdateUserProfile();
         UpdateLeadProfileByLead updateLeadProfile = updateLeadProfileRequest.getUpdateLeadProfile();
 
-        UserEntity savedEntity = checkAndUpdateUserProfile(userRegister);
+        UserEntity savedEntity = authService.getCurrentUserEntity();
 
         Optional<LeadEntity> optionalLeadEntity = leadRepository.findByUser(savedEntity);
 
@@ -327,15 +330,11 @@ public class ProfileService {
 
     }
 
-    public CoreTeamMemberDTO updateCoreTeamMemberProfileByStaff(UpdateCoreTeamMemberProfileByStaffRequest
+    public CoreTeamMemberDTO updateCoreTeamMemberProfileByStaff(Long coreTeamMemberId,
+                                                                UpdateCoreTeamMemberProfileByStaffRequest
                                                                  updateCoreTeamMemberProfileByStaffRequest) {
 
-        UpdateUserProfileByStaff updateUserProfileByStaff = updateCoreTeamMemberProfileByStaffRequest.getUpdateUserProfile();
         UpdateCoreTeamProfileByStaff updateCoreTeamProfileByStaff = updateCoreTeamMemberProfileByStaffRequest.getUpdateCoreTeamProfile();
-
-        UserEntity savedEntity = checkAndUpdateUserProfileByStaff(updateUserProfileByStaff);
-
-        Long coreTeamMemberId = updateCoreTeamProfileByStaff.getCoreTeamMemberId();
 
         Optional<CoreTeamMemberEntity> optionalCoreTeamMemberEntity = coreTeamMemberRepository.findById(coreTeamMemberId);
 
@@ -359,16 +358,15 @@ public class ProfileService {
 
         coreTeamMemberEntity = coreTeamMemberRepository.save(coreTeamMemberEntity);
 
-        return coreTeamMapper.toDTO(coreTeamMemberEntity);
+        return coreTeamMemberMapper.toDTO(coreTeamMemberEntity);
     }
 
     public CoreTeamMemberDTO updateCoreTeamMemberProfile(UpdateCoreTeamMemberProfileByMemberRequest
                                                                  updateCoreTeamMemberProfileRequest) {
 
-        UpdateUserProfileByUser userRegister = updateCoreTeamMemberProfileRequest.getUpdateUserProfile();
         UpdateCoreTeamProfileByCoreTeam updateCoreTeamProfile = updateCoreTeamMemberProfileRequest.getUpdateCoreTeamProfile();
 
-        UserEntity savedEntity = checkAndUpdateUserProfile(userRegister);
+        UserEntity savedEntity = authService.getCurrentUserEntity();
 
         Optional<CoreTeamMemberEntity> optionalCoreTeamMemberEntity = coreTeamMemberRepository.findByUser(savedEntity);
 
@@ -378,6 +376,6 @@ public class ProfileService {
 
         CoreTeamMemberEntity coreTeamMemberEntity = optionalCoreTeamMemberEntity.get();
 
-        return coreTeamMapper.toDTO(coreTeamMemberEntity);
+        return coreTeamMemberMapper.toDTO(coreTeamMemberEntity);
     }
 }

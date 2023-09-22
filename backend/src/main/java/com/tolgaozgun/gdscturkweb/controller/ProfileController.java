@@ -1,10 +1,7 @@
 package com.tolgaozgun.gdscturkweb.controller;
 
 
-import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
-import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
-import com.tolgaozgun.gdscturkweb.dto.GooglerDTO;
-import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import com.tolgaozgun.gdscturkweb.dto.*;
 import com.tolgaozgun.gdscturkweb.dto.request.profile.*;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
@@ -32,8 +29,8 @@ public class ProfileController {
             LeadDTO leadDTO = profileService.updateLeadProfile(updateLeadProfileByLeadRequest);
             return Response.create("Update is successful", HttpStatus.OK, leadDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -45,8 +42,8 @@ public class ProfileController {
             CoreTeamMemberDTO coreTeamMemberDTO = profileService.updateCoreTeamMemberProfile(updateCoreTeamMemberProfileByMemberRequest);
             return Response.create("Update is successful", HttpStatus.OK, coreTeamMemberDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -57,8 +54,8 @@ public class ProfileController {
             FacilitatorDTO facilitatorDTO = profileService.updateFacilitatorProfile(updateFacilitatorProfileByFacilitatorRequest);
             return Response.create("Update is successful", HttpStatus.OK, facilitatorDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -69,59 +66,93 @@ public class ProfileController {
             GooglerDTO googlerDTO = profileService.updateGooglerProfile(updateGooglerProfileByGooglerRequest);
             return Response.create("Update is successful", HttpStatus.OK, googlerDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update/user")
+    public ResponseEntity<Object> updateUserProfile(@Valid @RequestBody UpdateUserProfileByUserRequest
+                                                                   updateUserProfileByUserRequest) {
+        try {
+            UserDTO userDTO = profileService.updateUserProfileByUser(updateUserProfileByUserRequest);
+            return Response.create("Update is successful", HttpStatus.OK, userDTO);
+        } catch (Exception e) {
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/lead")
-    public ResponseEntity<Object> updateLeadProfileByStaff(@Valid @RequestBody UpdateLeadProfileByStaffRequest
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/lead/{leadId}")
+    public ResponseEntity<Object> updateLeadProfileByStaff(@Valid @PathVariable Long leadId,
+                                                           @Valid @RequestBody UpdateLeadProfileByStaffRequest
                                                                   updateLeadProfileByStaffRequest) {
         try {
-            LeadDTO leadDTO = profileService.updateLeadProfileByStaff(updateLeadProfileByStaffRequest);
+            LeadDTO leadDTO = profileService.updateLeadProfileByStaff(leadId, updateLeadProfileByStaffRequest);
             return Response.create("Update is successful", HttpStatus.OK, leadDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/core-team")
-    public ResponseEntity<Object> updateCoreTeamProfileByStaff(@Valid @RequestBody UpdateCoreTeamMemberProfileByStaffRequest
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/core-team/{coreTeamMemberId}")
+    public ResponseEntity<Object> updateCoreTeamProfileByStaff(@Valid @PathVariable Long coreTeamMemberId,
+                                                               @Valid @RequestBody UpdateCoreTeamMemberProfileByStaffRequest
                                                                       updateCoreTeamMemberProfileByStaffRequest) {
         try {
-            CoreTeamMemberDTO coreTeamMemberDTO = profileService.updateCoreTeamMemberProfileByStaff(updateCoreTeamMemberProfileByStaffRequest);
+            CoreTeamMemberDTO coreTeamMemberDTO = profileService.updateCoreTeamMemberProfileByStaff(coreTeamMemberId,
+                    updateCoreTeamMemberProfileByStaffRequest);
             return Response.create("Update is successful", HttpStatus.OK, coreTeamMemberDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/facilitator")
-    public ResponseEntity<Object> updateFacilitatorProfileByStaff(@Valid @RequestBody UpdateFacilitatorProfileByStaffRequest
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/facilitator/{facilitatorId}")
+    public ResponseEntity<Object> updateFacilitatorProfileByStaff(@Valid @PathVariable Long facilitatorId,
+                                                                  @Valid @RequestBody UpdateFacilitatorProfileByStaffRequest
                                                                    updateFacilitatorProfileByStaffRequest) {
         try {
-            FacilitatorDTO facilitatorDTO = profileService.updateFacilitatorProfileByStaff(updateFacilitatorProfileByStaffRequest);
+            FacilitatorDTO facilitatorDTO = profileService.updateFacilitatorProfileByStaff(facilitatorId,
+                    updateFacilitatorProfileByStaffRequest);
             return Response.create("Update is successful", HttpStatus.OK, facilitatorDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/googler")
-    public ResponseEntity<Object> updateGooglerProfileByStaff(@Valid @RequestBody UpdateGooglerProfileByStaffRequest
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/googler/{googlerId}")
+    public ResponseEntity<Object> updateGooglerProfileByStaff(@Valid @PathVariable Long googlerId,
+                                                              @Valid @RequestBody UpdateGooglerProfileByStaffRequest
                                                                   updateGooglerProfileByStaffRequest) {
         try {
-            GooglerDTO googlerDTO = profileService.updateGooglerProfileByStaff(updateGooglerProfileByStaffRequest);
+            GooglerDTO googlerDTO = profileService.updateGooglerProfileByStaff(googlerId,
+                    updateGooglerProfileByStaffRequest);
             return Response.create("Update is successful", HttpStatus.OK, googlerDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "update-staff/user/{userId}")
+    public ResponseEntity<Object> updateUserProfileByStaff(@Valid @PathVariable Long userId,
+                                                           @Valid @RequestBody UpdateUserProfileByStaffRequest
+                                                                      updateUserProfileByStaffRequest) {
+        try {
+            UserDTO userDTO = profileService.updateUserProfileByStaff(userId,
+                    updateUserProfileByStaffRequest);
+            return Response.create("Update is successful", HttpStatus.OK, userDTO);
+        } catch (Exception e) {
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

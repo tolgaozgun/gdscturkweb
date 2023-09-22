@@ -27,6 +27,9 @@ public class UniversityEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String chapterLink;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", nullable = false)
     private CityEntity city;

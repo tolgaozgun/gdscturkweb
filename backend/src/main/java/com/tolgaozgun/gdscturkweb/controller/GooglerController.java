@@ -29,8 +29,8 @@ public class GooglerController {
             List<GooglerDTO> googlers = googlerService.getAllGooglers();
             return Response.create("Gathered all googlers", HttpStatus.OK, googlers);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping( path = "create")
@@ -39,8 +39,8 @@ public class GooglerController {
             GooglerDTO googlerDTO = googlerService.registerGoogler(googlerRegisterRequest);
             return Response.create("Created Googler", HttpStatus.OK, googlerDTO);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 }

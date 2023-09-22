@@ -24,7 +24,8 @@ import java.util.UUID;
 public class UserInvitationService {
 
     private final UserInvitationRepository userInvitationRepository;
-    private final AuthService authService;
+    private final UserService userService;
+    private final EmailService emailService;
 
     private final int VALIDITY_IN_DAYS = 7;
 
@@ -55,7 +56,7 @@ public class UserInvitationService {
     public UserInviteEntity createInvitation(InviteUserRequest inviteUserRequest) {
         try {
 
-            UserEntity userEntity = authService.getCurrentUserEntity();
+            UserEntity userEntity = userService.getCurrentUserEntity();
             String email = inviteUserRequest.getEmail();
             UserType role = inviteUserRequest.getRole();
 
@@ -63,7 +64,7 @@ public class UserInvitationService {
                 throw new NotPermittedException();
             }
 
-            if (authService.userExists(email)) {
+            if (userService.userExists(email)) {
                 throw new UserAlreadyExistsException();
             }
 
@@ -79,8 +80,8 @@ public class UserInvitationService {
             return save(userInviteEntity);
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 
     public UserInvitationResponse createInvitationResponse(InviteUserRequest inviteUserRequest) {
@@ -91,6 +92,7 @@ public class UserInvitationService {
             userInvitationResponse.setRole(userInviteEntity.getRole());
             userInvitationResponse.setValidUntil(userInviteEntity.getValidUntil());
             userInvitationResponse.setIsValid(userInviteEntity.getIsValid());
+            emailService.sendUserInvitation(userInviteEntity.getEmail(), userInviteEntity);
             return userInvitationResponse;
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,12 +4,10 @@ import { User } from '../../types/UserTypes';
 import { useRefresh, useRefreshWithToken } from './useRefresh';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router';
 import { notifications } from '@mantine/notifications';
-import { useUser } from '../../contexts/UserContext';
 import { useToken } from './useToken';
 
 const loginAgain = (navigate: NavigateFunction) => {
 	
-	navigate("/login");
 	notifications.show({
 		id: 'login-expired',
 		title: 'Login expired!',
@@ -24,10 +22,8 @@ const loginAgain = (navigate: NavigateFunction) => {
 	});
 }
 
-const useAxiosSecureWithToken = (shouldRedirect: boolean = true, accessToken: string, refreshToken: string) => {
+const useAxiosSecureWithToken = (accessToken: string, refreshToken: string) => {
 	const refresh = useRefreshWithToken(accessToken, refreshToken);
-	const navigate = useNavigate();
-	const location = useLocation();
 
 	const token = {
 		accessToken: accessToken,
@@ -39,16 +35,10 @@ const useAxiosSecureWithToken = (shouldRedirect: boolean = true, accessToken: st
 			(config) => {
 				if (!config?.headers!['Authorization']) {
 					if (token == null) {
-						if (location.pathname !== "/login" && shouldRedirect) {
-							loginAgain(navigate);
-						}
 						return config;
 					}
 					
 					if (token?.accessToken == null){
-						if (location.pathname !== "/login" && shouldRedirect) {
-							loginAgain(navigate);
-						}
 						return config;
 					}
 
@@ -61,7 +51,6 @@ const useAxiosSecureWithToken = (shouldRedirect: boolean = true, accessToken: st
 			},
 			(error) => {
 				Promise.reject(error)
-				console.log("Error occurred here");
 			},
 		);
 
@@ -95,8 +84,12 @@ const useAxiosSecureWithToken = (shouldRedirect: boolean = true, accessToken: st
 const useAxiosSecure = (shouldRedirect: boolean = true) => {
 	const token = useToken();
 	const refresh = useRefresh();
-	const navigate = useNavigate();
-	const location = useLocation();
+	let navigate: NavigateFunction | null = null;
+	let location: Location | null = null;
+	if (shouldRedirect) {
+		navigate = useNavigate();
+		location = useLocation();
+	}
 
 	// const token = {
 	// 	accessToken: user?.accessToken,
@@ -108,15 +101,15 @@ const useAxiosSecure = (shouldRedirect: boolean = true) => {
 			(config) => {
 				if (!config?.headers!['Authorization']) {
 					if (token == null) {
-						if (location.pathname !== "/login" && shouldRedirect) {
-							loginAgain(navigate);
+						if (shouldRedirect && location!.pathname !== "/login") {
+							loginAgain(navigate!);
 						}
 						return config;
 					}
 					
 					if (token?.accessToken == null){
-						if (location.pathname !== "/login" && shouldRedirect) {
-							loginAgain(navigate);
+						if (shouldRedirect && location!.pathname !== "/login") {
+							loginAgain(navigate!);
 						}
 						return config;
 					}
@@ -130,7 +123,6 @@ const useAxiosSecure = (shouldRedirect: boolean = true) => {
 			},
 			(error) => {
 				Promise.reject(error)
-				console.log("Error occurred here");
 			},
 		);
 

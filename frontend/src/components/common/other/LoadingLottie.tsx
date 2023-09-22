@@ -15,15 +15,6 @@ const LoadingLottie = () => {
 			animationData={loadingLottie}
 			play
 			segments={segments}
-			onLoad={() => {
-				console.log('loaded');
-			}}
-			onLoadStart={() => {
-				console.log('load start');
-			}}
-			onLoadedData={() => {
-				console.log('loaded data');
-			}}
 			onLoopComplete={() => {
 				toggleSegments();
 			}}

@@ -14,9 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateUserProfileByStaff {
 
-    @NotNull
-    private Long userId;
-
     @Nullable
     private String name;
 

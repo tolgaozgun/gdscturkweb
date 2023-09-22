@@ -14,10 +14,6 @@ import lombok.NoArgsConstructor;
 public class UpdateLeadProfileByLeadRequest {
 
     @NotNull
-    @JsonProperty("user")
-    private UpdateUserProfileByUser updateUserProfile;
-
-    @NotNull
     @JsonProperty("lead")
     private UpdateLeadProfileByLead updateLeadProfile;
 

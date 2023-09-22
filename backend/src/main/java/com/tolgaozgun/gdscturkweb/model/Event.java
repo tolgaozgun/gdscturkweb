@@ -5,10 +5,12 @@ import com.tolgaozgun.gdscturkweb.entity.TopicEntity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -20,14 +22,26 @@ public class Event {
     private Long eventId;
 
     @NotNull
-    private List<UniversityEntity> organizers;
+    private List<University> organizers;
 
     @NotNull
     private String title;
+
+    @NotNull
+    private String address;
 
     @Nullable
     private String description;
 
     @NotNull
-    private List<TopicEntity> topics;
+    private Date startDate;
+
+    @Nullable
+    private Date endDate;
+
+    @NotNull
+    private String link;
+
+    @NotNull
+    private List<Topic> topics;
 }

@@ -18,7 +18,7 @@ export const LeadPanelData: PanelItem[] = [
     { label: 'Dashboard', icon: IconGauge, link: '/panel/lead/dashboard' },
     {
       label: 'My Core Team',
-      initiallyOpened: true,
+      link: '/panel/lead/core-team',
       icon: IconUsersGroup,
       links: [
         { label: 'List Users', link: '/panel/lead/core-team/my' },
@@ -27,7 +27,7 @@ export const LeadPanelData: PanelItem[] = [
     },
     {
       label: 'My Buddy Team',
-      initiallyOpened: true,
+      link: '/panel/lead/buddy-teams',
       icon: IconChalkboard,
       links: [
         { label: 'View Buddy Team', link: '/panel/lead/buddy-teams/my' },

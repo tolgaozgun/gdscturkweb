@@ -66,6 +66,8 @@ public class JWTFilter extends OncePerRequestFilter {
             }
         }
 
+        System.out.println("Current endpoint: " + currentEndpoint);
+
         boolean isCurrentRefresh = currentEndpoint.equals("/api/v1/auth/refresh");
 
         try {

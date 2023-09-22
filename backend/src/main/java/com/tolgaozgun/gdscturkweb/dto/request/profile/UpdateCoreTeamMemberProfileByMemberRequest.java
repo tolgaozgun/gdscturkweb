@@ -14,10 +14,6 @@ import lombok.NoArgsConstructor;
 public class UpdateCoreTeamMemberProfileByMemberRequest {
 
     @NotNull
-    @JsonProperty("user")
-    private UpdateUserProfileByUser updateUserProfile;
-
-    @NotNull
     @JsonProperty("core-team")
     private UpdateCoreTeamProfileByCoreTeam updateCoreTeamProfile;
 }

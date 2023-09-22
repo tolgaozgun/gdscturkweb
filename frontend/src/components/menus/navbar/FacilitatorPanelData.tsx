@@ -16,7 +16,7 @@ export const FacilitatorPanelData: PanelItem[] = [
     { label: 'Dashboard', icon: IconGauge, link: '/panel/facilitator/dashboard' },
     {
       label: 'My Buddy Team',
-      initiallyOpened: true,
+      link: '/panel/facilitator/buddy-teams',
       icon: IconChalkboard,
       links: [
         { label: 'View Buddy Team', link: '/panel/facilitator/buddy-teams/my' },
@@ -26,6 +26,7 @@ export const FacilitatorPanelData: PanelItem[] = [
     },
     {
       label: 'Campaigns',
+      link: '/panel/facilitator/campaigns',
       icon: IconBrandCampaignmonitor,
       links: [
         { label: 'List Current Campaigns', link: '/panel/facilitator/campaigns/current' },
@@ -34,6 +35,7 @@ export const FacilitatorPanelData: PanelItem[] = [
     },
     {
       label: 'Universities',
+      link: '/panel/facilitator/universities',
       icon: IconSchool,
       links: [
         { label: 'List Universities', link: '/panel/facilitator/universities/list' },
@@ -41,6 +43,7 @@ export const FacilitatorPanelData: PanelItem[] = [
     },
     {
       label: 'Cities',
+      link: '/panel/facilitator/cities',
       icon: IconTree,
       links: [
         { label: 'List Cities', link: '/panel/facilitator/cities/list' },
@@ -48,6 +51,7 @@ export const FacilitatorPanelData: PanelItem[] = [
     },
     {
       label: 'Countries',
+      link: '/panel/facilitator/countries',
       icon: IconFlag,
       links: [
         { label: 'List Countries', link: '/panel/facilitator/countries/list' },
@@ -55,6 +59,7 @@ export const FacilitatorPanelData: PanelItem[] = [
     },
     {
       label: 'Questions',
+      link: '/panel/facilitator/questions',
       icon: IconQuestionMark,
       links: [
         { label: 'List Questions', link: '/panel/facilitator/questions/list' },

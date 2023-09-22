@@ -9,20 +9,20 @@ import {
 	IconTicket,
 	IconUserCircle,
 } from '@tabler/icons-react';
-import { useLogout, useUser } from '../../hooks/auth';
 import SubtleLinkButton from '../buttons/SubtleLinkButton';
 import UserButton from '../buttons/UserButton';
+import { useUser } from '../../contexts/UserContext';
+import { useNavigate } from 'react-router';
 
 const AdminMenu = () => {
-	const user = useUser();
-
+	const {user} = useUser();
+	const navigate = useNavigate();
 	if (!user) {
 		return null;
 	}
 
-	const { logout } = useLogout();
 	const onLogout = () => {
-		logout();
+		navigate('/logout')
 	};
 
 	return (

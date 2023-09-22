@@ -34,7 +34,7 @@ export type User = {
 
 export type UserWithRole = {
 	user: User;
-	role: Object;
+	extra: Object;
 }
 
 export type UserModel = {
@@ -88,3 +88,8 @@ export type LeadDashboardResponse = {
 	buddyMeetings: Map<Date, boolean>;
 }
 
+export type CoreTeamMemberDashboardResponse = {
+	coreTeamMember: CoreTeamMemberModel;
+	coreTeamSize: number;
+	eventDates: Array<Date>;
+}

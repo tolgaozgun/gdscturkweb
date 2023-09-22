@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { getBuddyTeamByCurrentLead } from '../../services/buddy-team/BuddyTeamService';
+import { getBuddyTeamByCurrentLead } from '../../services/teams/BuddyTeamService';
 
 const useGetBuddyTeamByCurrentLead = (axiosSecure: AxiosInstance) => {
 	return useQuery({

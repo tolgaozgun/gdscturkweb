@@ -27,7 +27,8 @@ public class BuddyTeamController {
             List<BuddyTeamDTO> buddyTeams = buddyTeamService.getAllBuddyTeams();
             return Response.create("Gathered all buddy teams", HttpStatus.OK, buddyTeams);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);
         }
     }
 
@@ -39,8 +40,8 @@ public class BuddyTeamController {
             BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamDTOByCurrentUser();
             return Response.create("Gathered the buddy team", HttpStatus.OK, buddyTeam);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -50,8 +51,8 @@ public class BuddyTeamController {
             BuddyTeamDTO buddyTeam = buddyTeamService.getBuddyTeamDTOByFacilitator();
             return Response.create("Gathered the buddy team", HttpStatus.OK, buddyTeam);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -62,8 +63,8 @@ public class BuddyTeamController {
             BuddyTeamDTO buddyTeam = buddyTeamService.updateBuddyTeamById(buddyTeamId, updateBuddyTeamRequest);
             return Response.create("Updated the buddy team", HttpStatus.OK, buddyTeam);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -74,8 +75,8 @@ public class BuddyTeamController {
             BuddyTeamDTO buddyTeam = buddyTeamService.updateBuddyTeamByFacilitator(updateBuddyTeamRequest);
             return Response.create("Updated the buddy team", HttpStatus.OK, buddyTeam);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "update/by-lead")
@@ -84,8 +85,8 @@ public class BuddyTeamController {
             BuddyTeamDTO buddyTeam = buddyTeamService.updateBuddyTeamByLead(updateBuddyTeamRequest);
             return Response.create("Updated the buddy team", HttpStatus.OK, buddyTeam);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 }

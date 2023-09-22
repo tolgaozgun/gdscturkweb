@@ -51,6 +51,18 @@ import FacilitatorPanelCurrentCampaignListPage from './pages/panel/facilitator/c
 import SendEmailVerificationPage from './pages/auth/SendEmailVerificationPage.tsx';
 import EmailVerifyPage from './pages/auth/EmailVerifyPage.tsx';
 import LeadPanelBuddyTeamPage from './pages/panel/lead/LeadPanelBuddyTeamPage.tsx';
+import LeadPanelInviteCoreTeam from './pages/panel/lead/core-team/LeadPanelInviteCoreTeam.tsx';
+import LeadPanelCoreTeamPage from './pages/panel/lead/core-team/LeadPanelCoreTeamPage.tsx';
+import LeadPanelAccountSettings from './pages/panel/lead/LeadPanelAccountSettings.tsx';
+import LogoutPage from './pages/LogoutPage.tsx';
+import CoreTeamPanelCoreTeamPage from './pages/panel/core-team/core-team/CoreTeamPanelCoreTeamPage.tsx';
+import CoreTeamPanelCurrentCampaignListPage from './pages/panel/core-team/campaign/CoreTeamPanelCurrentCampaignListPage.tsx';
+import CoreTeamPanelCampaignListPage from './pages/panel/core-team/campaign/CoreTeamPanelCampaignListPage.tsx';
+import CoreTeamPanelUniversityListPage from './pages/panel/core-team/university/CoreTeamPanelUniversityListPage.tsx';
+import CoreTeamPanelCityListPage from './pages/panel/core-team/city/CoreTeamPanelCityListPage.tsx';
+import CoreTeamPanelAccountSettings from './pages/panel/core-team/CoreTeamPanelAccountSettings.tsx';
+import CoreTeamPanelCountryListPage from './pages/panel/core-team/country/CoreTeamPanelCountryListPage.tsx';
+import CoreTeamDashboardPage from './pages/panel/core-team/CoreTeamDashboardPage.tsx';
 
 
 const router = createBrowserRouter([
@@ -67,6 +79,10 @@ const router = createBrowserRouter([
 					{
 						path: '/login',
 						element: <LoginPage />,
+					},
+					{
+						path: '/logout',
+						element: <LogoutPage />,
 					},
 					{
 						path: '/register',
@@ -270,11 +286,11 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/lead/core-team/my',
-						element: <NotFoundPage />
+						element: <LeadPanelCoreTeamPage />
 					},
 					{
 						path: '/panel/lead/core-team/invite',
-						element: <NotFoundPage />
+						element: <LeadPanelInviteCoreTeam />
 					},
 					{
 						path: '/panel/lead/buddy-teams/my',
@@ -318,7 +334,51 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/lead/settings',
+						element: <LeadPanelAccountSettings />
+					},
+					{
+						path: '/panel/core-team',
+						element: <CoreTeamDashboardPage />
+					},
+					{
+						path: '/panel/core-team/dashboard',
+						element: <CoreTeamDashboardPage />
+					},
+					{
+						path: '/panel/core-team/core-team/my',
+						element: <CoreTeamPanelCoreTeamPage />
+					},
+					{
+						path: '/panel/core-team/campaigns/current',
+						element: <CoreTeamPanelCurrentCampaignListPage />
+					},
+					{
+						path: '/panel/core-team/campaigns/all',
+						element: <CoreTeamPanelCampaignListPage />
+					},
+					{
+						path: '/panel/core-team/universities/list',
+						element: <CoreTeamPanelUniversityListPage />
+					},
+					{
+						path: '/panel/core-team/cities/list',
+						element: <CoreTeamPanelCityListPage />
+					},
+					{
+						path: '/panel/core-team/countries/list',
+						element: <CoreTeamPanelCountryListPage />
+					},
+					{
+						path: '/panel/core-team/questions/list',
 						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/core-team/questions/ask',
+						element: <NotFoundPage />
+					},
+					{
+						path: '/panel/core-team/settings',
+						element: <CoreTeamPanelAccountSettings />
 					},
 					{
 						path: '*',

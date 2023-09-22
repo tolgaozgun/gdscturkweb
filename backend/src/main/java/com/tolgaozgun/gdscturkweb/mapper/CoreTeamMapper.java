@@ -1,16 +1,11 @@
 package com.tolgaozgun.gdscturkweb.mapper;
 
-import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
-import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
-import com.tolgaozgun.gdscturkweb.dto.UserDTO;
-import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.CoreTeamMemberEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.FacilitatorEntity;
-import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
-import com.tolgaozgun.gdscturkweb.model.University;
-import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
-import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
-import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
+import com.tolgaozgun.gdscturkweb.dto.BuddyTeamDTO;
+import com.tolgaozgun.gdscturkweb.dto.CoreTeamDTO;
+import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
+import com.tolgaozgun.gdscturkweb.entity.CoreTeamEntity;
+import com.tolgaozgun.gdscturkweb.model.BuddyTeam;
+import com.tolgaozgun.gdscturkweb.model.CoreTeam;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,41 +18,35 @@ import java.util.stream.Collectors;
 public class CoreTeamMapper {
 
     private final ModelMapper modelMapper;
-    private final UserMapper userMapper;
-    private final UniversityMapper universityMapper;
+    private final CoreTeamMemberMapper coreTeamMemberMapper;
+    private final LeadMapper leadMapper;
 
-    private final UniversityRepository universityRepository;
-    private final BuddyTeamRepository buddyTeamRepository;
-
-    public CoreTeamMemberEntity toEntity(CoreTeamMember coreTeamMember) {
-        CoreTeamMemberEntity coreTeamMemberEntity = modelMapper.map(coreTeamMember, CoreTeamMemberEntity.class);
-
-        return coreTeamMemberEntity;
+    public CoreTeamEntity toEntity(CoreTeam coreTeam) {
+        CoreTeamEntity coreTeamEntity = modelMapper.map(coreTeam, CoreTeamEntity.class);
+        return coreTeamEntity;
     }
 
-    public CoreTeamMemberDTO toDTO(CoreTeamMemberEntity coreTeamMemberEntity) {
-        UserEntity userEntity = coreTeamMemberEntity.getUser();
-        UserDTO userDTO = userMapper.toDTO(userEntity);
+    public CoreTeamDTO toDTO(CoreTeamEntity coreTeamEntity) {
 
-        UniversityEntity universityEntity = coreTeamMemberEntity.getUniversity();
-        University university = universityMapper.toModel(universityEntity);
+        CoreTeamDTO buddyTeamDTO = new CoreTeamDTO();
+        buddyTeamDTO.setCoreTeamId(coreTeamEntity.getId());
+        buddyTeamDTO.setLead(leadMapper.toDTO(coreTeamEntity.getLead()));
+        buddyTeamDTO.setCoreTeamMembers(coreTeamMemberMapper.toDTO(coreTeamEntity.getCoreTeamMembers()));
 
-        Long id = coreTeamMemberEntity.getCoreTeamMemberId();
-
-        return new CoreTeamMemberDTO(userDTO, university, id);
+        return buddyTeamDTO;
     }
 
-
-    public List<CoreTeamMemberDTO> toDTO(List<CoreTeamMemberEntity> coreTeamMemberEntities) {
-        return coreTeamMemberEntities.stream()
+    public List<CoreTeamDTO> toDTO(List<CoreTeamEntity> buddyTeamEntityList) {
+        return buddyTeamEntityList.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public CoreTeamMember toModel(CoreTeamMemberEntity coreTeamMemberEntity) {
 
-        CoreTeamMember coreTeamMember = modelMapper.map(coreTeamMemberEntity, CoreTeamMember.class);
+    public CoreTeam toModel(CoreTeamEntity buddyTeamEntity) {
 
-        return coreTeamMember;
+        CoreTeam buddyTeam = modelMapper.map(buddyTeamEntity, CoreTeam.class);
+
+        return buddyTeam;
     }
 }

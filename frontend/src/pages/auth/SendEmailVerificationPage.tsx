@@ -11,8 +11,6 @@ export function SendEmailVerificationPage() {
   // Get email and token param from url
   const email = param.email;
 
-  console.log("email is: " + email);
-
   return (
     <Center sx={{ height: "60vh" }}>
       <SendEmailVerificationForm email={email} />

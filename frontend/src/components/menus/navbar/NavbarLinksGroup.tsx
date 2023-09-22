@@ -10,7 +10,7 @@ import {
   rem,
 } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -46,6 +46,11 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  linkSelected: {
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+  },
+
   chevron: {
     transition: 'transform 200ms ease',
   },
@@ -54,7 +59,7 @@ const useStyles = createStyles((theme) => ({
 interface LinksGroupProps {
   label: string;
   icon: React.ElementType;
-  link?: string;
+  link: string;
   initiallyOpened?: boolean;
   links?: PanelLink[];
 }
@@ -62,14 +67,17 @@ interface LinksGroupProps {
 export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: LinksGroupProps) {
   const navigate = useNavigate();
   const { classes, theme } = useStyles();
+  const location = useLocation();
   const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const [opened, setOpened] = useState(location.pathname.includes(link) || !!initiallyOpened);
   const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft;
   const items = (hasLinks ? links : []).map((link) => (
     <Text<'a'>
       component="a"
-      className={classes.link}
+      className={classes.link + (location.pathname.includes(link.link) ? ' ' + classes.linkSelected : '')}
       key={link.label}
+      
+      
       onClick={(event) =>{
         event.preventDefault()
         navigate(link.link)
@@ -82,7 +90,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: 
   return (
     <>
       <UnstyledButton onClick={() => {
-        if (link) {
+        if (!links && link) {
             navigate(link);
             return;
         }

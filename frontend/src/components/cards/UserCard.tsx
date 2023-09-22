@@ -15,7 +15,6 @@ const UserCard = ({ lead, isUsedInMap }: UserInfoActionProps) => {
       topics[topics.length - 1] = topics[topics.length - 1].slice(0, -2);
     }
 
-
   return (
     <Paper
       radius="md"

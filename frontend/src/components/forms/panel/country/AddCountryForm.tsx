@@ -51,7 +51,6 @@ const AddCountryForm = ({padding, mt}: AddCountryFormProps) => {
 	});
 
 	const handleAddCountry = async () => {
-		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;

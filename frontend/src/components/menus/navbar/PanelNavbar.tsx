@@ -2,7 +2,7 @@ import { Navbar, Group, Code, ScrollArea, createStyles, rem, MediaQuery, Image }
 import { LinksGroup } from './NavbarLinksGroup';
 import Logo from '../../../assets/gdsc-logo.png';
 import UserMenuItem from '../../UserMenuItem';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useUser } from '../../../contexts/UserContext';
 
 
@@ -52,6 +52,7 @@ export function PanelNavbar({panelName, panelData}: PanelNavbarProps) {
   const { classes } = useStyles();
   const {user} = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
   const links = panelData.map((item) => <LinksGroup {...item} key={item.label} />);
 
   const handleHomePageRedirect = () => {
@@ -69,12 +70,12 @@ export function PanelNavbar({panelName, panelData}: PanelNavbarProps) {
                     </Group>
                 </Navbar.Section>
 
-                <Navbar.Section grow className={classes.links} component={ScrollArea}>
+                <Navbar.Section grow className={classes.links} component={ScrollArea} >
                     <div className={classes.linksInner}>{links}</div>
                 </Navbar.Section>
 
                 <Navbar.Section className={classes.footer}>
-                  <UserMenuItem user={user!}/>
+                  <UserMenuItem user={user}/>
                 </Navbar.Section>
             </Navbar>
             

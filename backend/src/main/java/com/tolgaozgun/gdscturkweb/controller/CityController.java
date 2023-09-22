@@ -29,8 +29,8 @@ public class CityController {
             List<City> cityList = cityService.getAllCities();
             return Response.create("Gathered all cities", HttpStatus.OK, cityList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -41,8 +41,8 @@ public class CityController {
             City city = cityService.getCity(cityId);
             return Response.create("Found the city", HttpStatus.OK, city);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -52,8 +52,8 @@ public class CityController {
             City city = cityService.createCity(createCityRequest);
             return Response.create("City created successfully", HttpStatus.OK, city);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -64,8 +64,8 @@ public class CityController {
             City city = cityService.editCity(cityId, editCityRequest);
             return Response.create("City edited successfully", HttpStatus.OK, city);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

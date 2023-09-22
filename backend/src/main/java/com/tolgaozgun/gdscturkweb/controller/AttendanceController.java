@@ -34,8 +34,8 @@ public class AttendanceController {
             List<AttendanceDTO> announcements = attendanceService.getAllAttendances();
             return Response.create("Gathered all attendances", HttpStatus.OK, announcements);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -45,8 +45,8 @@ public class AttendanceController {
             List<LeadAttendance> announcements = attendanceService.getAllAttendancesOfCurrentUser();
             return Response.create("Gathered all lead attendances for current user", HttpStatus.OK, announcements);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -56,8 +56,8 @@ public class AttendanceController {
             List<LeadAttendance> announcements = attendanceService.getAllAttendancesOfLead(leadId);
             return Response.create("Gathered all lead attendances for lead with ID " + leadId, HttpStatus.OK, announcements);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "facilitator/{facilitatorId}")
@@ -66,8 +66,8 @@ public class AttendanceController {
             List<AttendanceDTO> attendances = attendanceService.getAllAttendancesOfFacilitator(facilitatorId);
             return Response.create("Gathered all buddy team attendances for facilitator with ID " + facilitatorId, HttpStatus.OK, attendances);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -77,8 +77,8 @@ public class AttendanceController {
             AttendanceDTO announcement = attendanceService.getAttendanceById(id);
             return Response.create("Found the attendance", HttpStatus.OK, announcement);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -88,8 +88,8 @@ public class AttendanceController {
             AttendanceDTO announcement = attendanceService.createAttendance(createAttendanceRequest);
             return Response.create("Attendance created successfully", HttpStatus.OK, announcement);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -99,7 +99,7 @@ public class AttendanceController {
             AttendanceDTO announcement = attendanceService.editAttendance(id, editAttendanceRequest);
             return Response.create("Attendance edited successfully", HttpStatus.OK, announcement);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 }

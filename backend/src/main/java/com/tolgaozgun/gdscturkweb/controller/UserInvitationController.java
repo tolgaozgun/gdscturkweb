@@ -23,13 +23,14 @@ public class UserInvitationController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping( path = "invite")
-    public ResponseEntity<Object> verifyEmail(@RequestBody @NotNull InviteUserRequest inviteUserRequest) {
+    public ResponseEntity<Object> inviteUser(@RequestBody @NotNull InviteUserRequest inviteUserRequest) {
         try {
+            System.out.println("inviteUserRequest: " + inviteUserRequest);
             UserInvitationResponse response = userInvitationService.createInvitationResponse(inviteUserRequest);
             return Response.create("Successfully invited user", HttpStatus.OK, response);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -39,8 +40,8 @@ public class UserInvitationController {
             UserInvitationResponse response = userInvitationService.cancelInvitation(invitationId);
             return Response.create("Successfully cancelled the invite", HttpStatus.OK, response);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

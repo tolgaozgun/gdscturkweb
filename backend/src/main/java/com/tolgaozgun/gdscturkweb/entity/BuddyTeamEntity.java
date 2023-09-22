@@ -31,4 +31,6 @@ public class BuddyTeamEntity {
     @OneToMany
     @JoinColumn(name = "buddy_team_id", referencedColumnName = "buddy_team_id")
     private List<LeadEntity> leads;
+
+
 }

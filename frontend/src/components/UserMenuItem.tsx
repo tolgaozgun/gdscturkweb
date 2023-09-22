@@ -1,20 +1,49 @@
 import { Menu } from "@mantine/core";
-import { IconHeart, IconLogout, IconMessage, IconPlayerPause, IconSettings, IconStar, IconSwitchHorizontal, IconTrash } from "@tabler/icons-react";
+import { IconLogout, IconSettings } from "@tabler/icons-react";
 import { useState } from "react";
 import { UserButton } from "./UserButton";
 import { User } from "../types";
+import { useNavigate } from "react-router";
 
 interface UserMenuItemProps {
-    user: User;
+    user?: User;
 }
 
 const UserMenuItem = ({user}: UserMenuItemProps) => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const navigate = useNavigate();
 
     const handleProfileClick = () => {
         setIsMenuOpen(!isMenuOpen);
     }    
+    if (!user) {
+        return <></>
+    }
+
+    const handleLogout = () => {
+        navigate('/logout');
+    }
+
+    const handleSettings = () => {
+        switch(user.userType){
+            case "LEAD":
+                navigate('/panel/lead/settings');
+                break;
+            case "ADMIN":
+                navigate('/panel/admin/settings');
+                break;
+            case "CORE_TEAM_MEMBER":
+                navigate('/panel/core-team-member/settings');
+                break;
+            case "FACILITATOR":
+                navigate('/panel/facilitator/settings');
+                break;
+            case "GOOGLER":
+                navigate('/panel/googler/settings');
+                break;
+        }
+    }
 
     return (
         <>
@@ -61,10 +90,10 @@ const UserMenuItem = ({user}: UserMenuItemProps) => {
                     Delete account
                 </Menu.Item> */}
                 <Menu.Label>Settings</Menu.Label>
-                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
+                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />} onClick={handleSettings}>
                     Account settings
                 </Menu.Item>
-                <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>Logout</Menu.Item>
+                <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />} onClick={handleLogout}>Logout</Menu.Item>
 
             </Menu>
         }

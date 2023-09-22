@@ -16,19 +16,12 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconLogout,
-  IconHeart,
-  IconStar,
-  IconMessage,
   IconSettings,
-  IconPlayerPause,
-  IconTrash,
-  IconSwitchHorizontal,
   IconChevronDown,
 } from '@tabler/icons-react';
 import GDSCLogo from '../../assets/gdsc-logo.png';
 import { useNavigate } from 'react-router';
 import { User, UserType } from '../../types';
-import { useUser } from '../../contexts/UserContext';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -98,13 +91,13 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface SecondHeaderProps {
-  user: User;
+  user: User | null | undefined;
   tabs: { name: string; link: string }[];
   isLoggedIn?: boolean;
 }
 
 export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) {
-  const { classes, theme, cx } = useStyles();
+  const { classes, cx } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const navigate = useNavigate();
@@ -117,14 +110,63 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
     navigate("/");
   }
 
+  const handleLogout = () => {
+    navigate('/logout');
+  }
+
+  const handleSettings = () => {
+      switch(user?.userType){
+          case "LEAD":
+              navigate('/panel/lead/settings');
+              break;
+          case "ADMIN":
+              navigate('/panel/admin/settings');
+              break;
+          case "CORE_TEAM_MEMBER":
+              navigate('/panel/core-team-member/settings');
+              break;
+          case "FACILITATOR":
+              navigate('/panel/facilitator/settings');
+              break;
+          case "GOOGLER":
+              navigate('/panel/googler/settings');
+              break;
+      }
+  }
+
   const items = tabs.map((tab) => (
     <Tabs.Tab value={tab.name} key={tab.name} onClick={() => {handleTabClick(tab.link)}}>
       {tab.name}
     </Tabs.Tab>
   ));
+  
+  let userBar = <></>;
 
-  let userBar = (
-    <>
+  if (!isLoggedIn || !user) {
+    userBar = (
+      <>
+      <Group 
+        spacing={1.0}>
+        <UnstyledButton
+            className={cx(classes.user)}
+            onClick={() => {navigate("/login")}}
+          >
+            Sign In
+        </UnstyledButton>
+        <UnstyledButton
+            className={cx(classes.user)}
+            onClick={() => {navigate("/register")}}
+          >
+            Register
+        </UnstyledButton>
+        </Group>
+      </>
+    )
+  } else {
+
+
+    userBar = (
+      <>
           <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
 
           <Menu
@@ -185,36 +227,17 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
               </Menu.Item> */}
 
               <Menu.Label>Settings</Menu.Label>
-                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
+                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />} onClick={handleSettings}>
                     Account settings
                 </Menu.Item>
-                <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>Logout</Menu.Item>
+                <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />} onClick={handleLogout}>Logout</Menu.Item>
             </Menu.Dropdown>
           </Menu>
           </>
+          
   )
+}
 
-  if (!isLoggedIn) {
-    userBar = (
-      <>
-      <Group 
-        spacing={1.0}>
-        <UnstyledButton
-            className={cx(classes.user)}
-            onClick={() => {navigate("/login")}}
-          >
-            Sign In
-        </UnstyledButton>
-        <UnstyledButton
-            className={cx(classes.user)}
-            onClick={() => {navigate("/register")}}
-          >
-            Register
-        </UnstyledButton>
-        </Group>
-      </>
-    )
-  }
 
   return (
     <div className={classes.header}>
@@ -243,17 +266,22 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
               ml="auto"
               justify="flex-end"
             >
-              {user.userType == UserType.Lead &&
+              {user && user.userType == UserType.Lead &&
               <Tabs.Tab value="Lead Panel" key="Lead Panel" onClick={() => {handleTabClick("/panel/lead")}}>
                 Lead Panel
               </Tabs.Tab>
               }
-              {user.userType == UserType.Facilitator &&
+              {user && user.userType == UserType.Facilitator &&
               <Tabs.Tab value="Facilitator Panel" key="Facilitator Panel" onClick={() => {handleTabClick("/panel/facilitator")}}>
                 Facilitator Panel
               </Tabs.Tab>
               }
-              {user.userType == UserType.Admin &&
+              {user && user.userType == UserType.CoreTeamMember &&
+              <Tabs.Tab value="Core Team Panel" key="Core Team Panel" onClick={() => {handleTabClick("/panel/core-team")}}>
+                Core Team Panel
+              </Tabs.Tab>
+              }
+              {user && user.userType == UserType.Admin &&
               <Tabs.Tab value="Admin Panel" key="Admin Panel" onClick={() => {handleTabClick("/panel/admin")}}>
                 Admin Panel
               </Tabs.Tab>
