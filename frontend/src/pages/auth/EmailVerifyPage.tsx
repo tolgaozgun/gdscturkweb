@@ -1,13 +1,13 @@
 import { Center } from "@mantine/core";
 import { useParams } from "react-router";
 import VerifyEmailForm from "../../components/forms/auth/VerifyEmailForm";
+import { decodeEmail } from "../../utils/utils";
+import { useSearchParams } from "react-router-dom";
 
-const LoginPage = () => {
-  const param = useParams();
-
-  // Get email and token param from url
-  const email = param.email;
-  const token = param.token;
+const EmailVerifyPage = () => {
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get("email");
+  const token = searchParams.get("token");
 
 
   return (
@@ -17,4 +17,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default EmailVerifyPage;

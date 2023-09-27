@@ -5,6 +5,8 @@ import { OverviewCard } from "../../../components/cards/OverviewCard";
 import useAxiosSecure from "../../../hooks/auth/useAxiosSecure";
 import LoadingLottie from "../../../components/common/other/LoadingLottie";
 import useGetCoreTeamDashboard from "../../../hooks/user/useGetCoreTeamDashboard";
+import useGetEventsByCurrentUserUniversity from "../../../hooks/event/useGetEventsByCurrentUserUniversity";
+import { Activity } from "../../../types/EventTypes";
 
 
 const useStyles = createStyles((theme) => ({
@@ -29,6 +31,13 @@ const CoreTeamDashboardPage = () => {
 		isLoading: isDashboardLoading,
 		// isError: isUniversitiesError,
 	} = useGetCoreTeamDashboard(axiosSecure);
+
+
+  const {
+    data: eventsData,
+    isLoading: isEventsLoading,
+    // isError: isUniversitiesError,
+  } = useGetEventsByCurrentUserUniversity(axiosSecure);
 
   let data = [
     {
@@ -56,30 +65,31 @@ const CoreTeamDashboardPage = () => {
 
     // today's date
     const today = new Date();
-    let pastEvents: Date[] = []
+    let pastEvents: Activity[] = []
     const currentMonth = today.getMonth();
-    let futureEvents: Date[] = []
-
-    if (dashboardData.data.eventDates) {
+    let futureEvents: Activity[] = []
+    
+    if (eventsData?.data) {
       // seperate dashboardData.data.eventDates into past and future events
-      pastEvents = dashboardData.data.eventDates.filter((date) => {
-        return new Date(date) < today;
+      pastEvents = eventsData.data.filter((event) => {
+        return new Date(event.startDate) < today;
       });
 
-      futureEvents = dashboardData.data.eventDates.filter((date) => {
-        return new Date(date) >= today;
+      futureEvents = eventsData.data.filter((event) => {
+        return new Date(event.startDate) >= today;
       });
 
-      monthlyEventCount = dashboardData.data.eventDates.filter((date) => {
-        return new Date(date).getMonth() === currentMonth;
+      monthlyEventCount = eventsData.data.filter((event) => {
+        return new Date(event.startDate).getMonth() === currentMonth;
       }).length;
+
 
 
       // get the number of events in each month starting from september
       datasetEvents = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       datasetAttendances = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      dashboardData.data.eventDates.forEach((date) => {
-        const month = new Date(date).getMonth();
+      eventsData.data.forEach((event) => {
+        const month = new Date(event.startDate).getMonth();
         datasetEvents[(month - 8) % 12]++;
       });
     }
@@ -92,7 +102,7 @@ const CoreTeamDashboardPage = () => {
       },
       {
         title: "Time as a Core Team Member",
-        value: "To be added",
+        value: dashboardData.data.promotedAt ? `${Math.floor((new Date().getTime() - new Date(dashboardData.data.promotedAt).getTime()) / (1000 * 3600 * 24 * 30))} months` : "? months",
       },
       {
         title: "Core Team Size",

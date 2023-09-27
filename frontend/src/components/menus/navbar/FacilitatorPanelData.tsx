@@ -66,5 +66,14 @@ export const FacilitatorPanelData: PanelItem[] = [
         { label: 'Ask a Question', link: '/panel/facilitator/questions/ask' },
       ],
     },
-    { label: 'Settings', icon: IconAdjustments, link: '/panel/facilitator/settings' },
+    {
+      label: 'Settings',
+      link: '/panel/facilitator/settings',
+      icon: IconAdjustments,
+      links: [
+        { label: 'Account Settings', link: '/panel/facilitator/settings/account' },
+        { label: 'Ask a Question', link: '/panel/facilitator/settings/profile' },
+        { label: 'Preferences', link: '/panel/facilitator/settings/preferences' },
+      ],
+    },
   ];

@@ -98,3 +98,16 @@ export type UpdateUserProfileByUserRequest = {
 export type UpdateUserProfileByStaffRequest = {
     user: UpdateUserProfileByStaff;
 }
+
+export type SocialMediaLinks = {
+    facebook?: string;
+    instagram?: string;
+    twitter?: string;
+    youtube?: string;
+    linkedin?: string;
+    github?: string;
+    medium?: string;
+    discord?: string;
+    others?: Array<string>;
+
+}

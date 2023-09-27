@@ -33,9 +33,6 @@ public class LeadEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @Column(name = "promoted_at", nullable = false)
-    private Date promotedAt;
-
     public LeadEntity(UniversityEntity universityEntity, UserEntity user){
         this.university = universityEntity;
         this.user = user;

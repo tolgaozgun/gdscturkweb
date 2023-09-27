@@ -5,6 +5,8 @@ import { OverviewCard } from "../../../components/cards/OverviewCard";
 import useGetLeadDashboard from "../../../hooks/user/useGetLeadDashboard";
 import useAxiosSecure from "../../../hooks/auth/useAxiosSecure";
 import LoadingLottie from "../../../components/common/other/LoadingLottie";
+import useGetEventsByCurrentUserUniversity from "../../../hooks/event/useGetEventsByCurrentUserUniversity";
+import { Activity } from "../../../types/EventTypes";
 
 
 const useStyles = createStyles((theme) => ({
@@ -29,6 +31,12 @@ const LeadDashboardPage = () => {
 		isLoading: isDashboardLoading,
 		// isError: isUniversitiesError,
 	} = useGetLeadDashboard(axiosSecure);
+
+  const {
+    data: eventsData,
+    isLoading: isEventsLoading,
+    // isError: isUniversitiesError,
+  } = useGetEventsByCurrentUserUniversity(axiosSecure);
 
   let data = [
     {
@@ -66,30 +74,30 @@ const LeadDashboardPage = () => {
 
     // today's date
     const today = new Date();
-    let pastEvents: Date[] = []
+    let pastEvents: Activity[] = []
     const currentMonth = today.getMonth();
-    let futureEvents: Date[] = []
+    let futureEvents: Activity[] = []
 
-    if (dashboardData.data.eventDates) {
+    if (eventsData?.data) {
       // seperate dashboardData.data.eventDates into past and future events
-      pastEvents = dashboardData.data.eventDates.filter((date) => {
-        return new Date(date) < today;
+      pastEvents = eventsData.data.filter((event) => {
+        return new Date(event.startDate) < today;
       });
 
-      futureEvents = dashboardData.data.eventDates.filter((date) => {
-        return new Date(date) >= today;
+      futureEvents = eventsData.data.filter((event) => {
+        return new Date(event.startDate) >= today;
       });
 
-      monthlyEventCount = dashboardData.data.eventDates.filter((date) => {
-        return new Date(date).getMonth() === currentMonth;
+      monthlyEventCount = eventsData.data.filter((event) => {
+        return new Date(event.startDate).getMonth() === currentMonth;
       }).length;
 
 
       // get the number of events in each month starting from september
       datasetEvents = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       datasetAttendances = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      dashboardData.data.eventDates.forEach((date) => {
-        const month = new Date(date).getMonth();
+      eventsData.data.forEach((event) => {
+        const month = new Date(event.startDate).getMonth();
         datasetEvents[(month - 8) % 12]++;
       });
     }
@@ -118,7 +126,7 @@ const LeadDashboardPage = () => {
       },
       {
         title: "Time as a Leader",
-        value: "To be added",
+        value: dashboardData.data.promotedAt ? dashboardData.data.promotedAt.toString() : "Not found",
       },
       {
         title: "Core Team Size",
@@ -233,7 +241,7 @@ const LeadDashboardPage = () => {
                 <Text fz="lg" fw={500}>
                   {totalAttendance} / {noOfBuddyTeamMeetings}
                 </Text>
-                <Progress value={77} mt="md" size="lg" radius="xl" />
+                <Progress value={totalAttendance / noOfBuddyTeamMeetings} mt="md" size="lg" radius="xl" />
               </Card>
             </Grid.Col>
           </Grid>

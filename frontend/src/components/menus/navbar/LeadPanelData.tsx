@@ -11,6 +11,7 @@ import {
     IconQuestionMark,
     IconUserCircle,
     IconHome,
+    IconConfetti,
   } from '@tabler/icons-react';
 
 export const LeadPanelData: PanelItem[] = [
@@ -36,7 +37,17 @@ export const LeadPanelData: PanelItem[] = [
       ],
     },
     {
+      label: 'Events',
+      link: '/panel/lead/events',
+      icon: IconConfetti,
+      links: [
+        { label: 'My Events', link: '/panel/lead/events/my' },
+        { label: 'List All Events', link: '/panel/lead/events/all' },
+      ],
+    },
+    {
       label: 'Campaigns',
+      link: '/panel/lead/campaigns', 
       icon: IconBrandCampaignmonitor,
       links: [
         { label: 'List Current Campaigns', link: '/panel/lead/campaigns/current' },
@@ -45,20 +56,23 @@ export const LeadPanelData: PanelItem[] = [
     },
     {
       label: 'Leads',
+      link: '/panel/lead/leads',
       icon: IconUserCircle,
       links: [
-        { label: 'Leads Map', link: '/map/' },
+        { label: 'All Leads', link: '/panel/lead/leads/all' },
       ],
     },
     {
       label: 'Universities',
+      link: '/panel/lead/universities',
       icon: IconSchool,
       links: [
-        { label: 'List Universities', link: '/panel/lead/universities/list' },
+        { label: 'All Universities', link: '/panel/lead/universities/all' },
       ],
     },
     {
       label: 'Cities',
+      link: '/panel/lead/cities',
       icon: IconTree,
       links: [
         { label: 'List Cities', link: '/panel/lead/cities/list' },
@@ -66,6 +80,7 @@ export const LeadPanelData: PanelItem[] = [
     },
     {
       label: 'Countries',
+      link: '/panel/lead/countries',
       icon: IconFlag,
       links: [
         { label: 'List Countries', link: '/panel/lead/countries/list' },
@@ -73,11 +88,21 @@ export const LeadPanelData: PanelItem[] = [
     },
     {
       label: 'Questions',
+      link: '/panel/lead/questions',
       icon: IconQuestionMark,
       links: [
         { label: 'List Questions', link: '/panel/lead/questions/list' },
         { label: 'Ask a Question', link: '/panel/lead/questions/ask' },
       ],
     },
-    { label: 'Settings', icon: IconAdjustments, link: '/panel/lead/settings' },
+    {
+      label: 'Settings',
+      link: '/panel/lead/settings',
+      icon: IconAdjustments,
+      links: [
+        { label: 'User Settings', link: '/panel/lead/settings/user' },
+        { label: 'Lead Settings', link: '/panel/lead/settings/lead' },
+        { label: 'Preferences', link: '/panel/lead/settings/preferences' },
+      ],
+    },
   ];

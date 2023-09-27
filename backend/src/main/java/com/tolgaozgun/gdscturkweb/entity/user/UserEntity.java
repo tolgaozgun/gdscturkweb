@@ -3,6 +3,7 @@ package com.tolgaozgun.gdscturkweb.entity.user;
 
 import com.tolgaozgun.gdscturkweb.dto.user.register.UserRegister;
 import com.tolgaozgun.gdscturkweb.entity.PermissionEntity;
+import com.tolgaozgun.gdscturkweb.entity.SocialMediaLinksEntity;
 import com.tolgaozgun.gdscturkweb.entity.TopicEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
 import jakarta.persistence.*;
@@ -46,7 +47,7 @@ public class UserEntity {
     @Column(nullable = true)
     private String phoneNumber;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String biography;
 
     @Column(nullable = false)
@@ -61,6 +62,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserType userType;
+
+    @Column
+    private Date promotedAt;
 
     @ManyToMany
     @JoinTable(
@@ -89,6 +93,11 @@ public class UserEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date lastEditedAt;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "social_media_links_id")
+    private SocialMediaLinksEntity socialMediaLinksEntity;
+
 
     public UserEntity(UserRegister userRegister, UserType userType){
         this.username = userRegister.getUsername();

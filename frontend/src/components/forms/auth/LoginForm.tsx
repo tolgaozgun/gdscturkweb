@@ -105,7 +105,6 @@ const LoginForm = () => {
 	};
 
 	return (
-		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 350 }} mx="auto">
 			<Stack spacing={'md'}>
 				<Title size="28px" align="center">
 					Log in to your account
@@ -123,6 +122,7 @@ const LoginForm = () => {
 						<PasswordInput
 							label="Password"
 							placeholder="Your password"
+							
 							{...form.getInputProps('password')}
 						/>
 						<Button
@@ -144,7 +144,6 @@ const LoginForm = () => {
 					</Flex>
 				</form>
 			</Stack>
-		</Card>
 	);
 };
 

@@ -5,6 +5,8 @@ import com.tolgaozgun.gdscturkweb.dto.FacilitatorDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
 import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterRequest;
+import com.tolgaozgun.gdscturkweb.dto.response.FacilitatorDashboardResponse;
+import com.tolgaozgun.gdscturkweb.dto.response.LeadDashboardResponse;
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.service.FacilitatorService;
@@ -30,6 +32,18 @@ public class FacilitatorController {
         try {
             List<FacilitatorDTO> facilitatorList = facilitatorService.getAllFacilitators();
             return Response.create("Gathered all facilitators", HttpStatus.OK, facilitatorList);
+        } catch (Exception e) {
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping( path = "dashboard")
+    public ResponseEntity<Object> getCurrentFacilitatorDashboard() {
+        try {
+            FacilitatorDashboardResponse facilitatorDashboardResponse = facilitatorService.getCurrentFacilitatorDashboard();
+            return Response.create("Gathered current facilitator dashboard", HttpStatus.OK, facilitatorDashboardResponse);
         } catch (Exception e) {
             // HTTP 500
             return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }

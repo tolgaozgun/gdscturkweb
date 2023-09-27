@@ -18,6 +18,7 @@ import com.tolgaozgun.gdscturkweb.exception.CoreTeamMemberNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.LeadNotFoundException;
 import com.tolgaozgun.gdscturkweb.exception.UniversityNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.CoreTeamMemberMapper;
+import com.tolgaozgun.gdscturkweb.model.Event;
 import com.tolgaozgun.gdscturkweb.model.LeadAttendance;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.CoreTeamMemberRepository;
@@ -126,7 +127,7 @@ public class CoreTeamMemberService {
             coreTeamMemberDashboardResponse.setCoreTeamMemberDTO(coreTeamMemberMapper.toDTO(coreTeamMemberEntity));
             coreTeamMemberDashboardResponse.setCoreTeamSize(coreTeamSize);
 
-            // TODO: Add events
+            coreTeamMemberDashboardResponse.setPromotedAt(userEntity.getPromotedAt());
 
             return coreTeamMemberDashboardResponse;
         } catch (Exception e) {

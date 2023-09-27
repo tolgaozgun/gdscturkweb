@@ -1,4 +1,4 @@
-import { AppShell } from '@mantine/core';
+import { AppShell, Container, MediaQuery, Burger } from '@mantine/core';
 import { Outlet, useLocation } from 'react-router-dom';
 import { PanelNavbar } from './components/menus/navbar/PanelNavbar';
 import { AppHeader } from './components/header/AppHeader';
@@ -7,10 +7,14 @@ import { LeadPanelData } from './components/menus/navbar/LeadPanelData';
 import { FacilitatorPanelData } from './components/menus/navbar/FacilitatorPanelData';
 import { useUser } from './contexts/UserContext';
 import { CoreTeamPanelData } from './components/menus/navbar/CoreTeamPanelData';
+import { PanelHeader } from './components/header/PanelHeader';
+import { useState } from 'react';
 
 export const Layout = () => {
 	const { pathname } = useLocation();
 	let {user, isUserLoading, isUserError} = useUser();
+
+	const [opened, setOpened] = useState(false);
 
 	// const {
 	// 	data: currentUser,
@@ -45,17 +49,25 @@ export const Layout = () => {
 			link: "/"
 		},
 		{
-			name: "Map",
-			link: "map",
+			name: "About",
+			link: "/about"
 		},
 		{
-			name: "User List",
-			link: "user-list",
+			name: "Contact",
+			link: "/contact"
 		},
-		{
-			name: "FAQ",
-			link: "faq",
-		}
+		// {
+		// 	name: "Map",
+		// 	link: "map",
+		// },
+		// {
+		// 	name: "User List",
+		// 	link: "user-list",
+		// },
+		// {
+		// 	name: "FAQ",
+		// 	link: "faq",
+		// }
 	];
 
 	let header = <></>;
@@ -66,14 +78,66 @@ export const Layout = () => {
 	};
 
 	if (checkLink("/panel/admin")) {
-		navbar = <PanelNavbar panelName="Admin Panel" panelData={AdminPanelData} />;
+		navbar = <PanelNavbar hidden={!opened} panelName="Admin Panel" panelData={AdminPanelData} />;
+		header = <PanelHeader 
+
+			burger={
+				<MediaQuery largerThan="md" styles={{ display: 'none' }}>
+					<Burger
+						opened={opened}
+						onClick={() => setOpened(o => !o)}
+						size="sm"
+						mr="xl"
+					/>
+				</MediaQuery>
+			}
+		 />
 	} else if (checkLink("/panel/lead")) {
-		navbar = <PanelNavbar panelName="Lead Panel" panelData={LeadPanelData} />;
+		navbar = <PanelNavbar hidden={!opened} panelName="Lead Panel" panelData={LeadPanelData} />;
+		header = <PanelHeader 
+
+			burger={
+				<MediaQuery largerThan="md" styles={{ display: 'none' }}>
+					<Burger
+						opened={opened}
+						onClick={() => setOpened(o => !o)}
+						size="sm"
+						mr="xl"
+					/>
+				</MediaQuery>
+			}
+		 />
 	} else if (checkLink("/panel/facilitator")) {
-		navbar = <PanelNavbar panelName='Facilitator Panel' panelData={FacilitatorPanelData} />;
+		navbar = <PanelNavbar hidden={!opened} panelName='Facilitator Panel' panelData={FacilitatorPanelData} />;
+		header = <PanelHeader 
+
+			burger={
+				<MediaQuery largerThan="md" styles={{ display: 'none' }}>
+					<Burger
+						opened={opened}
+						onClick={() => setOpened(o => !o)}
+						size="sm"
+						mr="xl"
+					/>
+				</MediaQuery>
+			}
+		 />
 	} else if (checkLink("/panel/core-team")) {
-		navbar = <PanelNavbar panelName='Core Team Panel' panelData={CoreTeamPanelData} />;
-	}else {
+		navbar = <PanelNavbar hidden={!opened} panelName='Core Team Panel' panelData={CoreTeamPanelData} />;
+		header = <PanelHeader 
+
+			burger={
+				<MediaQuery largerThan="md" styles={{ display: 'none' }}>
+					<Burger
+						opened={opened}
+						onClick={() => setOpened(o => !o)}
+						size="sm"
+						mr="xl"
+					/>
+				</MediaQuery>
+			}
+		 />
+	} else if(!checkLink("/login") && !checkLink("/register")) {
 		header = <AppHeader user={user} tabs={tabs} isLoggedIn={!isUserError || !isUserLoading} />;
 	}
 

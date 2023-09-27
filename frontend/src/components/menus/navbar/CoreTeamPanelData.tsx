@@ -73,5 +73,14 @@ export const CoreTeamPanelData: PanelItem[] = [
         { label: 'Ask a Question', link: '/panel/core-team/questions/ask' },
       ],
     },
-    { label: 'Settings', icon: IconAdjustments, link: '/panel/core-team/settings' },
+    {
+      label: 'Settings',
+      link: '/panel/core-team/settings',
+      icon: IconAdjustments,
+      links: [
+        { label: 'Account Settings', link: '/panel/core-team/settings/account' },
+        { label: 'Ask a Question', link: '/panel/core-team/settings/profile' },
+        { label: 'Preferences', link: '/panel/core-team/settings/preferences' },
+      ],
+    },
   ];

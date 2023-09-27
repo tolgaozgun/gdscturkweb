@@ -1,6 +1,6 @@
 import { baseUrl } from '../../constants/api';
 import { Response } from '../../types/ResponseTypes';
-import { CoreTeamMemberDashboardResponse, LeadDashboardResponse } from "../../types";
+import { CoreTeamMemberDashboardResponse, FacilitatorDashboardResponse, LeadDashboardResponse } from "../../types";
 import { AxiosInstance } from 'axios';
 
 export async function getLeadDashboard(axiosSecure: AxiosInstance) {
@@ -10,5 +10,10 @@ export async function getLeadDashboard(axiosSecure: AxiosInstance) {
 
 export async function getCoreTeamMemberDashboard(axiosSecure: AxiosInstance) {
 	const res = await axiosSecure.get<Response<CoreTeamMemberDashboardResponse>>(`${baseUrl}/core-team-members/dashboard`);
+	return res.data;
+}
+
+export async function getFacilitatorDashboard(axiosSecure: AxiosInstance) {
+	const res = await axiosSecure.get<Response<FacilitatorDashboardResponse>>(`${baseUrl}/facilitators/dashboard`);
 	return res.data;
 }

@@ -49,7 +49,6 @@ public class AuthService {
 
     private final UserMapper userMapper;
     private final LeadMapper leadMapper;
-    private final UniversityMapper universityMapper;
     private final GooglerMapper googlerMapper;
     private final CoreTeamMemberMapper coreTeamMemberMapper;
     private final FacilitatorMapper facilitatorMapper;
@@ -68,6 +67,7 @@ public class AuthService {
     private final LeadRepository leadRepository;
     private final FacilitatorRepository facilitatorRepository;
     private final GooglerRepository googlerRepository;
+
 
     @Autowired
     private final JWTUtils jwtUtils;
@@ -317,7 +317,7 @@ public class AuthService {
         }
     }
 
-    public UserDTO verifyUser(Long userId) {
+    public UserDTO verifyUser(Long userId) throws Exception {
         try {
 
             // TODO: Add permissions
@@ -331,6 +331,15 @@ public class AuthService {
 
             userEntity.setIsVerified(true);
 
+            switch (userEntity.getUserType()) {
+                case LEAD -> {
+                    userEntity.setPromotedAt(new Date());
+                }
+                case CORE_TEAM_MEMBER -> {
+                    userEntity.setPromotedAt(new Date());
+                }
+                default -> {}
+            }
 
             return userMapper.toDTO(userRepository.save(userEntity));
 

@@ -18,6 +18,7 @@ import com.tolgaozgun.gdscturkweb.enums.UserType;
 import com.tolgaozgun.gdscturkweb.exception.LeadNotFoundException;
 import com.tolgaozgun.gdscturkweb.mapper.LeadMapper;
 import com.tolgaozgun.gdscturkweb.mapper.UniversityMapper;
+import com.tolgaozgun.gdscturkweb.model.Event;
 import com.tolgaozgun.gdscturkweb.model.LeadAttendance;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.CoreTeamMemberRepository;
@@ -124,7 +125,6 @@ public class LeadService {
             }
 
             LeadEntity leadEntity = new LeadEntity(universityEntity, savedEntity);
-            leadEntity.setPromotedAt(new Date());
 
             LeadEntity savedLeadEntity = leadRepository.save(leadEntity);
 
@@ -174,7 +174,7 @@ public class LeadService {
            }
            leadDashboardResponse.setBuddyMeetings(buddyMeetings);
 
-           // TODO: Add events
+           leadDashboardResponse.setPromotedAt(userEntity.getPromotedAt());
 
            return leadDashboardResponse;
        } catch (Exception e) {

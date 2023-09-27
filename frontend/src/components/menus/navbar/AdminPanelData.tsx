@@ -81,5 +81,14 @@ export const AdminPanelData: PanelItem[] = [
         { label: 'Add a Question', link: '/panel/admin/questions/add' },
       ],
     },
-    { label: 'Settings', icon: IconAdjustments, link: '/panel/admin/settings' },
+    {
+      label: 'Settings',
+      link: '/panel/admin/settings',
+      icon: IconAdjustments,
+      links: [
+        { label: 'Account Settings', link: '/panel/admin/settings/account' },
+        { label: 'Ask a Question', link: '/panel/admin/settings/profile' },
+        { label: 'Preferences', link: '/panel/admin/settings/preferences' },
+      ],
+    },
   ];

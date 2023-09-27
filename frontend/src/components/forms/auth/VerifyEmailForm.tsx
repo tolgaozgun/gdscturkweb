@@ -42,8 +42,8 @@ import { useVerifyEmail } from '../../../hooks/verification/useVerifyEmail';
   }));
 
   interface VerifyEmailFormProps {
-    email?: string;
-    token?: string;
+    email?: string | null;
+    token?: string | null;
   }
   
   export function VerifyEmailForm({email, token}: VerifyEmailFormProps) {
@@ -112,7 +112,7 @@ import { useVerifyEmail } from '../../../hooks/verification/useVerifyEmail';
     }
 
     const onForwardToVerify = () => {
-        navigate('/verify-email');
+        navigate('/verify-email?email=' + form.values.email);
     }
   
     return (

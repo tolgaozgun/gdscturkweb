@@ -4,6 +4,7 @@ package com.tolgaozgun.gdscturkweb.dto.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tolgaozgun.gdscturkweb.dto.CoreTeamMemberDTO;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,6 @@ public class CoreTeamMemberDashboardResponse {
 
     private Integer coreTeamSize;
 
-    private List<Date> eventDates;
+    @Nullable
+    private Date promotedAt;
 }

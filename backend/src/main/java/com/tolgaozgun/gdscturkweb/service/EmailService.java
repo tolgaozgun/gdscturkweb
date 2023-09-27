@@ -27,6 +27,10 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
+    private final String EMAIL_VERIFICATION_STEP1_URL = "http://localhost:5173/verify-email";
+    private final String EMAIL_VERIFICATION_STEP2_URL = "http://localhost:5173/verify-email/step-2";
+
+
     // Method 1
     // To send a simple email
     protected boolean sendSimpleMail(EmailDetails details) {
@@ -94,12 +98,17 @@ public class EmailService {
 
     protected boolean sendEmailVerification(UserEntity userEntity, EmailVerificationEntity emailVerificationEntity) {
         try {
-
+            String email = userEntity.getEmail();
+            String verificationCode = emailVerificationEntity.getVerificationCode();
 
             EmailDetails emailDetails = new EmailDetails();
             emailDetails.setRecipient(userEntity.getEmail());
             emailDetails.setSubject("GDSCTurk Email Verification");
-            emailDetails.setMsgBody("Your verification code is: " + emailVerificationEntity.getVerificationCode());
+            emailDetails.setMsgBody("Your verification code is: " + verificationCode
+                                    + "\nPlease click the link below to verify your email: "
+                                    + "\n" + EMAIL_VERIFICATION_STEP2_URL + "?email=" + email + "&token=" + verificationCode
+                                    + "\nThis code expires in 7 days. Use the following link to request a new code: "
+                                    + "\n" + EMAIL_VERIFICATION_STEP1_URL + "?email=" + email);
 
 
             return sendSimpleMail(emailDetails);

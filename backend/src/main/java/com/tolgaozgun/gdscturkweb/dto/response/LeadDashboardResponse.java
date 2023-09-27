@@ -2,6 +2,7 @@ package com.tolgaozgun.gdscturkweb.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tolgaozgun.gdscturkweb.dto.LeadDTO;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,9 @@ public class LeadDashboardResponse {
 
     private Integer coreTeamSize;
 
-    private List<Date> eventDates;
-
     private Map<Date, Boolean> buddyMeetings;
+
+    @Nullable
+    private Date promotedAt;
 
 }

@@ -12,7 +12,7 @@ import useGetUserWithRole from '../../../hooks/auth/useGetUserWithRole';
 import { LeadModel } from '../../../types';
 import { useNavigate } from 'react-router';
 
-const LeadPanelAccountSettings = () => {
+const LeadPanelUserSettings = () => {
 
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
@@ -23,22 +23,14 @@ const LeadPanelAccountSettings = () => {
 		isError: isTopicsError,
 	} = useGetAllTopics(axiosSecure);
 
-    const userWithRole = useGetUserWithRole(axiosSecure);
-
-
 	const topicList: Array<Topic> = allTopics? allTopics?.data! : [];
 
     let content = <Alert variant='outline' color='red'>User could not be loaded.</Alert>
 
     if (user) {
-        let lead = userWithRole.data?.data?.extra as LeadModel;
         content = (
             <Flex direction="column">
-                <Title p={10}>User Info</Title>
                 <ChangeUserProfileForm navigate={navigate} padding={10} topicList={topicList} user={user} />
-                <Divider />
-                <Title p={10}>Lead Info</Title>
-                <ChangeLeadProfileForm navigate={navigate} padding={10} lead={lead} />
             </Flex>
         )
     } 
@@ -49,10 +41,10 @@ const LeadPanelAccountSettings = () => {
     
     
 	return (
-		<PageContainer title="Update Profile">
+		<PageContainer title="User Settings">
             {content}
 		</PageContainer>
 	);
 };
 
-export default LeadPanelAccountSettings;
+export default LeadPanelUserSettings;

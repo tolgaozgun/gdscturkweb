@@ -7,6 +7,7 @@ import {
     rem,
 	SelectItem,
 	MultiSelect,
+	Input,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
@@ -21,7 +22,7 @@ import { forwardRef } from 'react';
 import { Topic } from '../../types/TopicTypes';
 import { User } from '../../types';
 import { NavigateFunction } from 'react-router';
-
+import CustomTextEditor from './CustomTextEditor';
 
 interface TopicSelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
 	label: string;
@@ -75,6 +76,10 @@ const ChangeUserProfileForm = ({padding, mt, navigate, user, topicList}: ChangeU
 			biography: (value) => (value && value.length > 0 ? null : 'Biography is required.'),
 		},
 	});
+
+	const changeBiography = (value: string) => {
+		form.setFieldValue('biography', value);
+	}
 
 
 
@@ -146,17 +151,19 @@ const ChangeUserProfileForm = ({padding, mt, navigate, user, topicList}: ChangeU
 	return (
 			<Flex direction={'column'} gap={'xl'} p={padding} mt={mt}>
             <form>
-                <Flex direction={'column'} gap={'xl'}>
-                    <TextInput
-                        withAsterisk
-                        label="Name"
-                        {...form.getInputProps('name')}
-                    />
-                    <TextInput
-                        withAsterisk
-                        label="Surname"
-                        {...form.getInputProps('surname')}
-                    />
+                <Flex direction={'column'} gap={'md'}>
+					<Flex direction="row" gap="md">
+						<TextInput	
+							withAsterisk
+							label="Name"
+							{...form.getInputProps('name')}
+						/>
+						<TextInput
+							withAsterisk
+							label="Surname"
+							{...form.getInputProps('surname')}
+						/>
+					</Flex>
                     <TextInput
                         label="Email"
 						disabled
@@ -179,11 +186,15 @@ const ChangeUserProfileForm = ({padding, mt, navigate, user, topicList}: ChangeU
                         label="Phone Number"
                         {...form.getInputProps('phoneNumber')}
                     />
-                    <TextInput
+
+					<Input.Wrapper
                         withAsterisk
                         label="Biography"
                         {...form.getInputProps('biography')}
-                    />
+                    >
+						<CustomTextEditor content={user && user.biography ? user.biography : ""} onChange={changeBiography} />
+
+					</Input.Wrapper>
                     <MultiSelect
                         label="Interests"
                         placeholder="Pick your interests"

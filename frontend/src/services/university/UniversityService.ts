@@ -1,7 +1,7 @@
 import { baseUrl } from '../../constants/api';
 import { CreateUniversity, University, UpdateUniversity } from "../../types/UniversityTypes";
 import { Response } from '../../types/ResponseTypes';
-import { axiosSecure as axios } from '../axios';
+import axios from 'axios';
 import { AxiosInstance } from 'axios';
 
 export async function getUniversities() {

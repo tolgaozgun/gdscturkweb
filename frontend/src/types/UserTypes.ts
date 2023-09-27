@@ -4,12 +4,15 @@ import { University } from "./UniversityTypes";
 import { Country } from "./CountryTypes";
 import { BuddyTeam } from "./BuddyTeamTypes";
 
+
+
+
 export enum UserType {
 	Admin = 'ADMIN',
 	Lead = 'LEAD',
 	CoreTeamMember = 'CORE_TEAM_MEMBER',
 	Facilitator = 'FACILITATOR',
-	Googler = 'GOOGLER'
+	Googler = 'GOOGLER',
 }
 
 export type Token = {
@@ -84,12 +87,19 @@ export type LeadDashboardResponse = {
 	lead: LeadModel;
 	buddyTeamSize: number;
 	coreTeamSize: number;
-	eventDates: Array<Date>;
 	buddyMeetings: Map<Date, boolean>;
+	promotedAt?: Date;
 }
 
 export type CoreTeamMemberDashboardResponse = {
 	coreTeamMember: CoreTeamMemberModel;
 	coreTeamSize: number;
-	eventDates: Array<Date>;
+	promotedAt?: Date;
+}
+
+export type FacilitatorDashboardResponse = {
+	facilitator: FacilitatorModel;
+	buddyTeamSize: number;
+	buddyMeetings: Map<Date, boolean>;
+	promotedAt?: Date;
 }

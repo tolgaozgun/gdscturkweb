@@ -60,16 +60,9 @@ public class AttendanceService {
         }
     }
 
-    public List<AttendanceDTO> getAllAttendancesOfFacilitator(Long facilitatorId) {
+    public List<AttendanceDTO> getAllAttendancesByFacilitatorEntity(FacilitatorEntity facilitatorEntity) {
+
         try {
-            Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findById(facilitatorId);
-
-            if (optionalFacilitatorEntity.isEmpty()) {
-                throw new FacilitatorNotFoundException();
-            }
-
-            FacilitatorEntity facilitatorEntity = optionalFacilitatorEntity.get();
-
             Optional<BuddyTeamEntity> optionalBuddyTeamEntity = buddyTeamRepository.findByFacilitator(facilitatorEntity);
 
             if (optionalBuddyTeamEntity.isEmpty()) {
@@ -81,6 +74,23 @@ public class AttendanceService {
             List<AttendanceEntity> attendanceEntities = attendanceRepository.findAllByBuddyTeam(buddyTeamEntity);
 
             return attendanceMapper.toDTO(attendanceEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public List<AttendanceDTO> getAllAttendancesOfFacilitator(Long facilitatorId) {
+        try {
+            Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findById(facilitatorId);
+
+            if (optionalFacilitatorEntity.isEmpty()) {
+                throw new FacilitatorNotFoundException();
+            }
+
+            FacilitatorEntity facilitatorEntity = optionalFacilitatorEntity.get();
+
+            return getAllAttendancesByFacilitatorEntity(facilitatorEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

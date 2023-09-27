@@ -18,10 +18,12 @@ import {
   IconLogout,
   IconSettings,
   IconChevronDown,
+  IconUser,
 } from '@tabler/icons-react';
 import GDSCLogo from '../../assets/gdsc-logo.png';
 import { useNavigate } from 'react-router';
 import { User, UserType } from '../../types';
+import { LanguagePicker } from '../common/LanguagePicker';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -114,31 +116,39 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
     navigate('/logout');
   }
 
-  const handleSettings = () => {
-      switch(user?.userType){
-          case "LEAD":
-              navigate('/panel/lead/settings');
-              break;
-          case "ADMIN":
-              navigate('/panel/admin/settings');
-              break;
-          case "CORE_TEAM_MEMBER":
-              navigate('/panel/core-team-member/settings');
-              break;
-          case "FACILITATOR":
-              navigate('/panel/facilitator/settings');
-              break;
-          case "GOOGLER":
-              navigate('/panel/googler/settings');
-              break;
-      }
-  }
-
   const items = tabs.map((tab) => (
     <Tabs.Tab value={tab.name} key={tab.name} onClick={() => {handleTabClick(tab.link)}}>
       {tab.name}
     </Tabs.Tab>
   ));
+
+  let userTypeSlug = "";
+  let userTypeString = "";
+  switch(user?.userType) {
+    default:
+    case UserType.Lead:
+      userTypeSlug = "lead";
+      userTypeString = "Lead";
+      break;
+    case UserType.Facilitator:
+      userTypeSlug = "facilitator";
+      userTypeString = "Facilitator";
+      break;
+    case UserType.CoreTeamMember:
+      userTypeSlug = "core-team";
+      userTypeString = "Core Team";
+      break;
+    case UserType.Admin:
+      userTypeSlug = "admin";
+      userTypeString = "Admin";
+      break;
+    case UserType.Googler:
+      userTypeSlug = "googler";
+      userTypeString = "Googler";
+      break;
+  }
+
+
   
   let userBar = <></>;
 
@@ -191,44 +201,13 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>
-              {/* <Menu.Item
-                icon={<IconHeart size="0.9rem" color={theme.colors.red[6]} stroke={1.5} />}
-              >
-                Liked posts
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconStar size="0.9rem" color={theme.colors.yellow[6]} stroke={1.5} />}
-              >
-                Saved posts
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconMessage size="0.9rem" color={theme.colors.blue[6]} stroke={1.5} />}
-              >
-                Your comments
-              </Menu.Item>
 
               <Menu.Label>Settings</Menu.Label>
-              <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
-                Account settings
-              </Menu.Item>
-              <Menu.Item icon={<IconSwitchHorizontal size="0.9rem" stroke={1.5} />}>
-                Change account
-              </Menu.Item>
-              <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>Logout</Menu.Item>
-
-              <Menu.Divider />
-
-              <Menu.Label>Danger zone</Menu.Label>
-              <Menu.Item icon={<IconPlayerPause size="0.9rem" stroke={1.5} />}>
-                Pause subscription
-              </Menu.Item>
-              <Menu.Item color="red" icon={<IconTrash size="0.9rem" stroke={1.5} />}>
-                Delete account
-              </Menu.Item> */}
-
-              <Menu.Label>Settings</Menu.Label>
-                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />} onClick={handleSettings}>
-                    Account settings
+                <Menu.Item icon={<IconUser size="0.9rem" stroke={1.5} />} onClick={() => {handleTabClick("/panel/" + userTypeSlug + "/settings/user")}}>
+                    User Settings
+                </Menu.Item>
+                <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />} onClick={() => {handleTabClick("/panel/" + userTypeSlug + "/settings/" + userTypeSlug)}}>
+                    {userTypeString} Settings
                 </Menu.Item>
                 <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />} onClick={handleLogout}>Logout</Menu.Item>
             </Menu.Dropdown>
@@ -245,7 +224,6 @@ export function AppHeader({ user, tabs, isLoggedIn = true }: SecondHeaderProps) 
         <Group position="apart">
           
           <Image src={GDSCLogo} onClick={handleHomePageRedirect} height={28} width={60} />
-
           { userBar }
         </Group>
       </Container>

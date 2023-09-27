@@ -42,7 +42,7 @@ import { useNavigate } from 'react-router';
   }));
 
   interface SendEmailVerificationFormProps {
-    email?: string;
+    email?: string | null;
   }
   
   export function SendEmailVerificationForm({email}: SendEmailVerificationFormProps) {
@@ -101,7 +101,7 @@ import { useNavigate } from 'react-router';
 				description: { color: theme.white }
 			})
 		});
-		navigate('/verify-email/step-2/' + form.values.email);
+		navigate('/verify-email/step-2?email=' + form.values.email);
 	};
 
     const onBackToLogin = () => {

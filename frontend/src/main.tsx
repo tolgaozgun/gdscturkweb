@@ -53,7 +53,7 @@ import EmailVerifyPage from './pages/auth/EmailVerifyPage.tsx';
 import LeadPanelBuddyTeamPage from './pages/panel/lead/LeadPanelBuddyTeamPage.tsx';
 import LeadPanelInviteCoreTeam from './pages/panel/lead/core-team/LeadPanelInviteCoreTeam.tsx';
 import LeadPanelCoreTeamPage from './pages/panel/lead/core-team/LeadPanelCoreTeamPage.tsx';
-import LeadPanelAccountSettings from './pages/panel/lead/LeadPanelAccountSettings.tsx';
+import LeadPanelUserSettings from './pages/panel/lead/LeadPanelUserSettings.tsx';
 import LogoutPage from './pages/LogoutPage.tsx';
 import CoreTeamPanelCoreTeamPage from './pages/panel/core-team/core-team/CoreTeamPanelCoreTeamPage.tsx';
 import CoreTeamPanelCurrentCampaignListPage from './pages/panel/core-team/campaign/CoreTeamPanelCurrentCampaignListPage.tsx';
@@ -63,6 +63,11 @@ import CoreTeamPanelCityListPage from './pages/panel/core-team/city/CoreTeamPane
 import CoreTeamPanelAccountSettings from './pages/panel/core-team/CoreTeamPanelAccountSettings.tsx';
 import CoreTeamPanelCountryListPage from './pages/panel/core-team/country/CoreTeamPanelCountryListPage.tsx';
 import CoreTeamDashboardPage from './pages/panel/core-team/CoreTeamDashboardPage.tsx';
+import LeadPanelMyEventsPage from './pages/panel/lead/event/LeadPanelMyEventsPage.tsx';
+import LeadPanelAllEventsPage from './pages/panel/lead/event/LeadPanelAllEventsPage.tsx';
+import LeadPanelAllBuddyTeamsPage from './pages/panel/lead/LeadPanelAllBuddyTeamsPage.tsx';
+import LeadPanelLeadListPage from './pages/panel/lead/LeadPanelLeadListPage.tsx';
+import LeadPanelLeadSettings from './pages/panel/lead/LeadPanelLeadSettings.tsx';
 
 
 const router = createBrowserRouter([
@@ -93,37 +98,25 @@ const router = createBrowserRouter([
 						element: <SendEmailVerificationPage />,
 					},
 					{
-						path: '/verify-email/:email',
-						element: <SendEmailVerificationPage />,
-					},
-					{
 						path: '/verify-email/step-2/',
 						element: <EmailVerifyPage />
 					},
-					{
-						path: '/verify-email/step-2/:email',
-						element: <EmailVerifyPage />
-					},
-					{
-						path: '/verify-email/step-2/:email/:token',
-						element: <EmailVerifyPage />
-					},
-					{
-						path: '/map',
-						element: <MapPage />
-					},
-					{
-						path: '/faq',
-						element: <FaqPage />
-					},
-					{
-						path: '/user-list',
-						element: <UserListPage />
-					},
-					{
-						path: '/loading',
-						element: <LoadingPage />
-					},
+					// {
+					// 	path: '/map',
+						// element: <MapPage />
+					// },
+					// {
+					// 	path: '/faq',
+					// 	element: <FaqPage />
+					// },
+					// {
+					// 	path: '/user-list',
+					// 	element: <UserListPage />
+					// },
+					// {
+					// 	path: '/loading',
+					// 	element: <LoadingPage />
+					// },
 					{
 						path: '/panel/admin',
 						element: <AdminDashboardPage />
@@ -302,7 +295,19 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/panel/lead/buddy-teams/all',
-						element: <NotFoundPage />
+						element: <LeadPanelAllBuddyTeamsPage />
+					},
+					{
+						path: '/panel/lead/leads/all',
+						element: <LeadPanelLeadListPage />
+					},
+					{
+						path: '/panel/lead/events/my',
+						element: <LeadPanelMyEventsPage />
+					},
+					{
+						path: '/panel/lead/events/all',
+						element: <LeadPanelAllEventsPage />
 					},
 					{
 						path: '/panel/lead/campaigns/current',
@@ -313,7 +318,7 @@ const router = createBrowserRouter([
 						element: <LeadPanelCampaignListPage />
 					},
 					{
-						path: '/panel/lead/universities/list',
+						path: '/panel/lead/universities/all',
 						element: <LeadPanelUniversityListPage />
 					},
 					{
@@ -333,8 +338,12 @@ const router = createBrowserRouter([
 						element: <NotFoundPage />
 					},
 					{
-						path: '/panel/lead/settings',
-						element: <LeadPanelAccountSettings />
+						path: '/panel/lead/settings/user',
+						element: <LeadPanelUserSettings />
+					},
+					{
+						path: '/panel/lead/settings/lead',
+						element: <LeadPanelLeadSettings />
 					},
 					{
 						path: '/panel/core-team',

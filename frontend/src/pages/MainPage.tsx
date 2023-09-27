@@ -4,11 +4,23 @@ import UniversitiesMap from "../components/maps/UniversitiesMap"
 import { Card, Center, Container, Title, Text, Flex, Stack, useMantineTheme } from "@mantine/core"
 import VerticalImageGrid from "../components/VerticalImageGrid"
 import ActivitiesCarousel from "../components/ActivitesCarousel"
+import useGetUniversities from "../hooks/university/useGetUniversities"
+import { University } from "../types/UniversityTypes"
 
 
 const MainPage = () => {
 
   const theme = useMantineTheme();
+  const {
+    data: universitiesData,
+    isLoading: isUniversitiesLoading,
+
+  } = useGetUniversities();
+
+  let universities: University[] = [] as University[];
+    if (universitiesData && universitiesData?.data){
+        universities = universitiesData?.data!
+    }
 
   return (
         < >
@@ -30,7 +42,7 @@ const MainPage = () => {
                         </Text>
                     </Stack>
                 </Center>
-                <UniversitiesMap />
+                <UniversitiesMap isLoading={isUniversitiesLoading} universities={universities} />
             </Container>
             
             <Container mt={30} mb={30}>

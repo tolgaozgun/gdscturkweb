@@ -1,162 +1,94 @@
-import { Box, Text, Title, Button, Menu } from '@mantine/core';
-import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
-import { MRT_ColumnDef, MRT_Row, MRT_TableInstance } from 'mantine-react-table';
-import { useMemo } from 'react';
-import { University } from '../../../../types/UniversityTypes';
+import { Alert, Button, Center } from '@mantine/core';
+import { IconExclamationMark, IconGridDots, IconList, IconMap } from '@tabler/icons-react';
+import { useState } from 'react';
 import { useGetUniversitiesWithAuth } from '../../../../hooks/university';
-import LoadingPage from '../../../LoadingPage';
-import BaseTable from '../../../../components/table/BaseTable';
-import { IconSend, IconUserCircle } from '@tabler/icons-react';
+import useAxiosSecure from '../../../../hooks/auth/useAxiosSecure';
+import { University } from '../../../../types/UniversityTypes';
+import UniversitiesMap from '../../../../components/maps/UniversitiesMap';
+import UniversityGrid from '../../../../components/grid/UniversityGrid';
+import UniversityTable from '../../../../components/table/UniversityTable';
 import { PageContainer } from '../../../../components/PageContainer';
 
-type PageType = University
+
+type CurrentDisplayType = 'grid' | 'list' | 'map';
 
 const LeadPanelUniversityListPage = () => {
+
 	const axiosSecure = useAxiosSecure();
 
-	const {
+	const [currentDisplayType, setCurrentDisplayType] = useState<CurrentDisplayType>('grid');
+	
+
+	const handleSelectGrid = () => {
+		setCurrentDisplayType('grid');
+	}
+
+	const handleSelectList = () => {
+		setCurrentDisplayType('list');
+	}
+
+	const handleSelectMap = () => [
+		setCurrentDisplayType('map')
+	]
+
+	let universityExists = false;
+
+	let {
 		data: allUniversities,
 		isLoading: isUniversitiesLoading,
 	} = useGetUniversitiesWithAuth(axiosSecure);
 
-	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
-		() => [
-		  {
-			id: 'university', //id used to define `group` column
-			header: 'University',
-			columns: [
-			  {
-				accessorFn: (row) => `${row.name}`, //accessorFn used to join multiple data into a single cell
-				id: 'name', //id is still required when using accessorFn instead of accessorKey
-				header: 'Name',
-				size: 250,
-				filterVariant: 'autocomplete',
-				Cell: ({ renderedCellValue, /*row*/ }) => (
-				  <Box
-					sx={{
-					  display: 'flex',
-					  alignItems: 'center',
-					  gap: '16px',
-					}}
-				  >
-					<span>{renderedCellValue}</span>
-				  </Box>
-				),
-			  },
-			  {
-				accessorFn: (row) => `${row.city.name}`, //accessorFn used to join multiple data into a single cell
-				enableClickToCopy: true,
-				header: 'City',
-				size: 300,
-			  },
-			  {
-				accessorFn: (row) => `${row.country.name}`, //accessorFn used to join multiple data into a single cell
-				enableClickToCopy: true,
-				header: 'Country',
-				size: 300,
-			  },
-			],
-		  },
-		],
-		[],
-	  );
+	let universities: University[] = [] as University[];
+	if (allUniversities && allUniversities?.data){
+		universities = allUniversities?.data!
+		universityExists = true;
+	}
 
-	const renderDetailPanel = (props: {
-		row: MRT_Row<PageType>;
-		table: MRT_TableInstance<PageType>
-	}): React.ReactNode => {
-		return (
-			<Box
-				sx={{
-				display: 'flex',
-				justifyContent: 'flex-start',
-				alignItems: 'center',
-				gap: '16px',
-				padding: '16px',
-				}}
-			>
-				<Box sx={{ textAlign: 'center' }}>
-				<Title>Biography:</Title>
-				<Text>&quot;{props.row.original.name}&quot;</Text>
-				</Box>
-			</Box>
-		)
-	};
+	// let leads: LeadModel[] = buddyTeams.leads;
 
-	const renderTopToolbarCustomActions = ( props: {
-		table: MRT_TableInstance<PageType>
-	}) => {
-		const table = props.table;
+	// let facilitator: FacilitatorModel[] = [buddyTeams.facilitator];
 
-		const handleDeactivate = () => {
-		  table.getSelectedRowModel().flatRows.map((row) => {
-			alert('deactivating ' + row.getValue('name'));
-		  });
-		};
-  
-		const handleActivate = () => {
-		  table.getSelectedRowModel().flatRows.map((row) => {
-			alert('activating ' + row.getValue('name'));
-		  });
-		};
-  
-		const handleContact = () => {
-		  table.getSelectedRowModel().flatRows.map((row) => {
-			alert('contact ' + row.getValue('name'));
-		  });
-		};
-		return (
-			<div style={{ display: 'flex', gap: '8px' }}>
-			  <Button
-				color="red"
-				disabled={!table.getIsSomeRowsSelected()}
-				onClick={handleDeactivate}
-				variant="filled"
-			  >
-				Deactivate
-			  </Button>
-			  <Button
-				color="green"
-				disabled={!table.getIsSomeRowsSelected()}
-				onClick={handleActivate}
-				variant="filled"
-			  >
-				Activate
-			  </Button>
-			  <Button
-				color="blue"
-				disabled={!table.getIsSomeRowsSelected()}
-				onClick={handleContact}
-				variant="filled"
-			  >
-				Contact
-			  </Button>
-			</div>
-		  );
+	let content = <Alert mt="md" variant='outline' color="red" title="Error" icon={<IconExclamationMark/>}>No leads found.</Alert>;
+
+	if (universityExists) {
+		if (currentDisplayType == 'grid') {
+			content = (
+			<Center mt="md">
+				<UniversityGrid data={universities} isLoading={isUniversitiesLoading} />
+			</Center>
+			);
+		} else if (currentDisplayType == 'list') {
+			content = (
+				<Center mt="md">
+					<UniversityTable data={universities} isLoading={isUniversitiesLoading} />
+				</Center>
+			);
+		} else if (currentDisplayType == 'map') {
+			content = (
+				<Center mt="md">
+					<UniversitiesMap universities={universities} isLoading={isUniversitiesLoading} />
+				</Center>
+			);
 		}
-	
-	const rowActionMenuItems = () => {
-		return (
-			<>
-				<Menu.Item icon={<IconUserCircle />}>View Profile</Menu.Item>
-				<Menu.Item icon={<IconSend />}>Send Email</Menu.Item>
-			</>
-		)
 	}
 
-	if (isUniversitiesLoading || !allUniversities) {
-		return <LoadingPage />
-	}
 
 	return (
-		<PageContainer title="Universities">
-			<BaseTable 
-				data={allUniversities?.data!} 
-				columns={columns} 
-				renderDetailPanel={renderDetailPanel}
-				renderTopToolbarCustomActions={renderTopToolbarCustomActions}
-				rowActionMenuItems={rowActionMenuItems}
-				  />
+		<PageContainer title="Leads">
+			{ universityExists &&
+			<Button.Group defaultValue="grid">
+				<Button disabled={currentDisplayType == 'grid'} leftIcon={<IconGridDots size="1rem" />} value="grid" onClick={handleSelectGrid} variant="default">
+					Grid
+				</Button>
+				<Button disabled={currentDisplayType == 'list'} leftIcon={<IconList size="1rem" />} value="list" onClick={handleSelectList} variant="default">
+					List
+				</Button>
+				<Button disabled={currentDisplayType == 'map'} leftIcon={<IconMap size="1rem" />} value="map" onClick={handleSelectMap} variant="default">
+					Map
+				</Button>
+			</Button.Group>
+			}
+			{content}
 		</PageContainer>
 	);
 };

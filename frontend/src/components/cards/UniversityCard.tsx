@@ -6,7 +6,7 @@ import GDSCLogo from "../../assets/gdsc-logo.png"
 
 interface UniversityCardProps {
     university: University;
-    padding: string;
+    padding?: string;
 }
 
 const UniversityCard = ({university, padding}: UniversityCardProps) => {

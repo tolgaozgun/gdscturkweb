@@ -48,7 +48,7 @@ public class UniversityController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "create")
-    public ResponseEntity<Object> createCity(@Valid @RequestBody CreateUniversityRequest createUniversityRequest) {
+    public ResponseEntity<Object> createUniversity(@Valid @RequestBody CreateUniversityRequest createUniversityRequest) {
         try {
             University university = universityService.createUniversity(createUniversityRequest);
             return Response.create("University created successfully", HttpStatus.OK, university);
@@ -60,7 +60,7 @@ public class UniversityController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{universityId}")
-    public ResponseEntity<Object> editCity(@PathVariable Long universityId, @Valid @RequestBody EditUniversityRequest editUniversityRequest) {
+    public ResponseEntity<Object> editUniversity(@PathVariable Long universityId, @Valid @RequestBody EditUniversityRequest editUniversityRequest) {
         try {
             University university = universityService.editUniversity(universityId, editUniversityRequest);
             return Response.create("University edited successfully", HttpStatus.OK, university);
