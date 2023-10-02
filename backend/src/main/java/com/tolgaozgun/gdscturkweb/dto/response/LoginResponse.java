@@ -2,10 +2,14 @@ package com.tolgaozgun.gdscturkweb.dto.response;
 
 import com.tolgaozgun.gdscturkweb.entity.user.UserEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
+import com.tolgaozgun.gdscturkweb.model.Topic;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,18 +21,32 @@ public class LoginResponse {
         private String name;
         private String surname;
         private String email;
+        private String profileImage;
+        private String phoneNumber;
+        private String biography;
+        private List<Topic> interests;
         private UserType userType;
+        private Date lastLoginDate;
+        private Date createdAt;
+        private Date lastEditedAt;
         private String accessToken;
         private String refreshToken;
 
 
-        public LoginResponse(UserEntity user, String accessToken, String refreshToken) {
+        public LoginResponse(UserEntity user, List<Topic> interests, String accessToken, String refreshToken) {
                 this.id = user.getUserId();
                 this.name = user.getName();
                 this.surname = user.getSurname();
                 this.username = user.getUsername();
                 this.email = user.getEmail();
                 this.userType = user.getUserType();
+                this.profileImage = user.getProfileImage();
+                this.phoneNumber = user.getPhoneNumber();
+                this.biography = user.getBiography();
+                this.lastLoginDate = user.getLastLoginDate();
+                this.createdAt = user.getCreatedAt();
+                this.lastEditedAt = user.getLastEditedAt();
+                this.interests = interests;
                 this.accessToken = accessToken;
                 this.refreshToken = refreshToken;
         }

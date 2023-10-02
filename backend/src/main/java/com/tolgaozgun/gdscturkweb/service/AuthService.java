@@ -3,24 +3,21 @@ package com.tolgaozgun.gdscturkweb.service;
 import com.tolgaozgun.gdscturkweb.dto.*;
 import com.tolgaozgun.gdscturkweb.dto.request.LoginRequest;
 import com.tolgaozgun.gdscturkweb.dto.request.VerifyUserRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.CoreTeamRegisterRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.FacilitatorRegisterRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.GooglerRegisterRequest;
-import com.tolgaozgun.gdscturkweb.dto.request.register.LeadRegisterRequest;
 import com.tolgaozgun.gdscturkweb.dto.response.LoginResponse;
+import com.tolgaozgun.gdscturkweb.dto.response.UserWithRoleResponse;
 import com.tolgaozgun.gdscturkweb.dto.user.register.*;
-import com.tolgaozgun.gdscturkweb.entity.BuddyTeamEntity;
+import com.tolgaozgun.gdscturkweb.entity.UserInviteEntity;
 import com.tolgaozgun.gdscturkweb.entity.user.*;
-import com.tolgaozgun.gdscturkweb.entity.UniversityEntity;
 import com.tolgaozgun.gdscturkweb.enums.UserType;
-import com.tolgaozgun.gdscturkweb.exception.PasswordNotMatchException;
-import com.tolgaozgun.gdscturkweb.exception.UserAlreadyExistsException;
-import com.tolgaozgun.gdscturkweb.exception.UserNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.*;
+import com.tolgaozgun.gdscturkweb.exception.invitation.InvitationNotFoundException;
+import com.tolgaozgun.gdscturkweb.exception.verification.EmailNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyUnverifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserAlreadyVerifiedException;
 import com.tolgaozgun.gdscturkweb.exception.verification.UserNotVerifiedException;
 import com.tolgaozgun.gdscturkweb.mapper.*;
-import com.tolgaozgun.gdscturkweb.model.user.CoreTeamMember;
+import com.tolgaozgun.gdscturkweb.model.EmailDetails;
+import com.tolgaozgun.gdscturkweb.model.Topic;
 import com.tolgaozgun.gdscturkweb.repository.BuddyTeamRepository;
 import com.tolgaozgun.gdscturkweb.repository.UniversityRepository;
 import com.tolgaozgun.gdscturkweb.repository.user.*;
@@ -28,10 +25,13 @@ import com.tolgaozgun.gdscturkweb.security.JWTUserService;
 import com.tolgaozgun.gdscturkweb.security.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,19 +49,19 @@ public class AuthService {
 
     private final UserMapper userMapper;
     private final LeadMapper leadMapper;
-    private final UniversityMapper universityMapper;
     private final GooglerMapper googlerMapper;
-    private final CoreTeamMapper coreTeamMapper;
+    private final CoreTeamMemberMapper coreTeamMemberMapper;
     private final FacilitatorMapper facilitatorMapper;
+    private final TopicMapper topicMapper;
 
     // JWT
 
     private final JWTUserService jwtUserService;
+    private final EmailVerificationService emailVerificationService;
+    private final UserInvitationService userInvitationService;
 
     // Repositories
 
-    private final BuddyTeamRepository buddyTeamRepository;
-    private final UniversityRepository universityRepository;
     private final CoreTeamMemberRepository coreTeamMemberRepository;
     private final UserRepository userRepository;
     private final LeadRepository leadRepository;
@@ -79,56 +79,158 @@ public class AuthService {
     }
 
 
+    protected UserEntity getUserEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    public boolean userExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    protected UserEntity getCurrentUserEntity() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            String userName = authentication.getName();
+
+            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
+
+            if (optionalUserEntity.isEmpty()) {
+                throw new UserNotFoundException("Error while getting user details");
+            }
+
+            return optionalUserEntity.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserWithRoleResponse getCurrentUserWithRole() {
+        try {
+            UserEntity userEntity = getCurrentUserEntity();
+            UserWithRoleResponse userWithRoleResponse = new UserWithRoleResponse();
+            userWithRoleResponse.setUserDTO(userMapper.toDTO(userEntity));
+
+            switch(userEntity.getUserType()) {
+                case LEAD -> {
+                    Optional<LeadEntity> optionalLeadEntity = leadRepository.findByUser(userEntity);
+                    if (optionalLeadEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(leadMapper.toDTO(optionalLeadEntity.get()));
+                }
+
+                case FACILITATOR -> {
+                    Optional<FacilitatorEntity> optionalFacilitatorEntity = facilitatorRepository.findByUser(userEntity);
+                    if (optionalFacilitatorEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(facilitatorMapper.toDTO(optionalFacilitatorEntity.get()));
+                }
+
+                case GOOGLER ->  {
+                    Optional<GooglerEntity> optionalGooglerEntity = googlerRepository.findByUser(userEntity);
+                    if (optionalGooglerEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(googlerMapper.toDTO(optionalGooglerEntity.get()));
+                }
+
+                case CORE_TEAM_MEMBER -> {
+                    Optional<CoreTeamMemberEntity> optionalCoreTeamMemberEntity = coreTeamMemberRepository.findByUser(userEntity);
+                    if (optionalCoreTeamMemberEntity.isEmpty()) {
+                        throw new UserNotFoundException("Error while getting user details");
+                    }
+                    userWithRoleResponse.setExtra(coreTeamMemberMapper.toDTO(optionalCoreTeamMemberEntity.get()));
+                }
+            }
+            return userWithRoleResponse;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserDTO getCurrentUser() {
+        try {
+            return userMapper.toDTO(getCurrentUserEntity());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+//    public boolean logout() {
+//        try {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//
+//            String userName = authentication.getName();
+//
+//            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
+//
+//            if (optionalUserEntity.isEmpty()) {
+//                throw new UserNotFoundException("Error while getting user details");
+//            }
+//
+//            UserEntity userEntity = optionalUserEntity.get();
+//
+//            userEntity.setLastLoginDate(null);
+//
+//            userRepository.save(userEntity);
+//
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//    }
+
     public LoginResponse login(LoginRequest user) throws Exception {
         try {
 //            Optional<UserEntity> usernameEntity = userRepository.findByUsername(user.getUsername());
             Optional<UserEntity> emailEntity = userRepository.findByEmail(user.getEmail());
-
 
             if (emailEntity.isEmpty()) {
                 throw new UserNotFoundException("User is not found");
             }
             UserEntity dbUser = emailEntity.get();
 
-            if (!dbUser.getIsVerified()) {
-                throw new UserNotVerifiedException();
-            }
-
-//            System.out.println(user.getUsername());
-//
-//            if (usernameEntity.isEmpty()) {
-//                if (emailEntity.isEmpty()) {
-//                    throw new UserNotFoundException("user is not found");
-//                } else {
-//                    dbUser = emailEntity.get();
-//                }
-//            } else {
-//                dbUser = usernameEntity.get();
-//            }
-
             String hashedPassword = dbUser.getPassword();
             boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword); /// change
 
             if (!passwordMatch) {
-                throw new PasswordNotMatchException("passwords do not match");
+                throw new PasswordNotMatchException("Invalid password");
             }
 
-            System.out.println("passwords are matched");
+            if(!dbUser.getIsEmailVerified()) {
+                throw new EmailNotVerifiedException();
+            }
+
+            if (!dbUser.getIsVerified()) {
+                throw new UserNotVerifiedException();
+            }
+
+            List<Topic> interests = topicMapper.toModel(dbUser.getInterests());
 
             final UserDetails userDetails = jwtUserService.loadUserByEmail(user.getEmail());
             final String accessToken = jwtUtils.createAccessToken(userDetails);
             final String refreshToken = jwtUtils.createRefreshToken(userDetails);
-            return new LoginResponse(dbUser, accessToken, refreshToken);
+
+            dbUser.setLastLoginDate(new Date());
+            dbUser = userRepository.save(dbUser);
+            return new LoginResponse(dbUser, interests, accessToken, refreshToken);
         } catch (Exception e) {
-            System.out.println("login exception");
             e.printStackTrace();
             throw e;
         }
     }
 
-    private UserEntity checkAndRegisterUser(UserRegister userRegister, UserType userType) throws Exception {
+    protected UserEntity checkAndRegisterUser(UserRegister userRegister, UserType userType) throws Exception {
         boolean userExist = userRepository.existsByUsername(userRegister.getUsername());
-
         if (userExist) {
             throw new UserAlreadyExistsException("This username already exists");
         }
@@ -138,117 +240,87 @@ public class AuthService {
         if (emailExist) {
             throw new UserAlreadyExistsException("This email already exists");
         }
+
+        String invitationCode = userRegister.getInvitationCode();
+
+        if (invitationCode != null) {
+            UserInviteEntity userInviteEntity =
+                    userInvitationService.getInvitation(userRegister.getEmail(), userType, invitationCode);
+
+            if (userInviteEntity == null) {
+                throw new InvitationNotFoundException();
+            }
+            userInviteEntity.setIsValid(false);
+            userInvitationService.save(userInviteEntity);
+        }
+
         userRegister.setPassword(encodePassword(userRegister.getPassword()));
+
 
         UserEntity userEntity = new UserEntity(userRegister, userType);
 
-        return userRepository.save(userEntity);
+        userEntity.setProfileImage("https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2,f_auto,g_center,q_auto:good/v1/gcs/platform-data-dsc/contentbuilder/GDG-Bevy-ChapterThumbnail.png");
+        userEntity.setCreatedAt(new Date());
+        userEntity.setLastEditedAt(new Date());
+        userEntity.setLastLoginDate(null);
+        userEntity.setIsEmailVerified(false);
+        userEntity.setIsBlackListed(false);
+        userEntity.setIsVerified(false);
 
+        userEntity = userRepository.save(userEntity);
+
+        emailVerificationService.sendVerificationCodeWithEntity(userEntity);
+
+        return userEntity;
     }
 
 
-    public LeadDTO registerLead(LeadRegisterRequest leadRegisterRequest) throws Exception {
+    public List<UserDTO> getVerifyList() {
         try {
-
-            UserRegister userRegister = leadRegisterRequest.getUserRegister();
-            LeadRegister leadRegister = leadRegisterRequest.getLeadRegister();
-
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.LEAD);
-
-            UniversityEntity universityEntity = universityRepository.findById(leadRegister.getUniversityId())
-                    .orElseThrow(() -> new Exception("University not found"));
-
-            LeadEntity leadEntity = new LeadEntity(universityEntity, savedEntity);
-
-            LeadEntity savedLeadEntity = leadRepository.save(leadEntity);
-
-            return leadMapper.toDTO(savedLeadEntity);
+            List<UserEntity> userEntities = userRepository.findAllByIsVerifiedAndIsBlackListed(false, false);
+            return userMapper.toDTO(userEntities);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    public CoreTeamMemberDTO registerCoreTeam(CoreTeamRegisterRequest coreTeamRegisterRequest) throws Exception {
+    public UserDTO blackListUser(Long userId) {
         try {
+            UserEntity userEntity = getUserEntityById(userId);
 
-            UserRegister userRegister = coreTeamRegisterRequest.getUserRegister();
-            CoreTeamRegister coreTeamRegister = coreTeamRegisterRequest.getCoreTeamRegister();
+            if (userEntity.getIsBlackListed()) {
+                throw new UserAlreadyBlackListedException();
+            }
 
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.CORE_TEAM_MEMBER);
-
-            UniversityEntity universityEntity = universityRepository.findById(coreTeamRegister.getUniversityId())
-                    .orElseThrow(() -> new Exception("University not found"));
-
-            CoreTeamMemberEntity coreTeamMemberEntity = new CoreTeamMemberEntity(universityEntity, savedEntity);
-
-
-            CoreTeamMemberEntity savedCoreTeamMemberEntity = coreTeamMemberRepository.save(coreTeamMemberEntity);
-
-            return coreTeamMapper.toDTO(savedCoreTeamMemberEntity);
+            userEntity.setIsBlackListed(true);
+            return userMapper.toDTO(userRepository.save(userEntity));
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-
-    public GooglerDTO registerGoogler(GooglerRegisterRequest googlerRegisterRequest) throws Exception {
+    public UserDTO unBlackListUser(Long userId) {
         try {
+            UserEntity userEntity = getUserEntityById(userId);
 
-            UserRegister userRegister = googlerRegisterRequest.getUserRegister();
-            GooglerRegister googlerRegister = googlerRegisterRequest.getGooglerRegister();
+            if (!userEntity.getIsBlackListed()) {
+                throw new UserNotBlackListedException();
+            }
 
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.CORE_TEAM_MEMBER);
-
-            GooglerEntity googlerEntity = new GooglerEntity();
-
-            googlerEntity.setUser(savedEntity);
-
-            googlerEntity = googlerRepository.save(googlerEntity);
-
-            return googlerMapper.toDTO(googlerEntity);
+            userEntity.setIsBlackListed(false);
+            return userMapper.toDTO(userRepository.save(userEntity));
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    public FacilitatorDTO registerFacilitator(FacilitatorRegisterRequest facilitatorRegisterRequest) throws Exception {
-        try {
-
-            UserRegister userRegister = facilitatorRegisterRequest.getUserRegister();
-            FacilitatorRegister facilitatorRegister = facilitatorRegisterRequest.getFacilitatorRegister();
-
-            UserEntity savedEntity = checkAndRegisterUser(userRegister, UserType.FACILITATOR);
-
-
-            UniversityEntity universityEntity = universityRepository.findById(facilitatorRegister.getUniversityId())
-                    .orElseThrow(() -> new Exception("University not found"));
-
-            FacilitatorEntity facilitatorEntity = new FacilitatorEntity();
-            facilitatorEntity.setUniversity(universityEntity);
-            facilitatorEntity.setUser(savedEntity);
-            facilitatorEntity = facilitatorRepository.save(facilitatorEntity);
-
-            BuddyTeamEntity buddyTeamEntity = new BuddyTeamEntity();
-            buddyTeamEntity.setFacilitator(facilitatorEntity);
-            buddyTeamEntity.setLeads(List.of());
-
-            buddyTeamRepository.save(buddyTeamEntity);
-
-            return facilitatorMapper.toDTO(facilitatorEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    public UserDTO verifyUser(VerifyUserRequest verifyUserRequest) {
+    public UserDTO verifyUser(Long userId) throws Exception {
         try {
 
             // TODO: Add permissions
-            Long userId = verifyUserRequest.getUserId();
 
             UserEntity userEntity = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -259,6 +331,16 @@ public class AuthService {
 
             userEntity.setIsVerified(true);
 
+            switch (userEntity.getUserType()) {
+                case LEAD -> {
+                    userEntity.setPromotedAt(new Date());
+                }
+                case CORE_TEAM_MEMBER -> {
+                    userEntity.setPromotedAt(new Date());
+                }
+                default -> {}
+            }
+
             return userMapper.toDTO(userRepository.save(userEntity));
 
         } catch (Exception e) {
@@ -267,12 +349,10 @@ public class AuthService {
         }
     }
 
-    public UserDTO unverifyUser(VerifyUserRequest verifyUserRequest) {
+    public UserDTO unverifyUser(Long userId) {
         try {
 
             // TODO: Add permissions
-
-            Long userId = verifyUserRequest.getUserId();
 
             UserEntity userEntity = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -291,7 +371,6 @@ public class AuthService {
         }
     }
 
-
     private String encodePassword(String plainPassword) {
         try {
             return bCryptPasswordEncoder.encode(plainPassword);
@@ -300,5 +379,4 @@ public class AuthService {
         }
     }
 
-    // Other service methods
 }

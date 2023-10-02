@@ -19,9 +19,8 @@ import java.util.stream.Collectors;
 public class BuddyTeamMapper {
 
     private final ModelMapper modelMapper;
-    private final UserMapper userMapper;
-    private final UniversityRepository universityRepository;
-    private final BuddyTeamRepository buddyTeamRepository;
+    private final FacilitatorMapper facilitatorMapper;
+    private final LeadMapper leadMapper;
 
     public BuddyTeamEntity toEntity(BuddyTeam buddyTeam) {
         BuddyTeamEntity buddyTeamEntity = modelMapper.map(buddyTeam, BuddyTeamEntity.class);
@@ -31,9 +30,12 @@ public class BuddyTeamMapper {
 
     public BuddyTeamDTO toDTO(BuddyTeamEntity buddyTeamEntity) {
 
-        BuddyTeamDTO buddyTeam = modelMapper.map(buddyTeamEntity, BuddyTeamDTO.class);
+        BuddyTeamDTO buddyTeamDTO = new BuddyTeamDTO();
+        buddyTeamDTO.setBuddyTeamId(buddyTeamEntity.getId());
+        buddyTeamDTO.setFacilitatorDTO(facilitatorMapper.toDTO(buddyTeamEntity.getFacilitator()));
+        buddyTeamDTO.setLeads(leadMapper.toDTO(buddyTeamEntity.getLeads()));
 
-        return buddyTeam;
+        return buddyTeamDTO;
     }
 
     public List<BuddyTeamDTO> toDTO(List<BuddyTeamEntity> buddyTeamEntityList) {

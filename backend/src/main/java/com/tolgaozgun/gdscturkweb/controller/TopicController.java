@@ -29,21 +29,21 @@ public class TopicController {
             List<Topic> topicList = topicService.getAllTopics();
             return Response.create("Gathered all topics", HttpStatus.OK, topicList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping( path = "{topicId}")
-    public ResponseEntity<Object> getCityById(@PathVariable Long topicId) {
+    public ResponseEntity<Object> getTopicById(@PathVariable Long topicId) {
         try {
             Topic topic = topicService.getTopic(topicId);
             return Response.create("Found the topic", HttpStatus.OK, topic);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -53,8 +53,8 @@ public class TopicController {
             Topic topic = topicService.createTopic(createTopicRequest);
             return Response.create("Topic created successfully", HttpStatus.OK, topic);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -65,8 +65,8 @@ public class TopicController {
             Topic topic = topicService.editTopic(topicId, editTopicRequest);
             return Response.create("Topic edited successfully", HttpStatus.OK, topic);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

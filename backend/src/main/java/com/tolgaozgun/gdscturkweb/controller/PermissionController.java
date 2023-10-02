@@ -26,8 +26,8 @@ public class PermissionController {
             List<Permission> permissions = permissionService.getCurrentUserPermissions();
             return Response.create("Gathered all permissions for the user", HttpStatus.OK, permissions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -38,8 +38,8 @@ public class PermissionController {
             List<Permission> permissions = permissionService.getUserPermissions(userId);
             return Response.create("Gathered all permissions for the user", HttpStatus.OK, permissions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

@@ -29,8 +29,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getAllQuestions();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -40,8 +40,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getAllQuestionsByCategory(categoryId);
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -51,8 +51,8 @@ public class QuestionController {
             List<QuestionCategory> questionCategories = questionService.getAllQuestionCategories();
             return Response.create("Gathered all categories", HttpStatus.OK, questionCategories);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -62,8 +62,8 @@ public class QuestionController {
             QuestionCategory questionCategory = questionService.getQuestionCategoryById(categoryId);
             return Response.create("Gathered the category", HttpStatus.OK, questionCategory);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -74,8 +74,8 @@ public class QuestionController {
             QuestionDTO question = questionService.getQuestion(questionId);
             return Response.create("Found the question", HttpStatus.OK, question);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -85,8 +85,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getQuestionsAskedByCurrentUser();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -96,8 +96,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getAnsweredQuestionsByCurrentUser();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -107,8 +107,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getQuestionsAskedOrAnsweredByCurrentUser();
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -118,8 +118,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getQuestionsAskedByUser(userId);
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -129,8 +129,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getAnsweredQuestionsByUser(userId);
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -140,8 +140,8 @@ public class QuestionController {
             List<QuestionDTO> questions = questionService.getQuestionsAskedOrAnsweredByUser(userId);
             return Response.create("Successfully listed questions", HttpStatus.OK, questions);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -151,8 +151,8 @@ public class QuestionController {
             QuestionDTO question = questionService.askQuestion(askQuestionRequest);
             return Response.create("Successfully asked question", HttpStatus.OK, question);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -163,8 +163,8 @@ public class QuestionController {
             QuestionDTO question = questionService.answerQuestion(answerQuestionRequest);
             return Response.create("Successfully answered question", HttpStatus.OK, question);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

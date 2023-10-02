@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { registerGoogler } from '../../services/auth';
 import { isErrorResponse } from '../../utils/utils';
 import { RegisterGoogler } from '../../types/AuthTypes';
@@ -10,8 +9,6 @@ export const useRegisterGoogler = () => {
 		if (isErrorResponse(res)) {
 			return res;
 		}
-		// Set the cookies and return the user
-		Cookies.set('currentUser', JSON.stringify(res.data));
 		return res;
 	};
 

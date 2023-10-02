@@ -27,17 +27,11 @@ public class PermissionService {
 
     private final PermissionMapper permissionMapper;
 
+    private final AuthService authService;
+
     public List<Permission> getCurrentUserPermissions(){
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String userName = authentication.getName();
-            Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userName);
-
-            if (optionalUserEntity.isEmpty()) {
-                throw new UserNotFoundException("Error while getting user details");
-            }
-
-            UserEntity userEntity = optionalUserEntity.get();
+            UserEntity userEntity = authService.getCurrentUserEntity();
             UserType userType = userEntity.getUserType();
 
             Optional<UserTypeEntity> optionalUserTypeEntity = userTypeRepository.findByUserType(userType);

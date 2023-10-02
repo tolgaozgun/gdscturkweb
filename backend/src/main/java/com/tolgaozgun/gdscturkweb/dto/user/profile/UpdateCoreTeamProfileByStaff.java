@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateCoreTeamProfileByStaff {
 
-    @NotNull
-    private Long coreTeamMemberId;
-
     @Nullable
     private Long universityId;
 

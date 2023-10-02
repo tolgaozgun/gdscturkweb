@@ -1,10 +1,16 @@
 import Cookies from 'js-cookie';
-import { logout as logoutFn } from '../../services/auth';
 
 export const useLogout = () => {
 	const logout = async () => {
-		logoutFn();
-		Cookies.remove('currentUser');
+		Cookies.remove('accessToken');
+		Cookies.remove('refreshToken');
+		// Wait a second
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+		
+		// const res = await logoutFn();
+		return true;
+		
+		// return res;
 	};
 
 	return { logout };

@@ -6,6 +6,7 @@ import com.tolgaozgun.gdscturkweb.dto.request.announcement.EditAnnouncementReque
 import com.tolgaozgun.gdscturkweb.dto.response.Response;
 import com.tolgaozgun.gdscturkweb.exception.ExceptionLogger;
 import com.tolgaozgun.gdscturkweb.service.AnnouncementService;
+import com.tolgaozgun.gdscturkweb.service.EventService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,8 @@ public class AnnouncementController {
             List<AnnouncementDTO> announcements = announcementService.getAllAnnouncementsByUserType();
             return Response.create("Gathered all announcements", HttpStatus.OK, announcements);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -40,8 +41,8 @@ public class AnnouncementController {
             List<AnnouncementDTO> announcements = announcementService.getAllAnnouncements();
             return Response.create("Gathered all announcements", HttpStatus.OK, announcements);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -51,8 +52,8 @@ public class AnnouncementController {
             AnnouncementDTO announcement = announcementService.getAnnouncementById(id);
             return Response.create("Found the announcement", HttpStatus.OK, announcement);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -62,8 +63,8 @@ public class AnnouncementController {
             AnnouncementDTO announcement = announcementService.createAnnouncement(announcementRequest);
             return Response.create("Announcement created successfully", HttpStatus.OK, announcement);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -73,7 +74,7 @@ public class AnnouncementController {
             AnnouncementDTO announcement = announcementService.editAnnouncement(id, editAnnouncementRequest);
             return Response.create("Announcement edited successfully", HttpStatus.OK, announcement);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 }

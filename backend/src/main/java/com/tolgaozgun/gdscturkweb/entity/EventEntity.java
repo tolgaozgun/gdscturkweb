@@ -2,12 +2,15 @@ package com.tolgaozgun.gdscturkweb.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 
 @Entity
+@Data
 @Table(name = "events")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,8 +32,20 @@ public class EventEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String address;
+
+    @Column(nullable = false)
+    private Date startDate;
+
+    @Column
+    private Date endDate;
+
+    @Column(nullable = false)
+    private String link;
 
     @ManyToMany
     @JoinTable(

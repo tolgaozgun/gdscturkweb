@@ -2,6 +2,12 @@ import { Group, Paper, SimpleGrid, createStyles, Text, Card, Progress, Grid } fr
 import { PageContainer } from "../../../components/PageContainer";
 import { ProfileCard } from "../../../components/cards/ProfileCard";
 import { OverviewCard } from "../../../components/cards/OverviewCard";
+import useGetLeadDashboard from "../../../hooks/user/useGetLeadDashboard";
+import useAxiosSecure from "../../../hooks/auth/useAxiosSecure";
+import LoadingLottie from "../../../components/common/other/LoadingLottie";
+import useGetEventsByCurrentUserUniversity from "../../../hooks/event/useGetEventsByCurrentUserUniversity";
+import { Activity } from "../../../types/EventTypes";
+import useGetAllEvents from "../../../hooks/event/useGetAllEvents";
 
 
 const useStyles = createStyles((theme) => ({
@@ -14,42 +20,129 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const data = [
-  {
-    title: "Buddy Team Size",
-    value: "10",
-  },
-  {
-    title: "Total Activites Completed",
-    value: "100",
-  },
-  {
-    title: "Time as a Leader",
-    value: "30 days 21 hours 39 minutes",
-  },
-  {
-    title: "Core Team Size",
-    value: "5",
-  },
-  {
-    title: "Upcoming Events",
-    value: "3",
-  },
-  {
-    title: "Total Buddy Team Meetings",
-    value: "35",
-  },
-]
 
 
 const AdminDashboardPage = () => {
+  const axiosSecure = useAxiosSecure();
   const { classes } = useStyles();
 
 
+	const {
+		data: dashboardData,
+		isLoading: isDashboardLoading,
+		// isError: isUniversitiesError,
+	} = useGetLeadDashboard(axiosSecure);
 
-  const labels = ['September', 'October', 'November', 'December', 'January', 'February', 'March', 'April'];
-  const datasetEvents = [3, 2, 2, 1, 5, 4, 2, 4];
-  const datasetAbsences = [1, 2, 1, 1, 0, 0, 0, 0];
+  const {
+    data: eventsData,
+    isLoading: isEventsLoading,
+    // isError: isUniversitiesError,
+  } = useGetAllEvents(axiosSecure);
+
+  let data = [
+    {
+      title: "Buddy Team Size",
+      value: "Unable to retrieve data",
+    },
+    {
+      title: "Total Activites Completed",
+      value: "Unable to retrieve data",
+    },
+    {
+      title: "Time as a Leader",
+      value: "Unable to retrieve data",
+    },
+    {
+      title: "Core Team Size",
+      value: "Unable to retrieve data",
+    },
+    {
+      title: "Upcoming Events",
+      value: "Unable to retrieve data",
+    },
+    {
+      title: "Total Buddy Team Meetings",
+      value: "Unable to retrieve data",
+    },
+  ]
+  let labels = ['September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'];
+  let monthlyEventCount = 0;
+  let noOfBuddyTeamMeetings = 0;
+  let totalAttendance = 0;
+  let datasetEvents = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  let datasetAttendances = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  if (dashboardData?.data) {
+
+    // today's date
+    const today = new Date();
+    let pastEvents: Activity[] = []
+    const currentMonth = today.getMonth();
+    let futureEvents: Activity[] = []
+
+    if (eventsData?.data) {
+      // seperate dashboardData.data.eventDates into past and future events
+      pastEvents = eventsData.data.filter((event) => {
+        return new Date(event.startDate) < today;
+      });
+
+      futureEvents = eventsData.data.filter((event) => {
+        return new Date(event.startDate) >= today;
+      });
+
+      monthlyEventCount = eventsData.data.filter((event) => {
+        return new Date(event.startDate).getMonth() === currentMonth;
+      }).length;
+
+
+      // get the number of events in each month starting from september
+      datasetEvents = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      datasetAttendances = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      eventsData.data.forEach((event) => {
+        const month = new Date(event.startDate).getMonth();
+        datasetEvents[(month - 8) % 12]++;
+      });
+    }
+
+    if (dashboardData.data.buddyMeetings && dashboardData.data.buddyMeetings instanceof Map) { 
+
+      // get the number of attended meetings in each month starting from september
+      dashboardData.data.buddyMeetings.forEach((attended: boolean, date: Date) => {
+        noOfBuddyTeamMeetings++;
+        if (!attended) return;
+        const month = new Date(date).getMonth();
+        datasetAttendances[(month - 8) % 12]++;
+        totalAttendance++;
+      });
+    }
+
+
+    data = [
+      {
+        title: "Buddy Team Size",
+        value: dashboardData.data.buddyTeamSize ? dashboardData.data.buddyTeamSize.toString() : "Not in a buddy team",
+      },
+      {
+        title: "Total Activites Completed",
+        value: pastEvents.length.toString(),
+      },
+      {
+        title: "Time as a Leader",
+        value: dashboardData.data.promotedAt ? dashboardData.data.promotedAt.toString() : "Not found",
+      },
+      {
+        title: "Core Team Size",
+        value: dashboardData.data.coreTeamSize.toString(),
+      },
+      {
+        title: "Upcoming Events",
+        value: futureEvents.length.toString(),
+      },
+      {
+        title: "Total Buddy Team Meetings",
+        value: noOfBuddyTeamMeetings.toString(),
+      }
+    ]
+  }
 
   const dataEvents = {
     labels,
@@ -70,7 +163,7 @@ const AdminDashboardPage = () => {
     datasets: [
       {
         label: 'Absences',
-        data: datasetAbsences,
+        data: datasetAttendances,
         tension: 0.4,
         borderColor: '#FF8C00',
         backgroundColor: '#FF8C00',
@@ -106,12 +199,16 @@ const AdminDashboardPage = () => {
       );
     });
 
+    if (isDashboardLoading || !dashboardData) {
+      return <LoadingLottie />;
+    }
+
     return (
       <PageContainer title="Dashboard">
         <div className={classes.root}>
           <Grid>
             <Grid.Col xs={12} md={6}>
-              <ProfileCard withBorder />
+              <ProfileCard user={dashboardData?.data?.lead?.user!} university={dashboardData?.data?.lead?.university!} withBorder />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
               <Card
@@ -126,9 +223,9 @@ const AdminDashboardPage = () => {
                   Monthly required activities completed
                 </Text>
                 <Text fz="lg" fw={500}>
-                  1 / 2
+                  {monthlyEventCount} / 2
                 </Text>
-                <Progress value={50} mt="md" size="lg" radius="xl" />
+                <Progress value={monthlyEventCount/2} mt="md" size="lg" radius="xl" />
               </Card>
               <Card
                 withBorder
@@ -143,9 +240,9 @@ const AdminDashboardPage = () => {
                   Weekly buddy team meetings attended
                 </Text>
                 <Text fz="lg" fw={500}>
-                  27 / 35
+                  {totalAttendance} / {noOfBuddyTeamMeetings}
                 </Text>
-                <Progress value={77} mt="md" size="lg" radius="xl" />
+                <Progress value={totalAttendance / noOfBuddyTeamMeetings} mt="md" size="lg" radius="xl" />
               </Card>
             </Grid.Col>
           </Grid>
@@ -153,7 +250,7 @@ const AdminDashboardPage = () => {
             {stats}
 
             <OverviewCard withBorder data={dataEvents} options={options} name="Past Events"/>
-            <OverviewCard withBorder data={dataAbsences} options={options} name="Buddy Team Meeting Absences"/>
+            <OverviewCard withBorder data={dataAbsences} options={options} name="Buddy Team Meeting Attendances"/>
             <OverviewCard withBorder data={dataEvents} options={options} name="Upcoming Events"/>
           </SimpleGrid>
         </div>

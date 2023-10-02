@@ -29,8 +29,8 @@ public class UniversityController {
             List<University> universityList = universityService.getAllUniversities();
             return Response.create("Gathered all universities", HttpStatus.OK, universityList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
@@ -42,31 +42,31 @@ public class UniversityController {
             University university = universityService.getUniversityById(universityId);
             return Response.create("Found the university", HttpStatus.OK, university);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "create")
-    public ResponseEntity<Object> createCity(@Valid @RequestBody CreateUniversityRequest createUniversityRequest) {
+    public ResponseEntity<Object> createUniversity(@Valid @RequestBody CreateUniversityRequest createUniversityRequest) {
         try {
             University university = universityService.createUniversity(createUniversityRequest);
             return Response.create("University created successfully", HttpStatus.OK, university);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "edit/{universityId}")
-    public ResponseEntity<Object> editCity(@PathVariable Long universityId, @Valid @RequestBody EditUniversityRequest editUniversityRequest) {
+    public ResponseEntity<Object> editUniversity(@PathVariable Long universityId, @Valid @RequestBody EditUniversityRequest editUniversityRequest) {
         try {
             University university = universityService.editUniversity(universityId, editUniversityRequest);
             return Response.create("University edited successfully", HttpStatus.OK, university);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            // HTTP 500
+            return Response.create(ExceptionLogger.log(e), HttpStatus.OK);        }
     }
 
 

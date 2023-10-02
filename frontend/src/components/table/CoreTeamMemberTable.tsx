@@ -19,7 +19,6 @@ interface CoreTeamMemberTableProps {
 
 const CoreTeamMemberTable = ({data, isLoading}: CoreTeamMemberTableProps) => {
 
-  console.log(data);
 
   const columns = useMemo<MRT_ColumnDef<CoreTeamMemberModel>[]>(
     () => [

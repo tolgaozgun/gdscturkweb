@@ -4,15 +4,16 @@ import './Map.css'
 import LoadingPage from "../../pages/LoadingPage";
 import useGetUniversities from "../../hooks/university/useGetUniversities";
 import UniversityCard from "../cards/UniversityCard";
+import { University } from "../../types/UniversityTypes";
 
-const UniversitiesMap = () => {
+interface UniversitiesMapProps {
+  universities: University[];
+  isLoading: boolean;
+}
 
-	const {
-		data: allUniversities,
-		isLoading: isUniversitiesLoading,
-	} = useGetUniversities();
+const UniversitiesMap = ({universities, isLoading}: UniversitiesMapProps) => {
 
-  if (isUniversitiesLoading || !allUniversities) {
+  if (isLoading || !universities) {
     return <LoadingPage/>
   }
 
@@ -22,7 +23,7 @@ const UniversitiesMap = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-        {allUniversities?.data?.map((university) => {
+        {universities.map((university) => {
           return (
             <Marker key={university.universityId} position={[university.latitude, university.longitude]}>
               <Popup>

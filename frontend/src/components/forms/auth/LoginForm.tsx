@@ -9,15 +9,16 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../../constants/colors';
 import { login } from '../../../services/auth';
 import { useMutation } from '@tanstack/react-query';
 import SubtleLinkButton from '../../buttons/SubtleLinkButton';
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
 	const navigate = useNavigate();
+	// const { user, isUserLoading, isUserError } = useUser();
 	const form = useForm({
 		initialValues: {
 			email: '',
@@ -52,18 +53,27 @@ const LoginForm = () => {
 				}),
 			});
 
-			Cookies.set('currentUser', JSON.stringify(data.data));
+			// dispatch({type: "LOGIN", payload: data.data});
+			
+			// let token = {
+			// 	accessToken: data.data.accessToken,
+			// 	refreshToken: data.data.refreshToken,
+			// }
+
+			Cookies.set('accessToken', data.data.accessToken);
+			Cookies.set('refreshToken', data.data.refreshToken);
 			if (data?.data.userType === 'LEAD') {
-				navigate('/add-fare');
+				navigate('/panel/lead');
 			} else if (data.data.userType === 'CORE_TEAM_MEMBER') {
-				navigate('/search-fare');
+				navigate('/panel/core-team');
 			} else if (data.data.userType === 'FACILITATOR') {
-				navigate('/system-reports');
+				navigate('/panel/facilitator');
 			} else if (data.data.userType === 'GOOGLER') {
-				navigate('/system-reports');
+				navigate('/panel/googler');
 			} else if (data.data.userType === 'ADMIN') {
-				navigate('/system-reports');
+				navigate('/panel/admin');
 			}
+			navigate(0)
 		},
 		onError: (error) => {
 			notifications.show({
@@ -95,7 +105,6 @@ const LoginForm = () => {
 	};
 
 	return (
-		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 350 }} mx="auto">
 			<Stack spacing={'md'}>
 				<Title size="28px" align="center">
 					Log in to your account
@@ -113,6 +122,7 @@ const LoginForm = () => {
 						<PasswordInput
 							label="Password"
 							placeholder="Your password"
+							
 							{...form.getInputProps('password')}
 						/>
 						<Button
@@ -134,7 +144,6 @@ const LoginForm = () => {
 					</Flex>
 				</form>
 			</Stack>
-		</Card>
 	);
 };
 

@@ -7,9 +7,10 @@ import { useContextMenu } from 'mantine-contextmenu';
 interface LeadCardProps {
     lead: LeadModel;
     padding: string;
+    isUsedInMap?: boolean
 }
 
-const LeadCard = ({lead, padding}: LeadCardProps) => {
+const LeadCard = ({lead, padding, isUsedInMap}: LeadCardProps) => {
     const navigate = useNavigate();
     const showContextMenu = useContextMenu();
 
@@ -25,11 +26,19 @@ const LeadCard = ({lead, padding}: LeadCardProps) => {
         // Download image
     }
 
+    const topics = lead.user.interests?.map((topic) => (topic.name + ", "))
+
+    // remove the last two characters from the last element on the array if exists
+    if (topics?.length > 0) {
+      topics[topics.length - 1] = topics[topics.length - 1].slice(0, -2);
+    }
 
     return (
         <Card
+        withBorder
           miw={300}
-              shadow="sm"
+          h={isUsedInMap ? 170 : 250}
+          shadow="sm"
           padding="xl"
           component="a"
           onClick={handleClick}
@@ -78,14 +87,19 @@ const LeadCard = ({lead, padding}: LeadCardProps) => {
                 </Grid.Col>
             </Grid>
           </Card.Section>
-          <Group mt="md">
-            {lead.user.interests?.map((topic) => {
+          <Group 
+            mt={isUsedInMap ? "md" : "none"}
+            >
+            Interests: {topics}
+            {/* <Text color="black" w={100}>{topics}</Text> */}
+            
+            {/* {lead.user.interests?.map((topic) => {
                 return (
-                    <Badge key={topic.topicId}>
-                        {topic.name}
-                    </Badge>
+                  <Text color="black" weight={300} mr={0}>
+                        {topic.name}, 
+                    </Text>
                 );
-            })}
+            })} */}
           </Group>
         </Card>
       );

@@ -40,7 +40,7 @@ public class UniversityService {
         }
     }
 
-    public University getUniversityById(Long universityId){
+    protected UniversityEntity getUniversityEntityById(Long universityId) {
         try {
             Optional<UniversityEntity> optionalUniversityEntity = universityRepository.findById(universityId);
 
@@ -49,7 +49,16 @@ public class UniversityService {
             }
 
             UniversityEntity universityEntity = optionalUniversityEntity.get();
-            return universityMapper.toModel(universityEntity);
+            return universityEntity;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public University getUniversityById(Long universityId){
+        try {
+            return universityMapper.toModel(getUniversityEntityById(universityId));
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;

@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { registerFacilitator } from '../../services/auth';
 import { isErrorResponse } from '../../utils/utils';
 import { RegisterFacilitator } from '../../types/AuthTypes';
@@ -10,8 +9,6 @@ export const useRegisterFacilitator = () => {
 		if (isErrorResponse(res)) {
 			return res;
 		}
-		// Set the cookies and return the user
-		Cookies.set('currentUser', JSON.stringify(res.data));
 		return res;
 	};
 

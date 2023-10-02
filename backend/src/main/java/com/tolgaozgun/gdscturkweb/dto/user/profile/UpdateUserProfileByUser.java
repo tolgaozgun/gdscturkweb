@@ -26,7 +26,7 @@ public class UpdateUserProfileByUser {
     private String phoneNumber;
 
     @Nullable
-    private String biograpghy;
+    private String biography;
 
     @Nullable
     private List<Topic> interests;

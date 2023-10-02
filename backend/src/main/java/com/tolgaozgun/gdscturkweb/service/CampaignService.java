@@ -43,6 +43,18 @@ public class CampaignService {
         }
     }
 
+    public List<Campaign> getCurrentCampaigns() {
+        try {
+            Date today = new Date();
+            List<CampaignEntity> campaignEntities = campaignRepository.findAllByStartDateAfterAndEndDateBefore(today, today);
+
+            return campaignMapper.toModel(campaignEntities);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
     public Campaign getCampaign(Long campaignId) {
         try {
             Optional<CampaignEntity> optionalCampaignEntity = campaignRepository.findById(campaignId);

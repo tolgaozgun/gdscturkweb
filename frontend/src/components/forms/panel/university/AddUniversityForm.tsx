@@ -130,7 +130,6 @@ const AddUniversityForm = ({padding, mt}: AddUniversityFormProps) => {
 	const countryList: Array<Country> = allCountries ? allCountries?.data!: [];
 	const countryData: Array<SelectItem> = countryList!
 		.map((country) => {
-			console.log(country);
 			return {
 				name: country.name,
 				countryId: country.countryId,
@@ -140,7 +139,6 @@ const AddUniversityForm = ({padding, mt}: AddUniversityFormProps) => {
 			};
 		}).sort((a, b) => a.name.localeCompare(b.name));
 
-    console.log(allCities)
 	const cityList: Array<City> = allCities? allCities?.data! : [];
 	const cityData: Array<SelectItem> = cityList!
 		.map((city) => {
@@ -154,7 +152,6 @@ const AddUniversityForm = ({padding, mt}: AddUniversityFormProps) => {
 		}).sort((a, b) => a.name.localeCompare(b.name));
 
 	const handleAddUniversity = async () => {
-		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;

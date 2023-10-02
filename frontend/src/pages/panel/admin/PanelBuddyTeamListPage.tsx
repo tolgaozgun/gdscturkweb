@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
 import { BuddyTeam } from '../../../types/BuddyTeamTypes';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
-import useGetBuddyTeams from '../../../hooks/buddy-team/useGetBuddyTeams';
+import useGetAllBuddyTeams from '../../../hooks/buddy-team/useGetAllBuddyTeams';
 import { PageContainer } from '../../../components/PageContainer';
 import LoadingPage from '../../LoadingPage';
 import BaseTable from '../../../components/table/BaseTable';
@@ -18,7 +18,7 @@ const PanelBuddyTeamListPage = () => {
 	const {
 		data: allBuddyTeams,
 		isLoading: isBuddyTeamsLoading,
-	} = useGetBuddyTeams(axiosSecure);
+	} = useGetAllBuddyTeams(axiosSecure);
 
 	const columns = useMemo<MRT_ColumnDef<PageType>[]>(
 		() => [

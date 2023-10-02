@@ -61,3 +61,11 @@ export function formatDate(date: Date): string {
 
 	return `${day}, ${month} ${year}`;
 }
+
+export const encodeEmail = (email: string) => {
+	return email.replace(/@/g, '#64;').replace(/\./g, '#46;');
+};
+
+export const decodeEmail = (email: string) => {
+	return email.replace(/#64;/g, '@').replace(/#46;/g, '.');
+}

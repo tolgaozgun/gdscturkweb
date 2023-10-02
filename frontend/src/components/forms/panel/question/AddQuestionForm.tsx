@@ -54,7 +54,6 @@ const AddQuestionForm = ({padding, mt}: AddQuestionFormProps) => {
 
 
 	const handleAddQuestion = async () => {
-		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;

@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateFacilitatorProfileByStaffRequest {
 
-    @NotNull
-    @JsonProperty("user")
-    private UpdateUserProfileByStaff updateUserProfile;
 
     @NotNull
     @JsonProperty("facilitator")

@@ -24,8 +24,6 @@ const LeadDashboardPage = () => {
 		],
 	});
 
-	console.log(fareId);
-	console.log(result);
 	if (result[0].isLoading || result[1].isLoading) {
 		return <LoadingPage />;
 	}

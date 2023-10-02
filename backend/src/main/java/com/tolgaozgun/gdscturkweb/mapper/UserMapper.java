@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class UserMapper {
@@ -31,5 +33,11 @@ public class UserMapper {
         UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
         return userDTO;
 
+    }
+
+    public List<UserDTO> toDTO(List<UserEntity> userEntityList) {
+        return userEntityList.stream()
+                .map(this::toDTO)
+                .toList();
     }
 }

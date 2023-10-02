@@ -21,6 +21,7 @@ public class Response {
         return new ResponseEntity<Object>(response, status);
     }
 
+
     public static ResponseEntity<Object> create(String message, HttpStatus status) {
         HashMap<String, Object> response = new HashMap<String, Object>();
         String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());

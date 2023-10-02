@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -22,5 +23,8 @@ public class UserDTO {
     private String phoneNumber;
     private String biography;
     private List<Topic> interests;
+    private Date lastLoginDate;
+    private Date createdAt;
+    private Date lastEditedAt;
 
 }
