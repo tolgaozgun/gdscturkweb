@@ -1,0 +1,32 @@
+name: Deploy Spring Boot App
+
+on:
+  push:
+    branches:
+      - main  # Or specify your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11  # Adjust the JDK version as needed
+
+      - name: Build Spring Boot App
+        run: ./mvnw clean package  # Use the correct build command for your project
+
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2
+        with:
+          server-ip: ${{ secrets.SERVER_IP }}
+          server-username: ${{ secrets.SERVER_USERNAME }}
+          server-port: ${{ secrets.SERVER_PORT }}
+          remote-dir: /home/tolgaozgun/gdscturkweb/backend/
+          local-dir: ./target  # Adjust the local directory as needed
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
