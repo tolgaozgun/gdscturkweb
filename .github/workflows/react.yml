@@ -1,0 +1,35 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - main  # Or specify your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14  # Adjust the Node.js version as needed
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build React App
+        run: npm run build
+
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2
+        with:
+          server-ip: ${{ secrets.SERVER_IP }}
+          server-username: ${{ secrets.SERVER_USERNAME }}
+          server-port: ${{ secrets.SERVER_PORT }}
+          remote-dir: /home/githubactions/gdscturkweb/
+          local-dir: ./build
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
