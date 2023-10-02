@@ -31,6 +31,6 @@ jobs:
           server-ip: ${{ secrets.SERVER_IP }}
           server-username: ${{ secrets.SERVER_USERNAME }}
           server-port: ${{ secrets.SERVER_PORT }}
-          remote-dir: /home/githubactions/gdscturkweb/frontend/
+          remote-dir: /home/${{ secrets.SERVER_USERNAME }}/gdscturkweb/frontend/
           local-dir: ./build
           key: ${{ secrets.SSH_PRIVATE_KEY }}
