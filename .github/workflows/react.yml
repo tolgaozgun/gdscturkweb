@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  # Or specify your main branch name
+  workflow_dispatch:
 
 jobs:
   build:
